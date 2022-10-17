@@ -1,0 +1,43 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printnum.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/10/13 12:57:49 by gfantech          #+#    #+#             */
+/*   Updated: 2022/10/13 12:57:52 by gfantech         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+#include "ft_printf.h"
+
+static void	ft_putnbr(int n, int *count)
+{
+	int		sign;
+	char	c;
+
+	sign = 1;
+	if (n < 0)
+	{
+		write(1, "-", 1);
+		*count += 1;
+		sign = -1;
+	}
+	if (n / 10)
+		ft_putnbr(n / 10 * sign, count);
+	c = '0' + n % 10 * sign;
+	write(1, &c, 1);
+	*count += 1;
+}
+
+int	ft_printnum(int val, int *count)
+{
+	if (val == 0)
+	{
+		write(1, "0", 1);
+		*count += 1;
+		return (1);
+	}
+	ft_putnbr(val, count);
+	return (1);
+}
