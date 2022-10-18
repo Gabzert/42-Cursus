@@ -16,31 +16,42 @@ static char		*find_end(char *str)
 	return (NULL);
 }
 
+
+char	*read_line(int fd, char *stat, char *temp)
+{
+	int	res;
+
+	while (res != 0)
+	{
+		res = read(fd, temp, BUFFER_SIZE);
+		if (res == -1)
+			return (NULL);
+		temp[res] = '\0';
+		ft_strjoin(stat, temp);
+		str = find_end(stat);
+		if (str != NULL)
+		{
+			stat = strcut(stat);
+			return (str);		
+		}
+	}
+	return (NULL);
+}
+
 char	*get_next_line(int fd)
 {
 	char	*buffer;
 	char	*str;
 	static char	*offset;
-	int			res;
-
+	
+	if (fd == NULL)
+		return (NULL);
 	if (offset == NULL)
 		offset = "\0";
 	buffer = malloc(sizeof(char *) * (BUFFER_SIZE + 1));
-	while (res != 0)
-	{
-		res = read(fd, buffer, BUFFER_SIZE);
-		if (res == -1)
-			return (NULL);
-		buffer[res] = '\0';
-		ft_strjoin(offset, buffer);
-		str = find_end(offset);
-		if (str != NULL)
-		{
-			offset = strcut(offset);
-			free(temp);
-			return (str);		
-		}
-	}
-	free(temp);
-	return (NULL);
+	if (buffer == NULL)
+		return (NULL);
+	str = read_line(fd, offset, buffer);
+	free(buffer);
+	return (str);
 }
