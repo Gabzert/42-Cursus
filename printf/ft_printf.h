@@ -17,13 +17,15 @@
 
 typedef struct s_format
 {
-	int	minus;
-	int	plus;
-	int	space;
-	int	hash;
-	int	zero;
-	int	width;
-	int	precision;
+	int		minus;
+	int		plus;
+	int		space;
+	int		hash;
+	int		zero;
+	int		width;
+	int		precision;
+	char	spec;
+	char	parse;
 }	t_format;
 
 int	ft_printchr(int c, int *count);

@@ -1,30 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printchr.c                                      :+:      :+:    :+:   */
+/*   ft_formatter.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 14:22:48 by gfantech          #+#    #+#             */
-/*   Updated: 2022/10/13 14:22:49 by gfantech         ###   ########.fr       */
+/*   Created: 2022/10/17 15:52:34 by gfantech          #+#    #+#             */
+/*   Updated: 2022/10/17 15:52:37 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_printf.h"
 
-int	ft_printchr(int c, int *count, t_format format)
+void	ft_formatter(t_format f)
 {
-	ft_formatter(format);
-	if (format->width > 0 && format->minus == 1)
-	{
-		ft_putchar_fd(c, 1);
-		*count += 1;
-		parsing(format, count);
-	}
-	else
-	{
-		parsing(format, count);
-		ft_putchar_fd(c, 1);
-		*count += 1;
-	}
-	return (1);
+	f->parse = ' ';
+	if (f->plus == 1 && f->space == 1)
+		f->space = 0;
+	if (f->minus == 1 && f->zero == 1)
+		f->zero = 0;
+	if ((f->spec == 'd' || f->spec == 'i' || f->spec == 'u' || f->spec == 'X'
+			|| f->spec == 'x') && f->zero == 1)
+		f->parse = '0';
 }

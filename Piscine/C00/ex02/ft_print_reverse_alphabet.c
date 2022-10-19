@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printchr.c                                      :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 14:22:48 by gfantech          #+#    #+#             */
-/*   Updated: 2022/10/13 14:22:49 by gfantech         ###   ########.fr       */
+/*   Created: 2022/05/05 12:10:57 by gfantech          #+#    #+#             */
+/*   Updated: 2022/05/05 12:11:10 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_printf.h"
+#include <unistd.h>
 
-int	ft_printchr(int c, int *count, t_format format)
+void	ft_print_reverse_alphabet(void)
 {
-	ft_formatter(format);
-	if (format->width > 0 && format->minus == 1)
+	char	x;
+	int		i;
+
+	x = 'z';
+	i = 0;
+	while (i < 26)
 	{
-		ft_putchar_fd(c, 1);
-		*count += 1;
-		parsing(format, count);
+		write(1, &x, 1);
+		x = x - 1;
+		i++;
 	}
-	else
-	{
-		parsing(format, count);
-		ft_putchar_fd(c, 1);
-		*count += 1;
-	}
-	return (1);
 }

@@ -17,6 +17,7 @@ static void	ft_putnbr(int n, int *count)
 	char	c;
 
 	sign = 1;
+
 	if (n < 0)
 	{
 		write(1, "-", 1);
@@ -28,16 +29,26 @@ static void	ft_putnbr(int n, int *count)
 	c = '0' + n % 10 * sign;
 	write(1, &c, 1);
 	*count += 1;
+
 }
 
 int	ft_printnum(int val, int *count)
 {
+	ft_formatter(format);
 	if (val == 0)
 	{
+		if (format->width > 0 && format->minus == 1)
+			parsing(format, count);
 		write(1, "0", 1);
 		*count += 1;
+		if (format->width > 0 && format->minus != 1)
+			parsing(format, count);
 		return (1);
 	}
+	if (format->width > 0 && format->minus == 1)
+		parsing(format, count);
 	ft_putnbr(val, count);
+	if (format->width > 0 && format->minus != 1)
+		parsing(format, count);
 	return (1);
 }

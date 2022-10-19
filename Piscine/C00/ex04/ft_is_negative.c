@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printchr.c                                      :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 14:22:48 by gfantech          #+#    #+#             */
-/*   Updated: 2022/10/13 14:22:49 by gfantech         ###   ########.fr       */
+/*   Created: 2022/05/05 12:10:57 by gfantech          #+#    #+#             */
+/*   Updated: 2022/05/05 12:11:10 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "ft_printf.h"
+#include <unistd.h>
 
-int	ft_printchr(int c, int *count, t_format format)
+void	ft_is_negative(int n)
 {
-	ft_formatter(format);
-	if (format->width > 0 && format->minus == 1)
+	if (n < 0)
 	{
-		ft_putchar_fd(c, 1);
-		*count += 1;
-		parsing(format, count);
+		write(1, "N", 1);
 	}
 	else
 	{
-		parsing(format, count);
-		ft_putchar_fd(c, 1);
-		*count += 1;
-	}
-	return (1);
+		write(1, "P", 1);
+	}	
 }
+
+/*void main()
+{
+	ft_is_negative();
+}*/
