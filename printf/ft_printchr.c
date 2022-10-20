@@ -11,20 +11,13 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-int	ft_printchr(int c, int *count, t_format format)
+int	ft_printchr(int c, int *count, t_format *f)
 {
-	ft_formatter(format);
-	if (format->width > 0 && format->minus == 1)
-	{
-		ft_putchar_fd(c, 1);
-		*count += 1;
-		parsing(format, count);
-	}
-	else
-	{
-		parsing(format, count);
-		ft_putchar_fd(c, 1);
-		*count += 1;
-	}
+	char	*res;
+
+	res = malloc(2 * sizeof(char));
+	res[0] = c;
+	res[1] = '\0';
+	ft_printer(f, res, count);
 	return (1);
 }

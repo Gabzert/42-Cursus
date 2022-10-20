@@ -10,6 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
+static int	ft_count(int n)
+{
+	int	len;
+
+	len = 0;
+	while (n != 0)
+	{
+		n = n / radix;
+		len++;
+	}
+}
 
 static void	pointer_hex(unsigned long n, int *count)
 {
@@ -30,16 +41,18 @@ static void	pointer_hex(unsigned long n, int *count)
 int	ft_printmem(void *ptr, int *count)
 {
 	unsigned long	a;
+	char	res;
 
 	if (ptr == NULL)
 	{
-		write(1, "(nil)", 5);
-		*count += 5;
+		res = malloc(6 * sizeof(char));
+		res = "(nil)";
+		ft_printer(f, res, count);
 		return (1);
 	}
 	a = (unsigned long)ptr;
-	write (1, "0x", 2);
-	*count += 2;
+	
+	
 	pointer_hex(a, count);
 	return (1);
 }

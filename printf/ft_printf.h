@@ -28,11 +28,16 @@ typedef struct s_format
 	char	parse;
 }	t_format;
 
-int	ft_printchr(int c, int *count);
-int	ft_printstr(char *str, int *count);
-int	ft_printnum(int val, int *count);
-int	ft_printhex(unsigned int n, char c, int *count);
-int	ft_printmem(void *ptr, int *count);
-int	ft_printf(const char *str, ...);
+int		ft_printchr(int c, int *count, t_format *f);
+int		ft_printstr(char *str, int *count, t_format *f);
+int		ft_printnum(int val, int *count, t_format *f);
+int		ft_printhex(unsigned int n, char c, int *count, t_format *f);
+int		ft_printmem(void *ptr, int *count, t_format *f);
+int		ft_printf(const char *str, ...);
+int		is_flag(char c);
+int		parsecalc(char *str, t_format *format);
+void	parsing(t_format *f, int *count);
+void	ft_formatter(t_format *f);
+void	format_initializer(t_format *f);
 
 #endif

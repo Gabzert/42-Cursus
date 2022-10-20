@@ -34,21 +34,12 @@ static void	ft_putnbr(int n, int *count)
 
 int	ft_printnum(int val, int *count)
 {
-	ft_formatter(format);
 	if (val == 0)
 	{
-		if (format->width > 0 && format->minus == 1)
-			parsing(format, count);
 		write(1, "0", 1);
 		*count += 1;
-		if (format->width > 0 && format->minus != 1)
-			parsing(format, count);
 		return (1);
 	}
-	if (format->width > 0 && format->minus == 1)
-		parsing(format, count);
 	ft_putnbr(val, count);
-	if (format->width > 0 && format->minus != 1)
-		parsing(format, count);
 	return (1);
 }

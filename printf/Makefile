@@ -6,33 +6,40 @@
 #    By: gfantech <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/14 11:21:35 by gfantech          #+#    #+#              #
-#    Updated: 2022/10/14 17:38:59 by gfantech         ###   ########.fr        #
+#    Updated: 2022/10/20 12:16:12 by gfantech         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-SRCS    =  ft_printf.c ft_printhex.c ft_printchr.c ft_printmem.c ft_printnum.c ft_printstr.c
-OBJS    = ${SRCS:.c=.o}
-INCS    = includes
-NAME    = libftprintf.a
-LIBC    = ar rc
-LIBR    = ranlib
-CC      = gcc
-RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror
+SRCS    =  ft_printf.c ft_printhex.c ft_printchr.c ft_printmem.c ft_printnum.c \
+	   ft_printstr.c ft_format_utils.c ft_formatter.c ft_format_initializer.c
+NAME		= libftprintf.a
+LIBFT		= libft
+LIBFT_LIB	= libft.a
+OBJS		= $(SRCS:.c=.o)
+RM			= rm -f
+LIBC		= ar -rcs
+FLAGS		= -Wall -Wextra -Werror
+INCS		= .
+COMPILER	= gcc
 
 .c.o:
-	${CC} ${CFLAGS} -c $< -o ${<:.c=.o} -I${INCS} -L. -lftprintf -lft
+	${COMPILER} ${FLAGS} -c $< -o ${<:.c=.o} -I${INCS}
 
-${NAME}: ${OBJS}
-	${LIBC} ${NAME} ${OBJS}
-	${LIBR} ${NAME}
+$(NAME): ${OBJS}
+	make all -C $(LIBFT)/
+	cp $(LIBFT)/$(LIBFT_LIB) $(NAME)
+	${LIBC} $(NAME) $(OBJS)
 
-all: ${NAME}
-
-clean:
-	${RM} ${OBJS}
-
+all: $(NAME)
+    
 fclean: clean
-	${RM} ${NAME}
-
+	$(RM) $(NAME) $(bonus)
+	make fclean -C $(LIBFT)
+    
+clean:
+	$(RM) -f $(OBJS) $(OBJS_B)
+	make clean -C $(LIBFT)
+    
 re: fclean all
+
+bonus: all
               

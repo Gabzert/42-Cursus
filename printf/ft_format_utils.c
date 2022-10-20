@@ -25,7 +25,7 @@ int	is_flag(char c)
 	return (1);
 }	
 
-int	atoa(char *str)
+static int	atoa(char *str)
 {
 	int	num;
 
@@ -38,35 +38,27 @@ int	atoa(char *str)
 	return (num);
 }
 
-int	parsecalc(char *str, t_format format)
+int	parsecalc(char *str, t_format *format)
 {
-	int	i;
+	size_t	i;
 
+	ft_formatter(format);
 	i = 0;
 	if (str[i] == '.')
 	{
 		i++;
-		format->precision = atoa(str[i]);
+		format->precision = atoa(&str[i]);
 	}
 	else
 	{
-		format->width = atoa(str[i]);
+		format->width = atoa(&str[i]);
 		while (is_flag(str[i]))
 			i++;
 		if (str[i] == '.')
 		{	
 			i++;
-			format->precision = atoa(str[i]);
+			format->precision = atoa(&str[i]);
 		}
 	}
 	return (i);
-}
-
-void	parsing(t_format f, int *count)
-{
-	while (f->width-- > 0)
-	{
-		write(1, &f->parse, 1);
-		*count += 1;
-	}
 }

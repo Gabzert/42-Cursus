@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   ft_printf->c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,32 +11,34 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-int	ft_check_flags(char *ptr, t_format format;)
+int	ft_check_flags(char *ptr, t_format *f)
 {
 	int	i;
 
-	while (is_flag(ptr[i]) || (ptr[i] <= '9' && ptr[i] >= '0'))
+	i = 0;
+	while (is_flag(ptr[i]) == 1 && (ptr[i] > '9' || ptr[i] < '1'))
 	{
 		if (ptr[i] == '0')
-			format->zero = 1;
+			f->zero = 1;
 		else if (ptr[i] == ' ')
-			format->space = 1;
+			f->space = 1;
 		else if (ptr[i] == '-')
-			format->minus = 1;
+			f->minus = 1;
 		else if (ptr[i] == '+')
-			format->plus = 1;
+			f->plus = 1;
 		else if (ptr[i] == '#')
-			format->hash = 1;
+			f->hash = 1;
 		i++;
 	}
-	if (ptr[i] == '.' || (ptr[i] <= '9' && ptr[i] >= '0'))
-		i += parsecalc(&ptr[i], format);
+	if (ptr[i] == '.' || (ptr[i] <= '9' && ptr[i] >= '1'))
+		i += parsecalc(&ptr[i], f);
 	return (i);
 }
 
-int	ft_check_specifier(char c, va_list ptr, int *count, t_format format;)
+int	ft_check_specifier(char c, va_list ptr, int *count, t_format *format)
 {
 	format->spec = c;
+	ft_formatter(format);
 	if (c == 'd' || c == 'i')
 		return (ft_printnum(va_arg(ptr, int), count, format));
 	else if (c == 'c')
@@ -64,13 +66,14 @@ int	ft_printf(const char *str, ...)
 
 	i = 0;
 	count = 0;
+	format_initializer(&format);
 	va_start(ptr, str);
 	while (str[i])
 	{
 		if (str[i] == '%')
 		{
-			i += ft_check_flags(&((char *)str)[i], &count, format);
-			i += ft_check_specifier(str[i + 1], ptr, &count, format);
+			i += ft_check_flags(&((char *)str)[i + 1], &format);
+			i += ft_check_specifier(str[i + 1], ptr, &count, &format);
 		}
 		else
 		{

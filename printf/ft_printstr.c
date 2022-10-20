@@ -11,20 +11,19 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-static void	ft_putstr(char *s, int *count)
+int	ft_printstr(char *str, int *count, t_format *f)
 {
-	write(1, s, ft_strlen(s));
-	*count += ft_strlen(s);
-}
+	char	*res;
 
-int	ft_printstr(char *str, int *count)
-{
 	if (str == NULL)
 	{
-		write(1, "(null)", 6);
-		*count += 6;
+		res = malloc(7 * sizeof(char));
+		res = "(null)";
+		ft_printer(f, res, count);
 		return (1);
 	}
-	ft_putstr(str, count);
+	res = malloc((ft_strlen(str) + 1) * sizeof(char));
+	ft_strcpy(res, str);
+	ft_printer(f, res, count);
 	return (1);
 }
