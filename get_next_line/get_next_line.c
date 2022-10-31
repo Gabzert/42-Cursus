@@ -30,7 +30,7 @@ static char	*find_end(char *str, int res)
 
 char	*read_line(int fd, char **stat, char *temp)
 {
-	int	res;
+	int		res;
 	char	*str;
 	char	*sup;
 

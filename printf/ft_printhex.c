@@ -44,6 +44,20 @@ static void	convert(unsigned int n, char c, int i, char *res)
 	}
 }
 
+static int	precision_handler(char *res, int *count, t_format *f)
+{
+	if (f->width > 0)
+	{
+		parsing(f, f->width);
+		*count += f->width;
+		free(res);
+		return (1);
+	}
+	res[0] = '\0';
+	ft_printer(f, res, count);
+	return (1);
+}
+
 int	ft_printhex(unsigned int n, char c, int *count, t_format *f)
 {
 	char	*res;
@@ -59,18 +73,7 @@ int	ft_printhex(unsigned int n, char c, int *count, t_format *f)
 		res = res_malloc_num(*f, &len, 0);
 	convert(n, c, len - 1, res);
 	if (n == 0 && f->pc_check == 1 && f->precision == 0)
-	{
-		if (f->width > 0)
-		{
-			parsing(f, f->width);
-			*count += f->width;
-			free(res);
-			return (1);
-		}
-		res[0] = '\0';
-		ft_printer(f, res, count);
-		return (1);
-	}
+		return (precision_handler(res, count, f));
 	res[len] = '\0';
 	ft_printer(f, res, count);
 	return (1);

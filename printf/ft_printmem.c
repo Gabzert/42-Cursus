@@ -41,9 +41,9 @@ static void	pointer_hex(unsigned long n, int i, char *res)
 
 int	ft_printmem(void *ptr, int *count, t_format *f)
 {
-	char		*res;
-	int			len;
 	unsigned long	a;
+	char			*res;
+	int				len;
 
 	if (ptr == NULL)
 	{

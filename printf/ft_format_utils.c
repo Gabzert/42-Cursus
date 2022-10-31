@@ -64,7 +64,7 @@ int	parsecalc(char *str, t_format *format)
 	return (i);
 }
 
-static char	*res_flags(t_format f, int *len, int *i, int is_zero)
+static char	*res_flags(t_format f, int *len, int is_zero)
 {
 	char	*res;
 
@@ -72,7 +72,6 @@ static char	*res_flags(t_format f, int *len, int *i, int is_zero)
 	{
 		*len += 2;
 		res = malloc(*len + 1 * sizeof(char));
-		*i += 2;
 		res[0] = '0';
 		if (f.spec == 'x')
 			res[1] = 'x';
@@ -83,7 +82,6 @@ static char	*res_flags(t_format f, int *len, int *i, int is_zero)
 	{
 		*len += 1;
 		res = malloc(*len + 1 * sizeof(char));
-		*i += 1;
 		if (f.plus == 1)
 			res[0] = '+';
 		if (f.space == 1)
@@ -101,10 +99,14 @@ char	*res_malloc_num(t_format f, int *len, int is_zero)
 	char	*res;
 
 	i = 0;
+	if ((f.plus == 1 || f.space == 1) && f.di_sign != -1)
+		i = 1;
+	else if ((f.spec == 'x' || f.spec == 'X') && f.hash == 1 && is_zero == 0)
+		i = 2;
 	parse = f.precision - *len;
 	if (f.pc_check == 1 && *len < f.precision)
 		*len = f.precision;
-	res = res_flags(f, len, &i, is_zero);
+	res = res_flags(f, len, is_zero);
 	while (parse-- > 0)
 	{
 		res[i] = '0';

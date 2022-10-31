@@ -11,19 +11,24 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
+static int	ft_strnull(int *count, t_format *f)
+{
+	char	*res;
+
+	res = calloc(7, sizeof(char));
+	ft_strlcpy(res, "(null)", 7);
+	if (f->pc_check == 1 && f->precision < 6)
+		res[0] = '\0';
+	ft_printer(f, res, count);
+	return (1);
+}
+
 int	ft_printstr(char *str, int *count, t_format *f)
 {
 	char	*res;
 
 	if (str == NULL)
-	{
-		res = calloc(7, sizeof(char));
-		ft_strlcpy(res, "(null)", 7);
-		if (f->pc_check == 1 && f->precision < 6)
-			res[0] = '\0';
-		ft_printer(f, res, count);
-		return (1);
-	}
+		return (ft_strnull(count, f));
 	res = malloc((ft_strlen(str) + 1) * sizeof(char));
 	ft_strlcpy(res, str, ft_strlen(str) + 1);
 	if (f->pc_check == 1 && f->precision < (int)(ft_strlen(str) + 1))
