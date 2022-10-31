@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf->c                                        :+:      :+:    :+:   */
+/*   ft_printf->c                                        :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,6 +16,7 @@ int	ft_check_flags(char *ptr, t_format *f)
 	int	i;
 
 	i = 0;
+	format_initializer(f);
 	while (is_flag(ptr[i]) == 1 && (ptr[i] > '9' || ptr[i] < '1'))
 	{
 		if (ptr[i] == '0')
@@ -45,8 +46,10 @@ int	ft_check_specifier(char c, va_list ptr, int *count, t_format *format)
 		return (ft_printchr(va_arg(ptr, int), count, format));
 	else if (c == 's')
 		return (ft_printstr(va_arg(ptr, char *), count, format));
-	else if (c == 'x' || c == 'X' || c == 'u')
+	else if (c == 'x' || c == 'X')
 		return (ft_printhex(va_arg(ptr, unsigned int), c, count, format));
+	else if (c == 'u')
+		return (ft_printun(va_arg(ptr, unsigned int), count, format));
 	else if (c == 'p')
 		return (ft_printmem(va_arg(ptr, void *), count, format));
 	else if (c == '%')
@@ -66,7 +69,6 @@ int	ft_printf(const char *str, ...)
 
 	i = 0;
 	count = 0;
-	format_initializer(&format);
 	va_start(ptr, str);
 	while (str[i])
 	{

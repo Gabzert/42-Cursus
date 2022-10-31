@@ -11,35 +11,59 @@
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-static void	ft_putnbr(int n, int *count)
+static int	ft_count_num(int n)
+{
+	int	len;
+
+	len = 0;
+	if (n == 0)
+		len++;
+	while (n != 0)
+	{
+		n = n / 10;
+		len++;
+	}
+	return (len);
+}
+
+static void	ft_putnbr(int n, int i, char *res)
 {
 	int		sign;
 	char	c;
 
 	sign = 1;
-
 	if (n < 0)
-	{
-		write(1, "-", 1);
-		*count += 1;
 		sign = -1;
-	}
 	if (n / 10)
-		ft_putnbr(n / 10 * sign, count);
+		ft_putnbr(n / 10 * sign, i - 1, res);
 	c = '0' + n % 10 * sign;
-	write(1, &c, 1);
-	*count += 1;
-
+	res[i] = c;
 }
 
-int	ft_printnum(int val, int *count)
+int	ft_printnum(int val, int *count, t_format *f)
 {
-	if (val == 0)
+	char	*res;
+	int		len;
+
+	len = ft_count_num(val);
+	if (val < 0)
+		f->di_sign = -1;
+	res = res_malloc_num(*f, &len, 0);
+	if (val == 0 && f->pc_check == 1 && f->precision == 0)
 	{
-		write(1, "0", 1);
-		*count += 1;
+		if (f->width > 0)
+		{
+			parsing(f, f->width);
+			*count += f->width;
+			free(res);
+			return (1);
+		}
+		res[0] = '\0';
+		ft_printer(f, res, count);
 		return (1);
 	}
-	ft_putnbr(val, count);
+	ft_putnbr(val, len - 1, res);
+	res[len] = '\0';
+	ft_printer(f, res, count);
 	return (1);
 }

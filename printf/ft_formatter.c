@@ -17,7 +17,23 @@ void	ft_formatter(t_format *f)
 		f->space = 0;
 	if (f->minus == 1 && f->zero == 1)
 		f->zero = 0;
+	if (f->pc_check == 1 && f->precision < f->width)
+		f->zero = 0;
 	if ((f->spec == 'd' || f->spec == 'i' || f->spec == 'u' || f->spec == 'X'
 			|| f->spec == 'x') && f->zero == 1)
 		f->parse = '0';
+}
+
+void	format_initializer(t_format *f)
+{
+	f->minus = 0;
+	f->plus = 0;
+	f->space = 0;
+	f->hash = 0;
+	f->zero = 0;
+	f->width = 0;
+	f->precision = 0;
+	f->pc_check = 0;
+	f->di_sign = 0;
+	f->parse = ' ';
 }

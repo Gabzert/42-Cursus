@@ -6,11 +6,11 @@
 #    By: gfantech <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/14 11:21:35 by gfantech          #+#    #+#              #
-#    Updated: 2022/10/20 12:16:12 by gfantech         ###   ########.fr        #
+#    Updated: 2022/10/24 09:49:58 by gfantech         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-SRCS    =  ft_printf.c ft_printhex.c ft_printchr.c ft_printmem.c ft_printnum.c \
-	   ft_printstr.c ft_format_utils.c ft_formatter.c ft_format_initializer.c
+SRCS    =  ft_printf.c ft_printhex.c ft_printchr.c ft_printmem.c ft_printnum.c ft_printun.c \
+	   ft_printstr.c ft_format_utils.c ft_formatter.c ft_printer.c
 NAME		= libftprintf.a
 LIBFT		= libft
 LIBFT_LIB	= libft.a

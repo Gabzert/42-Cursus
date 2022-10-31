@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printhex.c                                      :+:      :+:    :+:   */
+/*   ft_print_unsigned.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 14:48:10 by gfantech          #+#    #+#             */
-/*   Updated: 2022/10/13 14:48:12 by gfantech         ###   ########.fr       */
+/*   Created: 2022/10/21 18:30:19 by gfantech          #+#    #+#             */
+/*   Updated: 2022/10/21 18:30:22 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "ft_printf.h"
 
-static int	ft_count_hex(unsigned int n)
+static int	ft_count_num(unsigned int n)
 {
 	int	len;
 
@@ -20,44 +20,30 @@ static int	ft_count_hex(unsigned int n)
 		len++;
 	while (n != 0)
 	{
-		n = n / 16;
+		n = n / 10;
 		len++;
 	}
 	return (len);
 }
 
-static void	convert(unsigned int n, char c, int i, char *res)
+static void	ft_putunsigned(unsigned int n, int i, char *res)
 {
-	int		temp;
-	char	*base;
+	char	c;
 
-	if (c == 'x')
-		base = "0123456789abcdef";
-	else
-		base = "0123456789ABCDEF";
-	if (n != 0)
-	{
-		temp = n % 16;
-		n = n / 16;
-		convert(n, c, i - 1, res);
-		res[i] = base[temp];
-	}
+	if (n / 10)
+		ft_putunsigned(n / 10, i - 1, res);
+	c = '0' + n % 10;
+	res[i] = c;
 }
 
-int	ft_printhex(unsigned int n, char c, int *count, t_format *f)
+int	ft_printun(unsigned int n, int *count, t_format *f)
 {
 	char	*res;
 	int		len;
 
-	len = ft_count_hex(n);
-	if (n == 0)
-	{
-		res = res_malloc_num(*f, &len, 1);
-		res[len - 1] = '0';
-	}
-	else
-		res = res_malloc_num(*f, &len, 0);
-	convert(n, c, len - 1, res);
+	len = ft_count_num(n);
+	res = res_malloc_num(*f, &len, 0);
+	ft_putunsigned(n, len - 1, res);
 	if (n == 0 && f->pc_check == 1 && f->precision == 0)
 	{
 		if (f->width > 0)
