@@ -17,6 +17,12 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+typedef struct s_lines
+{
+	int	fd;
+	static char *offset;
+}		t_lines;
+
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char *s1, char *s2);
