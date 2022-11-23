@@ -43,7 +43,6 @@ int	parsecalc(char *str, t_format *format)
 {
 	size_t	i;
 
-	ft_formatter(format);
 	i = 0;
 	if (str[i] == '.')
 	{

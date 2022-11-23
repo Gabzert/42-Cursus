@@ -1,30 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/04 10:22:36 by gfantech          #+#    #+#             */
-/*   Updated: 2022/10/04 10:22:38 by gfantech         ###   ########.fr       */
+/*   Created: 2022/11/15 11:58:55 by gfantech          #+#    #+#             */
+/*   Updated: 2022/11/15 11:58:59 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
-#include <stdint.h>
 
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*array;
-	size_t	dim;
+#ifndef PUSH_SWAP_H
+# define PUSH_SWAP_H
 
-	dim = nmemb * size;
-	if (nmemb == 0 || size == 0)
-		dim = 1;
-	if (nmemb != 0 && dim / nmemb != size)
-		return (NULL);
-	array = (void *)malloc(nmemb * size);
-	if (array == NULL)
-		return (NULL);
-	ft_memset(array, 0, dim);
-	return (array);
-}
+# include "libft/libft.h"
+
+void	merge(char **a, int first, int center, int last);
+void	sort(char **a, int first, int last);
+void	push(char **x, char **y);
+void	shift(char **a, int rot);
+void	swap(char **a);
+
+#endif

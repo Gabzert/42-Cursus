@@ -49,16 +49,17 @@ int	ft_printmem(void *ptr, int *count, t_format *f)
 	{
 		res = malloc(6 * sizeof(char));
 		ft_strlcpy(res, "(nil)", 6);
+		f->pnull = 1;
 		ft_printer(f, res, count);
 		return (1);
 	}
 	a = (unsigned long)ptr;
 	len = ft_count_mem(a);
-	res = malloc((len + 3) * sizeof(char));
-	res[0] = '0';
-	res[1] = 'x';
-	pointer_hex(a, len + 1, res);
-	res[len + 2] = '\0';
+	res = (char *)malloc((len + 1) * sizeof(char));
+	pointer_hex(a, len - 1, res);
+	res[len] = '\0';
+	f->width -= 2;
+	*count += 2;
 	ft_printer(f, res, count);
 	return (1);
 }

@@ -22,23 +22,6 @@ size_t	ft_strlen(const char *str)
 	return (c);
 }
 
-char	*ft_realloc(char *str)
-{
-	int		i;
-	char	*supp;
-
-	i = 0;
-	supp = malloc((ft_strlen(str) + 1) * sizeof(char));
-	while (str[i])
-	{
-		supp[i] = str[i];
-		i++;
-	}
-	supp[i] = '\0';
-	free(str);
-	return (supp);
-}
-
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*new;
@@ -73,18 +56,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	char	*sub;
 
 	if (start > ft_strlen(s))
-	{
-		sub = (char *)malloc(1 * sizeof(char));
-		sub[0] = '\0';
-		return (sub);
-	}
+		len = 0;
 	if (len > ft_strlen(s + start))
 		len = ft_strlen(s + start);
 	sub = (char *)malloc((len + 1) * sizeof(char));
 	if (sub == NULL)
 		return (NULL);
 	c = 0;
-	while (((char *)s)[start] != '\0' && c < len)
+	while (c < len && ((char *)s)[start] != '\0')
 	{
 		sub[c] = ((char *)s)[start];
 		c++;
@@ -119,5 +98,6 @@ char	*strcut(char *str)
 		j++;
 	}
 	cut[j] = '\0';
+	free(str);
 	return (cut);
 }

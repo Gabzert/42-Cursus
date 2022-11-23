@@ -27,8 +27,12 @@ static void	put_flag(t_format *f, int diff, int *count)
 		write(1, "-", 1);
 		*count += 1;
 	}
-	if (f->minus != 1 && f->width > 1)
+	if (f->spec == 'p' && f->zero == 1 && f->pnull != 1)
+		write(1, "0x", 2);
+	if (f->minus != 1 && f->width > 0)
 		parsing(f, diff);
+	if (f->spec == 'p' && f->zero == 0 && f->pnull != 1)
+		write(1, "0x", 2);
 	if (f->di_sign == -1 && f->zero != 1)
 	{
 		write(1, "-", 1);
@@ -60,7 +64,7 @@ void	ft_printer(t_format *f, char *str, int *count)
 		write(1, &str[i], 1);
 		i++;
 	}
-	if (f->minus == 1 && f->width > 1)
+	if (f->minus == 1 && f->width > 0)
 		parsing(f, diff);
 	free(str);
 }

@@ -22,10 +22,10 @@ static int	set_ctr(char const *set, char c)
 	return (0);
 }
 
-static size_t	border_check(char const *s1, char const *set,
-		int side, size_t lenght)
+static int	border_check(char const *s1, char const *set,
+		int side, int lenght)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	if (side == -1)
@@ -42,15 +42,17 @@ static size_t	border_check(char const *s1, char const *set,
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	lenght;
+	int		lenght;
 	char	*str;
-	size_t	start;
-	size_t	end;
+	int		start;
+	int		end;
 
 	lenght = ft_strlen(s1);
 	start = border_check(s1, set, 1, lenght);
 	end = border_check(s1, set, -1, lenght);
 	lenght = (end + 1) - start;
+	if (lenght < 0)
+		lenght = 0;
 	str = (char *)malloc((lenght + 1) * sizeof(char));
 	if (str == NULL)
 		return (NULL);

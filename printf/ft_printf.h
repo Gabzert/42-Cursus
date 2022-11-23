@@ -28,6 +28,7 @@ typedef struct s_format
 	int		di_sign;
 	char	spec;
 	char	parse;
+	int		pnull;
 }	t_format;
 
 int		ft_printchr(int c, int *count, t_format *f);

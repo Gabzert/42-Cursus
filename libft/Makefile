@@ -6,11 +6,11 @@
 #    By: gfantech <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/06 09:27:29 by gfantech          #+#    #+#              #
-#    Updated: 2022/10/06 16:51:37 by gfantech         ###   ########.fr        #
+#    Updated: 2022/11/11 17:10:38 by gfantech         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 SRCS    = ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
-	ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c \
+	ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_striteri.c \
 	ft_memchr.c ft_memcmp.c ft_memcpy.c ft_memmove.c ft_memset.c \
 	ft_putchar_fd.c ft_putendl_fd.c ft_putnbr_fd.c ft_putstr_fd.c \
 	ft_split.c ft_strchr.c ft_strdup.c ft_strjoin.c ft_strlcat.c \

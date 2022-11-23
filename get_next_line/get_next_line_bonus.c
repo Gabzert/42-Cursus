@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*find_end(char *str, int res)
 {
@@ -59,25 +59,25 @@ char	*get_next_line(int fd)
 {
 	char		*buffer;
 	char		*str;
-	static char	*offset;
+	static char	*offsets[4096];
 
-	if (fd == -1 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (offset == NULL)
+	if (offsets[fd] == NULL)
 	{
-		offset = malloc(sizeof(char *) * 1);
-		if (offset == NULL)
+		offsets[fd] = malloc(sizeof(char *) * 1);
+		if (!offsets[fd])
 			return (NULL);
-		offset[0] = '\0';
+		offsets[fd][0] = '\0';
 	}
 	buffer = malloc(sizeof(char *) * (BUFFER_SIZE + 1));
 	if (buffer == NULL)
 		return (NULL);
-	str = read_line(fd, &offset, buffer);
+	str = read_line(fd, &offsets[fd], buffer);
 	if (str == NULL)
 	{
-		free(offset);
-		offset = NULL;
+		free(offsets[fd]);
+		offsets[fd] = NULL;
 	}
 	free(buffer);
 	return (str);

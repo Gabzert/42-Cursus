@@ -20,7 +20,7 @@ void	ft_formatter(t_format *f)
 	if (f->pc_check == 1 && f->precision < f->width)
 		f->zero = 0;
 	if ((f->spec == 'd' || f->spec == 'i' || f->spec == 'u' || f->spec == 'X'
-			|| f->spec == 'x') && f->zero == 1)
+			|| f->spec == 'x' || f->spec == 'p') && f->zero == 1)
 		f->parse = '0';
 }
 
@@ -36,4 +36,5 @@ void	format_initializer(t_format *f)
 	f->pc_check = 0;
 	f->di_sign = 0;
 	f->parse = ' ';
+	f->pnull = 0;
 }

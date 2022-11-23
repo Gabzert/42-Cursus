@@ -20,6 +20,34 @@ static void	convert(long n, char *res, int i)
 	}
 }
 
+static char	*check_num(long *n, int *lenght)
+{
+	char	*res;
+
+	if (*n < 0)
+	{
+		*n *= -1;
+		*lenght += 1;
+		res = (char *)malloc((*lenght + 1) * sizeof(char));
+		if (!res)
+			return (NULL);
+		res[0] = '-';
+	}
+	else if (*n == 0)
+	{
+		res = (char *)malloc(2 * sizeof(char));
+		if (!res)
+			return (NULL);
+		res[0] = '0';
+		res[1] = '\0';
+	}
+	else
+		res = (char *)malloc((*lenght + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
+	return (res);
+}
+
 char	*ft_itoa(int n)
 {
 	char	*res;
@@ -33,17 +61,11 @@ char	*ft_itoa(int n)
 		n = n / 10;
 		lenght++;
 	}
-	if (n1 < 0)
-	{
-		n1 = n1 * -1;
-		lenght++;
-		res = (char *)malloc((lenght + 1) * sizeof(char));
-		res[0] = '-';
-	}
-	else if (n1 == 0)
-		return ("0");
-	else
-		res = (char *)malloc((lenght + 1) * sizeof(char));
+	res = check_num(&n1, &lenght);
+	if (!res)
+		return (NULL);
+	if (res[0] == '0')
+		return (res);
 	convert(n1, res, lenght - 1);
 	res[lenght] = '\0';
 	return (res);
