@@ -12,70 +12,40 @@
 
 #include "push_swap.h"
 
-static int	find_average(int argc, int **argv)
+void	simple_sort(t_stack *a, t_stack *b)
 {
-	int	n;
-	int	i;
-
-	i = 0;
-	n = 0;
-	while (i < argc)
-	{
-		n += a[i];
-		i++;
-	}
-	n /= argc;
-	return (n);
-}
-		
-int	input_check(int argc, char **argv)
-{
-	int		i;
-	int		j;
-	int		x;
-
-	j = 0;
-	i = 0;
-	while (i <= argc)
-	{
-		x = 0;
-		while (ft_is_digit(argv[i][j]))
-			j++;
-		if (argv[i][j] != '\0')
-			return (1);
-		while (!ft_strcmp(argv[i], argv[x]))
-			x++;
-		if (x < argc)
-			return (1);
-		i++;
-	}
-	return (0);
+	if (a->size == 2)
+		small_sort2(a);
+	else if (a->size == 3)
+		small_sort3(a);
+	else
+		small_sort(a, b);
 }
 
-int	simple_sort(int num, char **a)
-{
-		
-}
 int	main(int argc, char **argv)
 {
-	int	**a;
-	int	c;
-	int	i;
+	t_stack	a;
+	t_stack	b;
+	int		i;
 
-	i = 0;
+	i = -1;
+	argc -= 1;
+	a.array = ft_calloc(argc, sizeof(int *));
+	a.size = argc;
+	b.array = ft_calloc(a.size, sizeof(int *));
+	b.size = 0;
 	if (input_check(argc, argv) == 1)
 		write(2, "Error\n", 6);
-	else if (argc < 6)
-		simple_sort(argc, argv);
-	else 
+	else
 	{
-		while (i < argc)
-		{
-			a[i] = ft_atoi(argv[i]);
-			i++;
-		}
-		c = find_average(argc, a);	
-		sort(a, argc, c);
+		while (++i < argc)
+			a.array[i] = ft_atoi(argv[i + 1]);
+		if (sort_check(&a) == 1)
+			smart_shift(&a, &b, find_min_max(&a, 1), 1);
+		else if (argc < 6)
+			simple_sort(&a, &b);
+		else
+			sort(&a, &b);
 	}
 	return (0);
 }

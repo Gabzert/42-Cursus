@@ -12,86 +12,92 @@
 
 #include "push_swap.h"
 
-static int	count(char **x)
+void	dshift(t_stack *a, t_stack *b, int rot)
 {
-	int	i; 
-
-	i = 0;
-	while (x[i])
-		i++;
-	return (i);
+	if (rot == 0)
+	{
+		shift(a, 2);
+		shift(b, 2);
+		ft_printf("rr\n");
+	}
+	else if (rot == 1)
+	{
+		rev_shift(a, 2);
+		rev_shift(b, 2);
+		ft_printf("rrr\n");
+	}
 }
 
-void	swap(int **a, int dir)
+void	swap(t_stack *x, int side)
 {
-	int	*temp;
+	int	temp;
 
-	temp = a[0];
-	a[0] = a[1];
-	a[1] = temp;
-	if (dir > 0)
+	temp = x->array[0];
+	x->array[0] = x->array[1];
+	x->array[1] = temp;
+	if (side == 0)
 		ft_printf("sa\n");
 	else
 		ft_printf("sb\n");
 }
 
-void	shift(int **a, int dir)
+void	shift(t_stack *x, int side)
 {
-	int	*temp;
-	int		i;
+	int	temp;
+	int	i;
 
 	i = 1;
-	temp = a[0];
-	while (a[i])
+	temp = x->array[0];
+	while (i < x->size)
 	{
-		a[i - 1] = a[i];
+		x->array[i - 1] = x->array[i];
 		i++;
 	}
-	a[i] = temp;
-	if (dir > 0)
+	x->array[i - 1] = temp;
+	if (side == 1)
 		ft_printf("ra\n");
-	else
+	else if (side == 0)
 		ft_printf("rb\n");
 }
 
-void	rev_shift(int **a, int dir)
+void	rev_shift(t_stack *x, int side)
 {
-	int	*temp;
-	int		i;
+	int	temp;
+	int	i;
 
-	i = (sizeof(a) / sizeof(int));
-	temp = a[i];
+	i = x->size - 1;
+	temp = x->array[i];
 	while (i > 0)
 	{
-		a[i] = a[i - 1];
+		x->array[i] = x->array[i - 1];
 		i--;
 	}
-	a[0] = temp;
-	if (dir > 0)
+	x->array[0] = temp;
+	if (side == 1)
 		ft_printf("rra\n");
-	else
+	else if (side == 0)
 		ft_printf("rrb\n");
 }
 
-
-void	push(int **x, int **y, int dir)
+void	push(t_stack *x, t_stack *y, int side)
 {
 	int		i;
 
-	i = (sizeof(y) / sizeof(int));
-	while (i < 0)
+	i = y->size;
+	while (i > 0)
 	{
-		y[i] = y[i - 1];
+		y->array[i] = y->array[i - 1];
 		i--;
 	}
-	y[0] = x[0];
-	while (x[i])
+	y->array[0] = x->array[0];
+	while (i < x->size)
 	{
-		x[i - 1] = x[i];
+		x->array[i - 1] = x->array[i];
 		i++;
 	}
-	x[i] = 0;
-	if (dir > 0)
+	x->size -= 1;
+	y->size += 1;
+	if (side > 0)
 		ft_printf("pa\n");
 	else
 		ft_printf("pb\n");

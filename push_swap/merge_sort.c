@@ -12,42 +12,55 @@
 
 #include "push_swap.h"
 
-void	sort(int **a, int num, int avg)
+static void	merge(t_stack *a, t_stack *b, int max, int min)
 {
-	int		i;
-	int	**b;
+	int		f_bottom;
+	int		f_top;
 
-	i = 0;
-	b = ft_calloc(num, sizeof(int **));
-	while (i < num)
-	{
-		if (a[0] > avg)
-			push(a, b, -1);
-		shift(a, 1)
-		i++;
-	}
-	
-}	
-
-int	sort_check(int **a, int size)
-{
-	int	n;
-	int	i;
-	int	max;
-	int	min;
-
-	i = 1;
-	n = 0;
-	// find max;
-	// find min;
-	while (n < size)
-	{
-		if (a[i] > a[i + 1] && a[i] != max && a[i + 1] != min)
-			return (0);
-		n++;
-	}
-	return (1);
+	f_top = find_first(a, max, min, 0);
+	f_bottom = find_first(a, max, min, -1);
+	if (f_top > f_bottom)
+		smart_shift(a, b, a->array[a->size - f_bottom - 1], 1);
+	else
+		smart_shift(a, b, a->array[f_top], 1);
+	if (adjust_b(b, a->array[0]) == 1)
+		fix_b(b, a, a->array[0]);
 }
 
+void	sort(t_stack *a, t_stack *b)
+{
+	int		c_min;
+	int		c_max;
 
+	c_min = find_min_max(a, -1);
+	c_max = c_min + 10;
+	while (a->size != 0)
+	{
+		while (find_first(a, c_max, c_min, 0) == -1)
+		{
+			c_min += 11;
+			c_max = c_min + 10;
+		}
+		merge(a, b, c_max, c_min);
+		push(a, b, -1);
+	}
+	smart_shift(b, a, find_min_max(b, 1), 0);
+	while (b->size > 0)
+		push(b, a, 1);
+}	
 
+int	sort_check(t_stack *a)
+{
+	int	i;
+	int	min;
+
+	i = 0;
+	min = find_min_max(a, -1);
+	while (i < a->size)
+	{
+		if (a->array[i] > a->array[i + 1] && a->array[i + 1] != min)
+			return (0);
+		i++;
+	}
+	return (1);
+}	
