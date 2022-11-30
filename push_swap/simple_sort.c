@@ -30,10 +30,10 @@ void	small_sort3(t_stack *a)
 		if (a->array[0] == min && a->array[1] == max)
 		{
 			rev_shift(a, 1);
-			swap(a, 1);
+			swap(a, 0);
 		}
 		else
-			swap(a, 1);
+			swap(a, 0);
 	}
 	else
 	{

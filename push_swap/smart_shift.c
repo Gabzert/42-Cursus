@@ -16,13 +16,25 @@ void	fix_b(t_stack *b, t_stack *a, int num)
 {
 	int	min_b;
 	int	max_b;
+	int	before_num;
+	int	i;
 
 	max_b = find_min_max(b, 1);
 	min_b = find_min_max(b, -1);
+	i = 0;
 	if (num < min_b || num > max_b)
-		smart_shift(b, a, max_b, 0);
-	else if (min_b < num < max_b)
-		smart_shift(b, a, b->array[find_first(b, num, min_b, 0)], 0);
+        smart_shift(b, a, max_b , 0);
+	else if (min_b < num < max_b )
+	{
+		before_num = min_b;
+		while (i < b->size)
+		{
+			if (num - b->array[i] <  num - before_num && b->array[i] < num)
+				before_num = b->array[i];
+			i++;
+		}
+		smart_shift(b, a, before_num, 0);
+	}
 }
 
 int	find_pos(t_stack *x, int num)
