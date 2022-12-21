@@ -12,55 +12,79 @@
 
 #include "push_swap.h"
 
-static void	merge(t_stack *a, t_stack *b, int max, int min)
+static void	merge(t_stack *a, t_stack *b)
 {
-	int		f_bottom;
-	int		f_top;
+	int	max_b;
+	int	max_a;
 
-	f_top = find_first(a, max, min, 0);
-	f_bottom = find_first(a, max, min, -1);
-	if (f_top > f_bottom)
-		smart_shift(a, b, a->array[a->size - f_bottom - 1], 1);
-	else
-		smart_shift(a, b, a->array[f_top], 1);
-	if (adjust_b(b, a->array[0]) == 1)
-		fix_b(b, a, a->array[0]);
+	while (b->size != 0)
+	{
+		max_b = find_min_max(b, 1);
+		smart_shift(b, a, max_b, 0);
+		smart_shift(a, b, max_a, 1);
+		if (b->array[0] == max_b && b->size != 0)
+			push(b, a, 1);
+		max_b = find_min_max(b, 1);
+		while (a->array[a->size - 1] > max_b && a->array[a->size - 1]
+			!= find_min_max(a, 1))
+			rev_shift(a, 1);
+		max_a = a->array[0];
+	}
+	if (sort_check(a) == 1)
+		smart_shift(a, b, find_min_max(a, -1), 1);
+	free(a->array);
+	free(a->chunk1);
+	free(a->chunk2);
+	free(a->chunk3);
+	free(a->chunk4);
+	free(b->array);
 }
 
 void	sort(t_stack *a, t_stack *b)
 {
-	int		c_min;
-	int		c_max;
+	int	chunk;
 
-	c_min = find_min_max(a, -1);
-	c_max = c_min + 10;
+	chunk = 1;
+	if (groups_init(a) == 0)
+		return ;
+	groups_fill(a);
 	while (a->size != 0)
 	{
-		while (find_first(a, c_max, c_min, 0) == -1)
+		while (group_empty(a, which_chunk(a, chunk)) == 0)
 		{
-			c_min += 11;
-			c_max = c_min + 10;
+			while (which_group(a, a->array[0]) == chunk && a->size != 0)
+			{
+				push(a, b, -1);
+				if (find_in_chunk(which_chunk(a,
+							which_group(a, b->array[0])),
+						b->array[0], a->c_size) == 0)
+					shift(b, 0);
+			}
+			shift(a, 1);
 		}
-		merge(a, b, c_max, c_min);
-		push(a, b, -1);
+		chunk++;
 	}
-	smart_shift(b, a, find_min_max(b, 1), 0);
-	while (b->size > 0)
-		push(b, a, 1);
-}	
+	merge(a, b);
+}
 
 int	sort_check(t_stack *a)
 {
 	int	i;
 	int	min;
+	int	max;
 
 	i = 0;
 	min = find_min_max(a, -1);
-	while (i < a->size)
+	max = find_min_max(a, 1);
+	while (i < a->size - 1)
 	{
 		if (a->array[i] > a->array[i + 1] && a->array[i + 1] != min)
+			return (0);
+		if (a->array[i + 1] == max && a->array[i] == min)
+			return (0);
+		if (a->array[0] < a->array[a->size - 1] && a->array[a->size - 1] != max)
 			return (0);
 		i++;
 	}
 	return (1);
-}	
+}

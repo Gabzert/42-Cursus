@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   extra.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/24 14:13:05 by gfantech          #+#    #+#             */
-/*   Updated: 2022/11/24 14:13:07 by gfantech         ###   ########.fr       */
+/*   Created: 2022/12/20 15:23:51 by gfantech          #+#    #+#             */
+/*   Updated: 2022/12/20 15:23:53 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "checker.h"
 
 int	find_min_max(t_stack *a, int swap)
 {
@@ -88,10 +88,10 @@ int	find_first(t_stack *a, int c_max, int side)
 	return (-1);
 }
 
-long	long_atoi(char *str)
+long int	long_atoi(char *str)
 {
-	long	num;
-	int	neg;
+	long int	num;
+	int			neg;
 
 	num = 0;
 	neg = 1;
@@ -123,7 +123,7 @@ int	ft_is_digit(char *str)
 	while (str[c] != '\0' )
 	{
 		if (str[c] > '9' || str[c] < '0')
-			return(0);
+			return (0);
 		c++;
 	}
 	return (1);

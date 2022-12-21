@@ -12,32 +12,24 @@
 
 #include "push_swap.h"
 
-void	fix_b(t_stack *b, t_stack *a, int num)
+void	optimize_shift(t_stack *a, t_stack *b)
 {
-	int	min_b;
-	int	max_b;
-	int before_num;
-	int i;
-
-	max_b = find_min_max(b, 1);
-	min_b = find_min_max(b, -1);
-	i = 0;
-	if (num < min_b || num > max_b)
-		smart_shift(b, a, max_b, 0);
-	else if (min_b < num < max_b)
-	 {
-		before_num = min_b;
-		while(i < b->size)
+	while (b->array[0] < a->array[0] && a->size != 0)
+	{
+		if (b->array[0] > a->array[a->size - 1] || a->array[a->size - 1]
+			== find_min_max(a, 1))
 		{
-				if (num - b->array[i] < num - before_num && b->array[i] < num)
-					before_num = b->array[i];
-				i++;
+			push(b, a, 1);
+			if (a->array[a->size - 1] < a->array[0] || (a->array[a->size - 1]
+					== find_min_max(a, 1) && b->array[0] > a->array[0]))
+				shift(a, 1);
 		}
-		smart_shift(b, a, before_num, 0);
-	 }
+		else
+			break ;
+	}
 }
 
-int	find_pos(t_stack *x, int num)
+static int	find_pos(t_stack *x, int num)
 {
 	int	i;
 
@@ -51,22 +43,16 @@ int	find_pos(t_stack *x, int num)
 	return (i);
 }
 
-int	adjust_b(t_stack *b, int num)
+static int	find_num(t_stack *x, int num)
 {
-	int	min_b;
-	int	max_b;	
+	int	i;
 
-	max_b = find_min_max(b, 1);
-	min_b = find_min_max(b, -1);
-	if (num < min_b || num > max_b)
+	i = 0;
+	while (i < x->size)
 	{
-		if (b->array[0] != find_min_max(b, 1))
+		if (x->array[i] == num)
 			return (1);
-	}
-	else if (min_b < num < max_b)
-	{
-		if (b->array[0] > num || b->array[b->size] < num)
-			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -77,22 +63,26 @@ void	smart_shift(t_stack *x, t_stack *y, int num, int side)
 	int	center;
 
 	i = find_pos(x, num);
+	if (i >= x->size)
+		return ;
 	center = (x->size / 2);
 	while (x->array[0] != num)
 	{
-		if (i < center)
+		if (i <= center)
 		{
-			if (adjust_b(y, num) == 1 && side == 1)
-				dshift(x, y, 0);
-			else
-				shift(x, side);
+			if (side == 0)
+				optimize_shift(y, x);
+			if (x->array[0] == num || find_num(x, num) == 0)
+				break ;
+			shift(x, side);
 		}
 		else
 		{
-			if (adjust_b(y, num) == 1 && side == 1)
-				dshift(x, y, 1);
-			else
-				rev_shift(x, side);
+			if (side == 0)
+				optimize_shift(y, x);
+			if (x->array[0] == num || find_num(x, num) == 0)
+				break ;
+			rev_shift(x, side);
 		}
 	}
 }

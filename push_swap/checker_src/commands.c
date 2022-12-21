@@ -76,6 +76,7 @@ void	push(t_stack *x, t_stack *y)
 		i--;
 	}
 	y->array[0] = x->array[0];
+	i = 1;
 	while (i < x->size)
 	{
 		x->array[i - 1] = x->array[i];
