@@ -27,6 +27,8 @@ void		rev_shift(t_stack *x);
 void		push(t_stack *x, t_stack *y);
 void		dshift(t_stack *a, t_stack *b, int rot);
 
+int			cmd_handler(t_stack *a, t_stack *b, char *cmd);
+
 long int	long_atoi(char *str);
 int			find_the_min(t_stack *a, int c_size);
 int			find_min_max(t_stack *a, int swap);

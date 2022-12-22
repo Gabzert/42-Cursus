@@ -68,21 +68,13 @@ void	smart_shift(t_stack *x, t_stack *y, int num, int side)
 	center = (x->size / 2);
 	while (x->array[0] != num)
 	{
+		if (side == 0)
+			optimize_shift(y, x);
+		if (x->array[0] == num || find_num(x, num) == 0)
+			break ;
 		if (i <= center)
-		{
-			if (side == 0)
-				optimize_shift(y, x);
-			if (x->array[0] == num || find_num(x, num) == 0)
-				break ;
 			shift(x, side);
-		}
 		else
-		{
-			if (side == 0)
-				optimize_shift(y, x);
-			if (x->array[0] == num || find_num(x, num) == 0)
-				break ;
 			rev_shift(x, side);
-		}
 	}
 }

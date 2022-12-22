@@ -54,15 +54,23 @@ int	find_in_chunk(int *group, int n, int size)
 	return (1);
 }
 
-int	group_empty(t_stack *b, int *group)
+int	group_empty(t_stack *b, int *group, int n)
 {
 	int	i;
 
 	i = 0;
 	while (i < b->size)
 	{
-		if (group_check(group, b->array[i], b->c_size) == 1)
-			return (0);
+		if (n != 4)
+		{
+			if (group_check(group, b->array[i], b->c_size) == 1)
+				return (0);
+		}
+		else
+		{
+			if (group_check(group, b->array[i], b->c_size + b->c_offset) == 1)
+				return (0);
+		}
 		i++;
 	}
 	return (1);

@@ -52,14 +52,14 @@ int	main(int argc, char **argv)
 
 	i = -1;
 	argc -= 1;
-	a.array = ft_calloc(argc, sizeof(int *));
-	a.size = argc;
-	b.array = ft_calloc(a.size, sizeof(int *));
-	b.size = 0;
 	if (input_check(argc, argv) == 1)
 		write(2, "Error\n", 6);
 	else
 	{
+		a.array = ft_calloc(argc, sizeof(int *));
+		a.size = argc;
+		b.array = ft_calloc(a.size, sizeof(int *));
+		b.size = 0;
 		while (++i < argc)
 			a.array[i] = ft_atoi(argv[i + 1]);
 		if (sort_check(&a) == 1)

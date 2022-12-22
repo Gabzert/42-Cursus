@@ -50,7 +50,7 @@ void	sort(t_stack *a, t_stack *b)
 	groups_fill(a);
 	while (a->size != 0)
 	{
-		while (group_empty(a, which_chunk(a, chunk)) == 0)
+		while (group_empty(a, which_chunk(a, chunk), chunk) == 0)
 		{
 			while (which_group(a, a->array[0]) == chunk && a->size != 0)
 			{
@@ -82,7 +82,8 @@ int	sort_check(t_stack *a)
 			return (0);
 		if (a->array[i + 1] == max && a->array[i] == min)
 			return (0);
-		if (a->array[0] < a->array[a->size - 1] && a->array[a->size - 1] != max)
+		if (a->array[0] < a->array[a->size - 1] && (a->array[a->size - 1] != max
+				|| a->array[0] != min))
 			return (0);
 		i++;
 	}

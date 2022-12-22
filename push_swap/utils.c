@@ -90,8 +90,8 @@ int	find_first(t_stack *a, int c_max, int side)
 
 long	long_atoi(char *str)
 {
-	long	num;
-	int	neg;
+	long int	num;
+	int			neg;
 
 	num = 0;
 	neg = 1;
@@ -123,7 +123,7 @@ int	ft_is_digit(char *str)
 	while (str[c] != '\0' )
 	{
 		if (str[c] > '9' || str[c] < '0')
-			return(0);
+			return (0);
 		c++;
 	}
 	return (1);

@@ -12,7 +12,7 @@
 
 SRCS	= get_next_line/get_next_line.c get_next_line/get_next_line_utils.c
 OBJS    = ${SRCS:.c=.o}
-INCS    = libft.h
+INCS    = includes
 NAME    = libft.a
 LIBC    = ar rc
 LIBR    = ranlib

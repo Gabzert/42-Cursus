@@ -29,10 +29,11 @@ int	group_check(int *group, int n, int size)
 int	groups_init(t_stack *a)
 {
 	a->c_size = a->size / 4;
+	a->c_offset = a->size % 4;
 	a->chunk1 = malloc(a->c_size * sizeof (int *));
 	a->chunk2 = malloc(a->c_size * sizeof (int *));
 	a->chunk3 = malloc(a->c_size * sizeof (int *));
-	a->chunk4 = malloc(a->c_size * sizeof (int *));
+	a->chunk4 = malloc((a->c_size + a->c_offset) * sizeof (int *));
 	if (!a->chunk1 || !a->chunk2 || !a->chunk3 || !a->chunk4)
 		return (0);
 	return (1);
@@ -75,7 +76,7 @@ int	which_group(t_stack *a, int n)
 		return (2);
 	else if (group_check(a->chunk3, n, a->c_size) == 1)
 		return (3);
-	else if (group_check(a->chunk4, n, a->c_size) == 1)
+	else if (group_check(a->chunk4, n, a->c_size + a->c_offset) == 1)
 		return (4);
 	return (0);
 }
