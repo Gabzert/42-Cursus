@@ -25,9 +25,9 @@ static int	input_check(int argc, char **argv)
 			return (1);
 		if (ft_is_digit(argv[i]) == 0)
 			return (1);
-		while (x < argc && ft_strncmp(argv[i], argv[x], 20) != 0)
+		while (x <= argc && ft_strncmp(argv[i], argv[x], 20) != 0)
 			x++;
-		if (x < argc)
+		if (x <= argc)
 			return (1);
 		i++;
 	}
