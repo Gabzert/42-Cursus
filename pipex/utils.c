@@ -30,28 +30,41 @@ char	*find_cmd(char *cmd, char **env)
 	char	**path_list;
 	char	*command;
 	char	*tmp;
+	int	i;
 
+	i = 0;
 	path_list = ft_split(find_path(env), ':');
-	while (*path_list)
+	while (path_list[i])
 	{
-		tmp = *path_list;
-		tmp = ft_strjoin(*path_list, "/");
+		tmp = ft_strjoin(path_list[i], "/");
 		command = ft_strjoin(tmp, cmd);
 		if (access(command, X_OK) == 0)
 			return (command);
-		path_list++;
+		free(command);
+		free(tmp);
+		i++;
 	}
+	while(--i >= 0)
+		free(path_list[i]);
+	free(path_list);
 	write(2, "command not found : ", 20);
 	write(2, cmd, ft_strlen(cmd));
 	write(2, "\n", 1);
-	free(command);
 	return (NULL);
 }
 
 void	free_child(char **input, t_pipex *pipe)
 {
+	int	i;
+
+	i = 0;
+	while (input[i])
+	{
+		free(input[i]);
+		i++;
+	}
 	free(input);
-	free_pipes(pipe->fd);
+	free_pipes(pipe->fd, pipe->fd_count - 1);
 	exit(1);
 }
 
@@ -77,10 +90,16 @@ void	take_input(char *eof, int *file)
 
 void	pipex_init(t_pipex *p, char **argv, int argc)
 {
-	p->i = 0;
 	if (ft_strncmp(argv[1], "here_doc", 8) != 0)
 		p->here_doc = 0;
 	else
 		p->here_doc = 1;
-	p->fd = create_pipe(argc, argv);
+	if ((p->here_doc == 0 && argc < 5) || (p->here_doc == 1 && argc < 6))
+	{
+		write(1, "wrong number of arguments \n", 27);
+		exit(1);
+	}
+	p->i = 0;
+	p->pidn = -1;
+	p->fd = create_pipe(argc, argv, p);
 }

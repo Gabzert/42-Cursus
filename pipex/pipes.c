@@ -12,52 +12,45 @@
 
 #include "pipex.h"
 
-void	close_pipes(int **fd)
+void	close_pipes(int **fd, int i)
 {
-	int	i;
-
-	i = 0;
-	while (fd[i])
+	while (i >= 0)
 	{
 		close(fd[i][1]);
 		close(fd[i][0]);
-		i++;
+		i--;
 	}
 }
 
-void	free_pipes(int **fd)
+void	free_pipes(int **fd, int i)
 {
-	int	i;
-
-	i = 0;
-	while (fd[i])
+	while (i >= 0)
 	{
 		close(fd[i][1]);
 		close(fd[i][0]);
 		free(fd[i]);
-		i++;
+		i--;
 	}
 	free(fd);
 }
 
-int	**create_pipe(int argc, char **argv)
+int	**create_pipe(int argc, char **argv, t_pipex *p)
 {
 	int	i;
 	int	**fd;
-	int	cmd_number;
 
 	i = 0;
-	if (ft_strncmp(argv[1], "here_doc", 8) != 0)
-		cmd_number = argc - 4;
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+		p->fd_count = argc - 5;
 	else
-		cmd_number = argc - 3;
-	fd = (int **)malloc((cmd_number - 1) * sizeof(int *));
-	while (i < cmd_number)
+		p->fd_count = argc - 4;
+	fd = (int **)malloc((p->fd_count) * sizeof(int *));
+	while (i < p->fd_count)
 	{
 		fd[i] = (int *)malloc(2 * sizeof(int));
 		if (pipe(fd[i]) == -1)
 		{
-			free_pipes(fd);
+			free_pipes(fd, i);
 			return (NULL);
 		}
 		i++;

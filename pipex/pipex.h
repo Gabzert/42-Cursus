@@ -23,6 +23,7 @@
 typedef struct s_pipex
 {
 	int	**fd;
+	int	fd_count;
 	int	pid1;
 	int	pid2;
 	int	pidn;
@@ -34,9 +35,9 @@ typedef struct s_pipex
 /*    PIPE      */
 /****************/
 
-int		**create_pipe(int argc, char **argv);
-void	close_pipes(int **fd);
-void	free_pipes(int **fd);
+int		**create_pipe(int argc, char **argv, t_pipex *p);
+void	close_pipes(int **fd, int i);
+void	free_pipes(int **fd, int i);
 
 /****************/
 /*    UTILS     */

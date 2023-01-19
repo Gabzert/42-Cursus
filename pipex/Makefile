@@ -57,7 +57,8 @@ ${NAME}: ${OBJS}
 debug: ${OBJS}
 	make all -C libft
 	cp libft/libft.a ../${NAME}
-	gcc ${CFLAGS} -o ${NAME} ${OBJS} libft.a
+	${CC} ${CFLAGS} -g -o ${NAME} ${OBJS} libft.a
+	${RM} -f libft.a
 	echo "${DEF_COLOR}DEBUG READY"
 
 bonus: ${B_OBJS}

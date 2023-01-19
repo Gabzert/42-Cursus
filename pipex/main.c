@@ -33,7 +33,7 @@ void	run_child_first(t_pipex pipe, char **argv, char **env)
 		free_child(input, &pipe);
 	dup2(file, 0);
 	dup2(pipe.fd[pipe.i][1], 1);
-	close_pipes(pipe.fd);
+	close_pipes(pipe.fd, pipe.fd_count - 1);
 	if (execve(cmd, input, env) == -1)
 	{
 		perror("execution failed");
@@ -50,7 +50,7 @@ void	run_child_middle(t_pipex pipe, char **input, char **env)
 		free_child(input, &pipe);
 	dup2(pipe.fd[pipe.i][0], 0);
 	dup2(pipe.fd[pipe.i + 1][1], 1);
-	close_pipes(pipe.fd);
+	close_pipes(pipe.fd, pipe.fd_count - 1);
 	if (execve(cmd, input, env) == -1)
 		free_child(input, &pipe);
 }
@@ -76,7 +76,7 @@ void	run_child_last(t_pipex pipe, int argc, char **argv, char **env)
 	}
 	dup2(pipe.fd[pipe.i][0], 0);
 	dup2(file, 1);
-	close_pipes(pipe.fd);
+	close_pipes(pipe.fd, pipe.fd_count - 1);
 	if (execve(cmd, input, env) == -1)
 		free_child(input, &pipe);
 }
@@ -89,6 +89,7 @@ int	main(int argc, char **argv, char **envp)
 	pipe.pid1 = fork();
 	if (pipe.pid1 == 0)
 		run_child_first(pipe, argv, envp);
+	waitpid(pipe.pid1, NULL, 0);
 	if ((argc > 5 && pipe.here_doc == 0) || (argc > 6 && pipe.here_doc == 1))
 	{
 		while (pipe.i < argc - 5)
@@ -102,8 +103,7 @@ int	main(int argc, char **argv, char **envp)
 	pipe.pid2 = fork();
 	if (pipe.pid2 == 0)
 		run_child_last(pipe, argc, argv, envp);
-	free_pipes(pipe.fd);
-	waitpid(pipe.pid1, NULL, 0);
+	free_pipes(pipe.fd, pipe.fd_count - 1);
 	waitpid(pipe.pidn, NULL, 0);
 	waitpid(pipe.pid2, NULL, 0);
 	return (0);
