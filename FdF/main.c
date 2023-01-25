@@ -64,6 +64,7 @@ int	**create_matrix(t_map_data data, int fd)
 			map[i][j] = ft_atoi(columns[j]);
 			j++;
 		}
+		j = 0;
 		i++;
 	}
 	return (map);
