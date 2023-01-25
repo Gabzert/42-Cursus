@@ -16,6 +16,11 @@
 #include <mlx.h>
 #include "libft/libft.h"
 
+typedef struct	s_map_data {
+	int	rows;
+	int	colouns;
+}				t_map_data;
+
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -23,7 +28,6 @@ typedef struct	s_data {
 	int		line_length;
 	int		endian;
 }				t_data;
-
 
 typedef struct	s_vars {
 	void	*mlx;

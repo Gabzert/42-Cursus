@@ -34,7 +34,7 @@ GREEN = \033[0;32m
 RED = \033[0;91m
 CIANO = \033[0;36m
 
-.SILENT:
+#.SILENT:
 
 all: ${NAME}
 
