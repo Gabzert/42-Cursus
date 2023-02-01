@@ -13,15 +13,28 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <mlx.h>
-#include "libft/libft.h"
+# include <mlx.h>
+# include "libft/libft.h"
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+# include <math.h>
 
-typedef struct	s_map_data {
-	int	rows;
-	int	colouns;
-}				t_map_data;
+typedef struct s_map {
+	int		rows;
+	int		colouns;
+	int		**points;
+	int		**colors;
+	int		zoom;
+	int		x_offset;
+	int		y_offset;
+	float	angle;
+	float	rotation;
+	float	x;
+	float	y;
+}				t_map;
 
-typedef struct	s_data {
+typedef struct s_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -29,36 +42,59 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
-typedef struct	s_vars {
+typedef struct s_vars {
 	void	*mlx;
 	void	*mlx_win;
 }				t_vars;
 
-typedef struct	s_color {
-	int	color;
-	int	red;
-	int	green;
-	int	blue;
-}		t_color;
+typedef struct s_line {
+	float	x_step;
+	float	y_step;
+	float	max;
+	int		z;
+	int		z1;
+	int		color;
+}				t_line;
 
-typedef struct	s_everything {
+typedef struct s_everything {
 	t_data	data;
 	t_vars	vars;
-	t_color	color;
+	t_map	map;
 }				t_everything;
 
+void	create_image(t_everything *all, t_map *map);
+
+/************/
+/*  KEYS   */
+/************/
+void	move(int key, t_everything *all);
+void	change_angle(int key, t_everything *all);
+void	rotate(int key, t_everything *all);
+int		scroll(int button, int x, int y, t_everything *all);
 
 /****************/
-/*    UTILS     */
+/*  WIN_UTILS   */
 /****************/
-
-int	create_trgb(int t, int r, int g, int b);
+int		key_hooks(int keycode, t_everything *all);
+int		terminate(t_vars *vars);
 void	destroy(t_vars *vars);
-int	terminate(t_vars *vars);
-int	key_hooks(int keycode, t_everything *all);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
+/**************/
+/*  G_UTILS   */
+/**************/
+void	map_init(t_map *map);
+void	isometric(float *x, float *y, int z, float angle);
+void	zoom(t_map *map, float *x1, float *y1);
+void	shift(t_map *map, float *x1, float *y1);
+void	rotation(t_map *map, float *x1, float *y1);
 
-int	put_color(t_vars vars, t_data img, t_color rgb);
-
+/************/
+/*  UTILS   */
+/************/
+float	find_max(float a, float b);
+char	*get_color(char *point);
+char	*get_value(char *point);
+int		create_trgb(int t, int r, int g, int b);
+int		hex_convert(char *color);
 #endif

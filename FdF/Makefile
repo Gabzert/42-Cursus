@@ -6,7 +6,7 @@ NAME    = fdf
 INCS    = mlx
 CC      = gcc
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror
+CFLAGS  = -Wall -Wextra -Werror -g
 OBJDIR  = obj/
 SRCDIR  =
 B_DIR	=
@@ -15,7 +15,7 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS    = testing.c test_utils.c
+SRCS    = $(wildcard *.c)
 
 OBJS    = $(addprefix $(OBJDIR),$(SRCS:.c=.o))
 
@@ -51,7 +51,6 @@ ${NAME}: ${OBJS}
 	cp libft/libft.a ${CURDIR}
 	cp mlx/libmlx_Linux.a ${CURDIR}
 	${CC} ${CFLAGS} ${OBJS} -L${INCS} -l${INCS} -L/usr/lib -I${INCS} -lXext -lX11 -lm -lz -o ${NAME} libft.a
-	#${CC} ${CFLAGS} -L${INCS} -l${INCS} -I${INCS} -lXext -lX11 -lm -lz -o ${NAME} ${OBJS} libft.a libmlx_Linux.a#
 	${RM} -f libft.a
 	echo "${GREEN}OK"
 
