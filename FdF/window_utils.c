@@ -27,9 +27,23 @@ int	key_hooks(int keycode, t_everything *all)
 		|| keycode == 97 || keycode == 100)
 		move(keycode, all);
 	else if (keycode == 65364 || keycode == 65362)
-		change_angle(keycode, all);
+	{
+		if (all->map.mercator == false)
+			change_angle(keycode, all);
+		else
+			rotX(keycode, all);
+	}
 	else if (keycode == 65363 || keycode == 65361)
-		rotate(keycode, all);
+	{
+		if (all->map.mercator == false)
+			rotate(keycode, all);
+		else
+			rotY(keycode, all);
+	}
+	else if (keycode == 112)
+		change_projection(all);
+	else if (keycode == 113 || keycode == 101)
+		rotZ(keycode, all);
 	return (0);
 }
 

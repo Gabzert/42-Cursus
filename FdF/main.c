@@ -11,71 +11,33 @@
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-void	read_map(int fd, t_map *data)
-{
-	char	*str;
-	char	**temp;
-	int		i;
-
-	data->rows = 0;
-	data->colouns = 0;
-	i = 0;
-	while (1)
-	{
-		str = get_next_line(fd);
-		if (!str)
-			break ;
-		data->rows++;
-		temp = ft_split(str, ' ');
-		while (temp[i])
-			i++;
-		if (data->colouns == 0)
-			data->colouns = i;
-		if (i != data->colouns)
-			exit(1);
-		i = 0;
-	}
-}
-
-void	create_matrix(t_map *data, int fd)
-{
-	int		i;
-	int		j;
-	char	**columns;
-
-	i = 0;
-	j = 0;
-	data->points = (int **)malloc((data->rows) * sizeof(int *));
-	data->colors = (int **)malloc((data->rows) * sizeof(int *));
-	while (i < data->rows)
-	{
-		data->points[i] = (int *)malloc(data->colouns * sizeof(int));
-		data->colors[i] = (int *)malloc(data->colouns * sizeof(int));
-		columns = ft_split(get_next_line(fd), ' ');
-		while (j < data->colouns)
-		{
-			data->points[i][j] = ft_atoi(get_value(columns[j]));
-			data->colors[i][j] = hex_convert(get_color(columns[j]));
-			j++;
-		}
-		free(columns);
-		j = 0;
-		i++;
-	}
-}
+#include <stdio.h>
 
 void	bresenham(float x1, float y1, t_map map, t_data *data)
 {
 	t_line	bres;
-
+	map.radius = map.colouns * map.zoom / (M_PI * 2);
 	bres.color = map.colors[(int)map.y][(int)map.x];
 	bres.z = map.points[(int)map.y][(int)map.x] * (map.zoom / 2);
 	bres.z1 = map.points[(int)y1][(int)x1] * (map.zoom / 2);
-	rotation(&map, &x1, &y1);
-	zoom(&map, &x1, &y1);
-	isometric(&map.x, &map.y, bres.z, map.angle);
-	isometric(&x1, &y1, bres.z1, map.angle);
+	if (map.mercator == false)
+	{
+		rotation(&map, &x1, &y1);
+		zoom(&map, &x1, &y1);
+		isometric(&map.x, &map.y, bres.z, map.angle);
+		isometric(&x1, &y1, bres.z1, map.angle);
+	}
+	else
+	{
+		mercator(&map.x, &map.y, &bres.z, map);
+		mercator(&x1, &y1, &bres.z1, map);
+		rotateX(&map.y, &bres.z, map.x_angle);
+		rotateY(&map.x, &bres.z, map.y_angle);
+		rotateZ(&map.x, &map.y, map.z_angle);
+		rotateX(&y1, &bres.z1, map.x_angle);
+		rotateY(&x1, &bres.z1, map.y_angle);
+		rotateZ(&x1, &y1, map.z_angle);
+	}
 	bres.x_step = x1 - map.x;
 	bres.y_step = y1 - map.y;
 	shift(&map, &x1, &y1);
@@ -100,6 +62,7 @@ void	create_image(t_everything *all, t_map *map)
 			&all->data.line_length, &all->data.endian);
 	while (map->y <= map->rows - 1)
 	{
+
 		while (map->x <= map->colouns - 1)
 		{
 			if (map->x != map->colouns - 1)
@@ -124,9 +87,9 @@ int	main(int argc, char **argv)
 
 	if (argc > 2)
 		return (0);
-	map_init(&map);
 	fd_map = open(argv[1], O_RDONLY);
 	read_map(fd_map, &map);
+	map_init(&map);
 	close(fd_map);
 	fd_map = open(argv[1], O_RDONLY);
 	create_matrix(&map, fd_map);
