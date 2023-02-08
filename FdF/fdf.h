@@ -70,6 +70,8 @@ typedef struct s_everything {
 	t_map	map;
 }				t_everything;
 
+void	create_matrix(t_map *data, int fd);
+void	read_map(int fd, t_map *data);
 
 /************/
 /*  KEYS   */
@@ -121,7 +123,7 @@ int		hex_convert(char *color);
 /************/
 void	map_init(t_map *map);
 void	create_image(t_everything *all, t_map *map);
-void	create_matrix(t_map *data, int fd);
-void	read_map(int fd, t_map *data);
+void	isometric_handler(t_map *map, t_line *bres, float *x1, float *y1);
+void	mercator_handler(t_map *map, t_line *bres, float *x1, float *y1);
 
 #endif
