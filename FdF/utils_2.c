@@ -54,15 +54,16 @@ void	map_init(t_map *map)
 	map->rotation = 0;
 	map->radius = map->colouns * map->zoom / (M_PI * 2);
 	map->mercator = false;
-	map->x_angle = 0;
+	map->x_angle = 1.55;
 	map->y_angle = 0;
 	map->z_angle = 0;
+	map->mer_fix = 1;
 }
 
 void	isometric_handler(t_map *map, t_line *bres, float *x1, float *y1)
 {
-		rotation(&map, x1, y1);
-		zoom(&map, x1, y1);
+		rotation(map, x1, y1);
+		zoom(map, x1, y1);
 		isometric(&map->x, &map->y, bres->z, map->angle);
 		isometric(x1, y1, bres->z1, map->angle);
 }

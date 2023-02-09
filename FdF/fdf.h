@@ -37,6 +37,7 @@ typedef struct s_map {
 	float	x;
 	float	y;
 	bool	mercator;
+	int	mer_fix;
 	float	radius;
 	int	lon_step;
 	int	lat_step;

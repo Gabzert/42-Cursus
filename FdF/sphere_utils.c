@@ -21,7 +21,7 @@ void	rotX(int key, t_everything *all)
 	if (key == 65364)
 		all->map.x_angle -= 0.05;
 	else if (key == 65362)
-		all->map.angle += 0.05;
+		all->map.x_angle += 0.05;
 	create_image(all, &all->map);
 }
 

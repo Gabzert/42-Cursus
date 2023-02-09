@@ -38,7 +38,6 @@ void	read_map(int fd, t_map *data)
 	}
 }
 
-
 void	create_matrix(t_map *data, int fd)
 {
 	int		i;
@@ -69,10 +68,13 @@ void	create_matrix(t_map *data, int fd)
 void	bresenham(float x1, float y1, t_map map, t_data *data)
 {
 	t_line	bres;
-	map.radius = map.colouns * map.zoom / (M_PI * 2);
+
 	bres.color = map.colors[(int)map.y][(int)map.x];
 	bres.z = map.points[(int)map.y][(int)map.x] * (map.zoom / 2);
-	bres.z1 = map.points[(int)y1][(int)x1] * (map.zoom / 2);
+	if (map.mer_fix == 0 && map.x == map.colouns - 1)
+		bres.z1 = map.points[(int)y1][0] * (map.zoom / 2);
+	else
+		bres.z1 = map.points[(int)y1][(int)x1] * (map.zoom / 2);
 	if (map.mercator == false)
 		isometric_handler(&map, &bres, &x1, &y1);
 	else
@@ -94,11 +96,6 @@ void	bresenham(float x1, float y1, t_map map, t_data *data)
 
 void	create_image(t_everything *all, t_map *map)
 {
-	int	mer_fix;	
-
-	mer_fix = 1;
-	if (map->mercator == true)
-		mer_fix = 0,
 	map->x = 0;
 	map->y = 0;
 	all->data.img = mlx_new_image(all->vars.mlx, 1920, 1080);
@@ -106,9 +103,9 @@ void	create_image(t_everything *all, t_map *map)
 			&all->data.line_length, &all->data.endian);
 	while (map->y <= map->rows - 1)
 	{
-		while (map->x <= map->colouns - mer_fix)
+		while (map->x <= map->colouns - 1)
 		{
-			if (map->x != map->colouns - mer_fix)
+			if (map->x != map->colouns - map->mer_fix)
 				bresenham(map->x + 1, map->y, *map, &all->data);
 			if (map->y != map->rows - 1)
 				bresenham(map->x, map->y + 1, *map, &all->data);

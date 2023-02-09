@@ -78,9 +78,15 @@ void	change_projection(t_everything *all)
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (all->map.mercator == false)
+	{
 		all->map.mercator = true;
+		all->map.mer_fix = 0;
+	}
 	else
+	{
 		all->map.mercator = false;
+		all->map.mer_fix = 1;
+	}
 	create_image(all, &all->map);
 }
 
