@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/06 12:58:31 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 void	ft_lstadd_back(t_list **lst, t_list *new)
 {

@@ -12,6 +12,19 @@
 
 #include "fdf.h"
 
+void	free_split(char **a)
+{
+	int	i;
+
+	i = 0;
+	while (a[i])
+	{
+		free(a[i]);
+		i++;
+	}
+	free(a);
+}
+
 void	read_map(int fd, t_map *data)
 {
 	char	*str;
@@ -20,9 +33,9 @@ void	read_map(int fd, t_map *data)
 
 	data->rows = 0;
 	data->colouns = 0;
-	i = 0;
 	while (1)
 	{
+		i = 0;
 		str = get_next_line(fd);
 		if (!str)
 			break ;
@@ -30,11 +43,12 @@ void	read_map(int fd, t_map *data)
 		temp = ft_split(str, ' ');
 		while (temp[i])
 			i++;
+		free_split(temp);
 		if (data->colouns == 0)
 			data->colouns = i;
 		if (i != data->colouns)
 			exit(1);
-		i = 0;
+		free(str);
 	}
 }
 
@@ -44,24 +58,22 @@ void	create_matrix(t_map *data, int fd)
 	int		j;
 	char	**columns;
 
-	i = 0;
-	j = 0;
+	i = -1;
+	j = -1;
 	data->points = (int **)malloc((data->rows) * sizeof(int *));
 	data->colors = (int **)malloc((data->rows) * sizeof(int *));
-	while (i < data->rows)
+	while (++i < data->rows)
 	{
 		data->points[i] = (int *)malloc(data->colouns * sizeof(int));
 		data->colors[i] = (int *)malloc(data->colouns * sizeof(int));
-		columns = ft_split(get_next_line(fd), ' ');
-		while (j < data->colouns)
+		columns = ft_split_free(get_next_line(fd), ' ');
+		while (++j < data->colouns)
 		{
-			data->points[i][j] = ft_atoi(get_value(columns[j]));
+			data->points[i][j] = ft_atoi_free(get_value(columns[j]));
 			data->colors[i][j] = hex_convert(get_color(columns[j]));
-			j++;
 		}
-		free(columns);
-		j = 0;
-		i++;
+		free_split(columns);
+		j = -1;
 	}
 }
 
@@ -87,7 +99,7 @@ void	bresenham(float x1, float y1, t_map map, t_data *data)
 	bres.y_step /= bres.max;
 	while ((int)(map.x - x1) || (int)(map.y - y1))
 	{
-		if ((map.x > 0 && map.x < 1920) && (map.y > 0 && map.y < 1070))
+		if ((map.x > 0 && map.x < WIN_L) && (map.y > 0 && map.y < WIN_H))
 			my_mlx_pixel_put(data, map.x, map.y, bres.color);
 		map.x += bres.x_step;
 		map.y += bres.y_step;
@@ -98,7 +110,7 @@ void	create_image(t_everything *all, t_map *map)
 {
 	map->x = 0;
 	map->y = 0;
-	all->data.img = mlx_new_image(all->vars.mlx, 1920, 1080);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	while (map->y <= map->rows - 1)
@@ -125,16 +137,16 @@ int	main(int argc, char **argv)
 	t_vars			vars;
 	t_everything	all;
 
-	if (argc > 2)
+	if (argc != 2)
 		return (0);
 	fd_map = open(argv[1], O_RDONLY);
 	read_map(fd_map, &map);
-	map_init(&map);
 	close(fd_map);
 	fd_map = open(argv[1], O_RDONLY);
 	create_matrix(&map, fd_map);
+	map_init(&map);
 	vars.mlx = mlx_init();
-	vars.mlx_win = mlx_new_window(vars.mlx, 1920, 1080, "Hello world!");
+	vars.mlx_win = mlx_new_window(vars.mlx, WIN_L, WIN_H, "Hello world!");
 	all.vars = vars;
 	create_image(&all, &map);
 	all.map = map;

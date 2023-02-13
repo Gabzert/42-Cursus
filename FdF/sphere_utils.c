@@ -12,10 +12,11 @@
 
 #include "fdf.h"
 
-void	rotX(int key, t_everything *all)
+void	rot_x(int key, t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (key == 65364)
@@ -25,10 +26,11 @@ void	rotX(int key, t_everything *all)
 	create_image(all, &all->map);
 }
 
-void	rotY(int key, t_everything *all)
+void	rot_y(int key, t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (key == 65363)
@@ -38,10 +40,11 @@ void	rotY(int key, t_everything *all)
 	create_image(all, &all->map);
 }
 
-void	rotZ(int key, t_everything *all)
+void	rot_z(int key, t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (key == 113)
@@ -51,26 +54,35 @@ void	rotZ(int key, t_everything *all)
 	create_image(all, &all->map);
 }
 
-void	rotateX(float *y, float *z, float angle)
+void	rotate_x(float *y, float *z, float angle)
 {
-	float y_new = *y * cos(angle) - *z * sin(angle);
-	float z_new = *y * sin(angle) + *z * cos(angle);
+	float	y_new;
+	float	z_new;
+
+	y_new = *y * cos(angle) - *z * sin(angle);
+	z_new = *y * sin(angle) + *z * cos(angle);
 	*y = y_new;
 	*z = z_new;
 }
 
-void	rotateY(float *x, float *z, float angle)
+void	rotate_y(float *x, float *z, float angle)
 {
-	float x_new = *x * cos(angle) + *z * sin(angle);
-	float z_new = - *x * sin(angle) + *z * cos(angle);
+	float	x_new;
+	float	z_new;
+
+	x_new = *x * cos(angle) + *z * sin(angle);
+	z_new = *z * cos(angle) - *x * sin(angle);
 	*x = x_new;
 	*z = z_new;
 }
 
-void	rotateZ(float *x, float *y, float angle)
+void	rotate_z(float *x, float *y, float angle)
 {
-	float x_new = *x * cos(angle) - *y * sin(angle);
-	float y_new = *x * sin(angle) + *y * cos(angle);
+	float	x_new;
+	float	y_new;
+
+	x_new = *x * cos(angle) - *y * sin(angle);
+	y_new = *x * sin(angle) + *y * cos(angle);
 	*x = x_new;
 	*y = y_new;
 }

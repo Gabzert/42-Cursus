@@ -30,7 +30,7 @@ char	*find_cmd(char *cmd, char **env)
 	char	**path_list;
 	char	*command;
 	char	*tmp;
-	int	i;
+	int		i;
 
 	i = 0;
 	path_list = ft_split(find_path(env), ':');
@@ -44,7 +44,7 @@ char	*find_cmd(char *cmd, char **env)
 		free(tmp);
 		i++;
 	}
-	while(--i >= 0)
+	while (--i >= 0)
 		free(path_list[i]);
 	free(path_list);
 	write(2, "command not found : ", 20);
@@ -75,7 +75,7 @@ void	take_input(char *eof, int *file)
 	int		fd;
 
 	len = ft_strlen(eof);
-	fd = open(".here_doc", O_WRONLY | O_CREAT | O_APPEND, 0777);
+	fd = open(".here_doc", O_WRONLY | O_CREAT , 0777);
 	while (1)
 	{
 		write(1, "here_doc>", 9);

@@ -45,6 +45,8 @@ void	run_child_middle(t_pipex pipe, char **input, char **env)
 {
 	char	*cmd;
 
+	if (pipe.here_doc == 1)
+		unlink(".here_doc");
 	cmd = find_cmd(input[0], env);
 	if (cmd == NULL)
 		free_child(input, &pipe);

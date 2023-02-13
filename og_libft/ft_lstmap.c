@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/06 14:36:28 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
@@ -17,8 +17,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	t_list	*new;
 	t_list	*back;
 
-	if (!lst)
-		return (NULL);
 	new = ft_lstnew((*f)(lst->content));
 	if (!new)
 		return (NULL);

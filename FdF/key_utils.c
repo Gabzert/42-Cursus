@@ -15,7 +15,7 @@
 void	move(int key, t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (key == 115)
@@ -32,7 +32,8 @@ void	move(int key, t_everything *all)
 void	change_angle(int key, t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (key == 65364)
@@ -47,13 +48,14 @@ int	scroll(int button, int x, int y, t_everything *all)
 	(void) x;
 	(void) y;
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (button == 4)
-		all->map.zoom += 2;
+		all->map.zoom += 0.5;
 	else if (button == 5)
-		all->map.zoom -= 2;
+		all->map.zoom -= 0.5;
 	create_image(all, &all->map);
 	return (0);
 }
@@ -61,7 +63,8 @@ int	scroll(int button, int x, int y, t_everything *all)
 void	rotate(int key, t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (key == 65363)
@@ -74,7 +77,8 @@ void	rotate(int key, t_everything *all)
 void	change_projection(t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, 1980, 1080);
+	free(all->data.addr);
+	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
 	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
 			&all->data.line_length, &all->data.endian);
 	if (all->map.mercator == false)
@@ -89,4 +93,3 @@ void	change_projection(t_everything *all)
 	}
 	create_image(all, &all->map);
 }
-

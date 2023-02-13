@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/03 18:50:43 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 int	ft_toupper(int c)
 {

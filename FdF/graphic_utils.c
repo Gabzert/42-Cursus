@@ -15,17 +15,17 @@
 
 void	mercator(float *x, float *y, float *z, t_map map)
 {
-	float x_norm;
-	float y_norm;
-	float theta;
-	float phi;
+	float	x_norm;
+	float	y_norm;
+	float	theta;
+	float	phi;
 
 	map.radius = map.colouns * map.zoom / (M_PI * 2);
 	x_norm = *x / map.colouns;
 	y_norm = *y / map.rows;
 	theta = y_norm * M_PI;
 	phi = x_norm * 2 * M_PI;
-	*z /= 2;
+	*z /= 10;
 	*x = (map.radius + *z) * sin(theta) * cos(phi);
 	*y = (map.radius + *z) * sin(theta) * sin(phi);
 	*z = (map.radius + *z) * cos(theta);

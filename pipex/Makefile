@@ -19,7 +19,7 @@ SRCS    = main.c utils.c pipes.c
 
 OBJS    = $(addprefix $(OBJDIR),$(SRCS:.c=.o))
 
-B_SRCS  = 
+B_SRCS  = main.c utils.c pipes.c
 
 B_FILES = 
 
@@ -34,7 +34,7 @@ GREEN = \033[0;32m
 RED = \033[0;91m
 CIANO = \033[0;36m
 
-#.SILENT:
+.SILENT:
 
 all: ${NAME}
 
@@ -64,7 +64,7 @@ debug: ${OBJS}
 bonus: ${B_OBJS}
 	make all -C libft
 	cp libft/libft.a ${CURDIR}
-	${CC} ${CFLAGS} -o checker ${B_OBJS} libft.a
+	${CC} ${CFLAGS} -o ${NAME} ${B_OBJS} libft.a
 	${RM} -f libft.a
 
 clean:

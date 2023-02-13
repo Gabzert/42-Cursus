@@ -9,7 +9,7 @@
 /*   Updated: 2022/05/24 10:55:51 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 static size_t	ft_toklen(const char *s, char c)
 {
@@ -55,5 +55,14 @@ char	**ft_split(const char *s, char c)
 			++s;
 	}
 	ret[i] = 0;
+	return (ret);
+}
+
+char	**ft_split_free(char *s, char c)
+{
+	char **ret;
+
+	ret = ft_split(s, c);
+	free(s);
 	return (ret);
 }

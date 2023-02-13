@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/03 16:48:52 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 void	*ft_bzero(void *s, size_t n)
 {

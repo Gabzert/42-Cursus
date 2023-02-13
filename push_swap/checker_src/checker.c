@@ -14,16 +14,20 @@
 
 static int	input_check(int argc, char **argv)
 {
-	int		i;
-	int		x;
+	int	i;
+	int	x;
+	int	s;
 
 	i = 1;
+	s = 0;
 	while (i <= argc)
 	{
 		x = i + 1;
 		if (long_atoi(argv[i]) > 2147483647 || long_atoi(argv[i]) < -2147483648)
 			return (1);
-		if (ft_is_digit(argv[i]) == 0)
+		if (argv[i][0] == '-')
+			s = 1;
+		if (ft_is_digit(argv[i] + s) == 0)
 			return (1);
 		while (x <= argc && ft_strncmp(argv[i], argv[x], 20) != 0)
 			x++;
@@ -33,6 +37,7 @@ static int	input_check(int argc, char **argv)
 	}
 	return (0);
 }
+
 
 static int	sort_check(t_stack *a)
 {

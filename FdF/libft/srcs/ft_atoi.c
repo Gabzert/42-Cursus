@@ -37,3 +37,12 @@ int	ft_atoi(const char *str)
 	}
 	return (num * neg);
 }
+
+int	ft_atoi_free(char *str)
+{
+	int	n;
+
+	n = ft_atoi(str);
+	free(str);
+	return (n);
+}

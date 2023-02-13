@@ -26,28 +26,34 @@ float	find_max(float a, float b)
 
 char	*get_value(char *point)
 {
-	char	**temp;	
+	char	**temp;
+	char	*value;	
 
 	if (ft_strchr(point, ',') == 0)
 	{
 		temp = ft_split(point, ',');
-		return (temp[0]);
+		value = ft_strdup(temp[0]);
+		free_split(temp);
 	}
 	else
-		return (point);
+		value = ft_strdup(point);
+	return (value);
 }
 
 char	*get_color(char *point)
 {
-	char	**temp;	
+	char	**temp;
+	char	*color;
 
 	if (ft_strchr(point, ',') != 0)
 	{
 		temp = ft_split(point, ',');
-		return (temp[1]);
+		color = ft_strdup(temp[1]);
+		free_split(temp);
 	}
 	else
-		return ("0x00FFFFFF");
+		color = ft_strdup("0x00FFFFFF");
+	return (color);
 }
 
 int	find_pos(char c, char *base, char *base2)
@@ -80,5 +86,6 @@ int	hex_convert(char *color)
 		c = c * 16 + find_pos(color[i], base, base2);
 		i++;
 	}
+	free(color);
 	return (c);
 }

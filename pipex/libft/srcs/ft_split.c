@@ -57,3 +57,12 @@ char	**ft_split(const char *s, char c)
 	ret[i] = 0;
 	return (ret);
 }
+
+char	**ft_split_free(char *s, char c)
+{
+	char **ret;
+
+	ret = ft_split(s, c);
+	free(s);
+	return (ret);
+}

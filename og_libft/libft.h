@@ -9,8 +9,8 @@
 /*   Updated: 2022/10/05 17:35:27 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#ifndef LIBFT_H
-# define LIBFT_H
+#ifndef FT_LIBFT_H
+# define FT_LIBFT_H
 
 # include <stddef.h>
 # include <unistd.h>
@@ -68,4 +68,6 @@ t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
 t_list				*ft_lstnew(void *content);
 int					ft_lstsize(t_list *lst);
 
+char				**ft_split_free(char *s, char c);
+int					ft_atoi_free(char *str);
 #endif

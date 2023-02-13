@@ -74,7 +74,7 @@ char	*get_next_line(int fd)
 	if (buffer == NULL)
 		return (NULL);
 	str = read_line(fd, &offset, buffer);
-	if (str == NULL)
+	if (str == NULL || *offset == '\0')
 	{
 		free(offset);
 		offset = NULL;

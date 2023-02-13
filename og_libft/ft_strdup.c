@@ -9,7 +9,7 @@
 /*   Updated: 2022/05/16 08:50:16 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 char	*ft_strdup(char *src)
 {

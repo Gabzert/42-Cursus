@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/03 14:29:05 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 int	ft_isalpha(int c)
 {

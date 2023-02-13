@@ -50,7 +50,7 @@ ${NAME}: ${OBJS}
 	make all -C libft
 	cp libft/libft.a ${CURDIR}
 	cp mlx/libmlx_Linux.a ${CURDIR}
-	${CC} ${CFLAGS} ${OBJS} -L${INCS} -l${INCS} -L/usr/lib -I${INCS} -lXext -lX11 -lm -lz -o ${NAME} libft.a
+	${CC} ${CFLAGS} ${OBJS} -L${INCS} -l${INCS} -L/usr/lib -I${INCS} -lXext -lX11 -lm -lz -o ${NAME} libft.a #-fsanitize=address#
 	${RM} -f libft.a
 	echo "${GREEN}OK"
 

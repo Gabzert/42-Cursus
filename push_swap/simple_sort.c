@@ -14,7 +14,7 @@
 
 void	small_sort2(t_stack *a)
 {
-	if (sort_check(a) == 0)
+	if (a->array[0] > a->array[1])
 		swap(a, 1);
 }
 

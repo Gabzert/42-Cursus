@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/04 16:26:59 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 static int	set_ctr(char const *set, char c)
 {

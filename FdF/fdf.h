@@ -21,26 +21,30 @@
 # include <stdbool.h>
 # include <math.h>
 
+# define WIN_H 1000
+# define WIN_L 1920
+
 typedef struct s_map {
 	int		rows;
 	int		colouns;
 	int		**points;
 	int		**colors;
-	int		zoom;
+	float	zoom;
 	int		x_offset;
 	int		y_offset;
 	float	angle;
-	float	x_angle;
-	float	y_angle;
-	float	z_angle;
 	float	rotation;
 	float	x;
 	float	y;
+	bool	color;
 	bool	mercator;
 	int	mer_fix;
 	float	radius;
 	int	lon_step;
 	int	lat_step;
+	float	x_angle;
+	float	y_angle;
+	float	z_angle;
 }				t_map;
 
 typedef struct s_data {
@@ -82,13 +86,13 @@ void	change_angle(int key, t_everything *all);
 void	rotate(int key, t_everything *all);
 int		scroll(int button, int x, int y, t_everything *all);
 void	change_projection(t_everything *all);
+void	change_color(t_everything *all);
 
 /****************/
 /*  WIN_UTILS   */
 /****************/
 int		key_hooks(int keycode, t_everything *all);
 int		terminate(t_vars *vars);
-void	destroy(t_vars *vars);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 /**************/
@@ -102,13 +106,13 @@ void	rotation(t_map *map, float *x1, float *y1);
 
 /*******************/
 /*  SPHERE UTILS   */
-/*******************/
-void	rotX(int key, t_everything *all);
-void	rotY(int key, t_everything *all);
-void	rotZ(int key, t_everything *all);
-void	rotateX(float *y, float *z, float angle);
-void	rotateY(float *x, float *z, float angle);
-void	rotateZ(float *x, float *y, float angle);
+/***********0********/
+void	rot_x(int key, t_everything *all);
+void	rot_y(int key, t_everything *all);
+void	rot_z(int key, t_everything *all);
+void	rotate_x(float *y, float *z, float angle);
+void	rotate_y(float *x, float *z, float angle);
+void	rotate_z(float *x, float *y, float angle);
 
 /************/
 /*  UTILS   */
@@ -126,5 +130,13 @@ void	map_init(t_map *map);
 void	create_image(t_everything *all, t_map *map);
 void	isometric_handler(t_map *map, t_line *bres, float *x1, float *y1);
 void	mercator_handler(t_map *map, t_line *bres, float *x1, float *y1);
+void	free_map(t_map *map);
+
+
+
+
+
+
+void	free_split(char **a);
 
 #endif
