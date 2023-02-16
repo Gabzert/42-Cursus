@@ -38,10 +38,10 @@ typedef struct s_map {
 	float	y;
 	bool	color;
 	bool	mercator;
-	int	mer_fix;
+	int		mer_fix;
 	float	radius;
-	int	lon_step;
-	int	lat_step;
+	int		lon_step;
+	int		lat_step;
 	float	x_angle;
 	float	y_angle;
 	float	z_angle;
@@ -64,8 +64,8 @@ typedef struct s_line {
 	float	x_step;
 	float	y_step;
 	float	max;
-	float		z;
-	float		z1;
+	float	z;
+	float	z1;
 	int		color;
 }				t_line;
 
@@ -77,6 +77,7 @@ typedef struct s_everything {
 
 void	create_matrix(t_map *data, int fd);
 void	read_map(int fd, t_map *data);
+void	is_printable(t_map map, t_data *data, t_line bres);
 
 /************/
 /*  KEYS   */
@@ -106,7 +107,7 @@ void	rotation(t_map *map, float *x1, float *y1);
 
 /*******************/
 /*  SPHERE UTILS   */
-/***********0********/
+/*******************/
 void	rot_x(int key, t_everything *all);
 void	rot_y(int key, t_everything *all);
 void	rot_z(int key, t_everything *all);
@@ -130,13 +131,11 @@ void	map_init(t_map *map);
 void	create_image(t_everything *all, t_map *map);
 void	isometric_handler(t_map *map, t_line *bres, float *x1, float *y1);
 void	mercator_handler(t_map *map, t_line *bres, float *x1, float *y1);
+
+/**********/
+/* FREES  */
+/**********/
 void	free_map(t_map *map);
-
-
-
-
-
-
 void	free_split(char **a);
 
 #endif

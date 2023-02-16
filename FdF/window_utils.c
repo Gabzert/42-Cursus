@@ -12,6 +12,17 @@
 
 #include "fdf.h"
 
+void	is_printable(t_map map, t_data *data, t_line bres)
+{
+	if ((map.x > 0 && map.x < WIN_L) && (map.y > 0 && map.y < WIN_H))
+	{
+		if (map.mercator == false)
+			my_mlx_pixel_put(data, map.x, map.y, bres.color);
+		else if (bres.z < 0)
+			my_mlx_pixel_put(data, map.x, map.y, bres.color);
+	}
+}
+
 void	destroy(t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
@@ -23,32 +34,31 @@ void	destroy(t_everything *all)
 	exit(0);
 }
 
-int	key_hooks(int keycode, t_everything *all)
+int	key_hooks(int key, t_everything *all)
 {
-	if (keycode == 65307)
+	if (key == 65307)
 		destroy(all);
-	else if (keycode == 115 || keycode == 119
-		|| keycode == 97 || keycode == 100)
-		move(keycode, all);
-	else if (keycode == 65364 || keycode == 65362)
+	else if (key == 115 || key == 119 || key == 97 || key == 100)
+		move(key, all);
+	else if (key == 65364 || key == 65362)
 	{
 		if (all->map.mercator == false)
-			change_angle(keycode, all);
+			change_angle(key, all);
 		else
-			rot_x(keycode, all);
+			rot_x(key, all);
 	}
-	else if (keycode == 65363 || keycode == 65361)
+	else if (key == 65363 || key == 65361)
 	{
 		if (all->map.mercator == false)
-			rotate(keycode, all);
+			rotate(key, all);
 		else
-			rot_y(keycode, all);
+			rot_y(key, all);
 	}
-	else if (keycode == 112)
+	else if (key == 112)
 		change_projection(all);
-	else if (keycode == 113 || keycode == 101)
-		rot_z(keycode, all);
-	else if (keycode == 99)
+	else if (key == 113 || key == 101)
+		rot_z(key, all);
+	else if (key == 99)
 		change_color(all);
 	return (0);
 }
@@ -58,7 +68,7 @@ int	terminate(t_vars *vars)
 	mlx_destroy_window(vars->mlx, vars->mlx_win);
 	mlx_destroy_display(vars->mlx);
 	free(vars->mlx);
-	return(0);
+	return (0);
 }
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)

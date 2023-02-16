@@ -12,19 +12,6 @@
 
 #include "fdf.h"
 
-void	free_split(char **a)
-{
-	int	i;
-
-	i = 0;
-	while (a[i])
-	{
-		free(a[i]);
-		i++;
-	}
-	free(a);
-}
-
 void	read_map(int fd, t_map *data)
 {
 	char	*str;
@@ -99,8 +86,7 @@ void	bresenham(float x1, float y1, t_map map, t_data *data)
 	bres.y_step /= bres.max;
 	while ((int)(map.x - x1) || (int)(map.y - y1))
 	{
-		if ((map.x > 0 && map.x < WIN_L) && (map.y > 0 && map.y < WIN_H))
-			my_mlx_pixel_put(data, map.x, map.y, bres.color);
+		is_printable(map, data, bres);
 		map.x += bres.x_step;
 		map.y += bres.y_step;
 	}
@@ -146,7 +132,7 @@ int	main(int argc, char **argv)
 	create_matrix(&map, fd_map);
 	map_init(&map);
 	vars.mlx = mlx_init();
-	vars.mlx_win = mlx_new_window(vars.mlx, WIN_L, WIN_H, "Hello world!");
+	vars.mlx_win = mlx_new_window(vars.mlx, WIN_L, WIN_H, "FdF");
 	all.vars = vars;
 	create_image(&all, &map);
 	all.map = map;

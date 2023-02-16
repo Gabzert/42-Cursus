@@ -12,11 +12,28 @@
 
 #include "fdf.h"
 
-int	zoom_check(t_map map, int zoom)
+static void	simulate_map(t_map *map, int zoom, int i, int j)
 {
 	float	z;
 	float	x_shift;
 	float	y_shift;
+
+	map->x = i;
+	map->y = j;
+	z = map->points[j][i] * (zoom / 2);
+	x_shift = map->x - map->colouns / 2;
+	y_shift = map->y - map->rows / 2;
+	map->x = (x_shift * cos(map->rotation) - y_shift * sin(map->rotation));
+	map->y = (y_shift * cos(map->rotation) + x_shift * sin(map->rotation));
+	map->x *= zoom;
+	map->y *= zoom;
+	isometric(&map->x, &map->y, z, map->angle);
+	map->x += map->x_offset;
+	map->y += map->y_offset;
+}
+
+static int	zoom_check(t_map map, int zoom)
+{
 	int		i;
 	int		j;
 
@@ -26,18 +43,7 @@ int	zoom_check(t_map map, int zoom)
 	{
 		while (i <= map.colouns - 1 && zoom > 0)
 		{
-			map.x = i;
-			map.y = j;
-			z = map.points[j][i] * (zoom / 2);
-			x_shift = map.x - map.colouns / 2;
-			y_shift = map.y - map.rows / 2;
-			map.x = (x_shift * cos(map.rotation) - y_shift * sin(map.rotation));
-			map.y = (y_shift * cos(map.rotation) + x_shift * sin(map.rotation));
-			map.x *= zoom;
-			map.y *= zoom;
-			isometric(&map.x, &map.y, z, map.angle);
-			map.x += map.x_offset;
-			map.y += map.y_offset;
+			simulate_map(&map, zoom, i, j);
 			if ((map.x > WIN_L || map.x < 0) || (map.y > WIN_H || map.y < 0))
 			{
 				zoom -= 0.5;
@@ -84,22 +90,7 @@ void	mercator_handler(t_map *map, t_line *bres, float *x1, float *y1)
 	rotate_x(&map->y, &bres->z, map->x_angle);
 	rotate_y(&map->x, &bres->z, map->y_angle);
 	rotate_z(&map->x, &map->y, map->z_angle);
-	rotate_z(y1, &bres->z1, map->x_angle);
-	rotate_z(x1, &bres->z1, map->y_angle);
+	rotate_x(y1, &bres->z1, map->x_angle);
+	rotate_y(x1, &bres->z1, map->y_angle);
 	rotate_z(x1, y1, map->z_angle);
-}
-
-void	free_map(t_map *map)
-{
-	int	i;
-
-	i = 0;
-	while (i < map->rows)
-	{
-		free(map->points[i]);
-		free(map->colors[i]);
-		i++;
-	}
-	free(map->points);
-	free(map->colors);
 }

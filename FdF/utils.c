@@ -56,7 +56,7 @@ char	*get_color(char *point)
 	return (color);
 }
 
-int	find_pos(char c, char *base, char *base2)
+static int	find_pos(char c, char *base, char *base2)
 {
 	int	i;
 

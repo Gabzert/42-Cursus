@@ -60,7 +60,7 @@ char	**ft_split(const char *s, char c)
 
 char	**ft_split_free(char *s, char c)
 {
-	char **ret;
+	char	**ret;
 
 	ret = ft_split(s, c);
 	free(s);

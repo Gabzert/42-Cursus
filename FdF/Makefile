@@ -15,7 +15,8 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS    = $(wildcard *.c)
+SRCS    = main.c window_utils.c key_utils.c graphic_utils.c \
+	rotation_sphere.c sphere_keys.c color_utils.c free.c utils.c utils_2.c
 
 OBJS    = $(addprefix $(OBJDIR),$(SRCS:.c=.o))
 
@@ -50,15 +51,10 @@ ${NAME}: ${OBJS}
 	make all -C libft
 	cp libft/libft.a ${CURDIR}
 	cp mlx/libmlx_Linux.a ${CURDIR}
-	${CC} ${CFLAGS} ${OBJS} -L${INCS} -l${INCS} -L/usr/lib -I${INCS} -lXext -lX11 -lm -lz -o ${NAME} libft.a #-fsanitize=address#
+	${CC} ${CFLAGS} ${OBJS} -L${INCS} -l${INCS} -L/usr/lib -I${INCS} -lXext -lX11 -lm -lz -o ${NAME} libft.a 
 	${RM} -f libft.a
+	${RM} -f libmlx_Linux.a
 	echo "${GREEN}OK"
-
-bonus: ${B_OBJS}
-	make all -C libft
-	cp libft/libft.a ${CURDIR}
-	${CC} ${CFLAGS} -o ${NAME} ${B_OBJS} libft.a
-	${RM} -f libft.a
 
 clean:
 	${RM} -rf ${OBJDIR}
@@ -68,7 +64,6 @@ clean:
 fclean: clean
 	${RM} -f ${NAME}
 	make fclean -C libft
-	${RM} -f checker
 	echo "${CIANO}Tutto"
 
 re: fclean all

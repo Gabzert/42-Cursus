@@ -12,7 +12,51 @@
 
 #include "fdf.h"
 
-void	colorize(t_map *map)
+static int	find_min_max(t_map map, int swap)
+{
+	int	i;
+	int	j;
+	int	z;
+
+	i = 0;
+	j = 0;
+	z = 0;
+	while (j <= map.rows - 1)
+	{
+		while (i <= map.colouns - 1)
+		{
+			if (swap == 1 && map.points[j][i] > z)
+				z = map.points[j][i];
+			else if (swap == 0 && map.points[j][i] < z)
+				z = map.points[j][i];
+			i++;
+		}
+		i = 0;
+		j++;
+	}
+	return (z);
+}
+
+static void	determine_color(t_map *map, int j, int i)
+{
+	int	z_max;
+	z_max = find_min_max(*map, 1);
+	if (map->points[j][i] < z_max * 0.02)
+		map->colors[j][i] = hex_convert(ft_strdup("0xFF"));
+	else if (map->points[j][i] >= z_max * 0.02
+		&& map->points[j][i] < z_max * 0.15)
+		map->colors[j][i] = hex_convert(ft_strdup("0xFF00"));
+	else if (map->points[j][i] >= z_max * 0.15
+		&& map->points[j][i] < z_max * 0.35)
+		map->colors[j][i] = hex_convert(ft_strdup("0x642D13"));
+	else if (map->points[j][i] >= z_max * 0.35
+		&& map->points[j][i] < z_max * 0.5)
+		map->colors[j][i] = hex_convert(ft_strdup("0x484848"));
+	else if (map->points[j][i] >= z_max * 0.5)
+		map->colors[j][i] = hex_convert(ft_strdup("0xFFFFFF"));
+}
+
+static void	colorize(t_map *map)
 {
 	int	i;
 	int	j;
@@ -24,20 +68,9 @@ void	colorize(t_map *map)
 		while (i <= map->colouns - 1)
 		{
 			if (map->color == true)
-			{
-				if (map->points[j][i] <= 10)
-					map->colors[j][i] = hex_convert("0xFF");
-				else if (map->points[j][i] >= 11 && map->points[j][i] <= 40)
-					map->colors[j][i] = hex_convert("0xFF00");
-				else if (map->points[j][i] >= 41 && map->points[j][i] <= 60)
-					map->colors[j][i] = hex_convert("0x753900");
-				else if (map->points[j][i] >= 61 && map->points[j][i] <= 80)
-					map->colors[j][i] = hex_convert("0x484848");
-				else if (map->points[j][i] >= 81)
-					map->colors[j][i] = hex_convert("0xFFFFFF");
-			}
+				determine_color(map, j, i);
 			else
-				map->colors[j][i] = hex_convert("0xFFFFFF");
+				map->colors[j][i] = hex_convert(ft_strdup("0x00FFFFFF"));
 			i++;
 		}
 		i = 0;
@@ -48,9 +81,6 @@ void	colorize(t_map *map)
 void	change_color(t_everything *all)
 {
 	mlx_destroy_image(all->vars.mlx, all->data.img);
-	all->data.img = mlx_new_image(all->vars.mlx, WIN_L, WIN_H);
-	all->data.addr = mlx_get_data_addr(all->data.img, &all->data.bits_per_pixel,
-			&all->data.line_length, &all->data.endian);
 	if (all->map.color == false)
 	{
 		all->map.color = true;
