@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:47:17 by gfantech          #+#    #+#             */
-/*   Updated: 2023/02/21 16:22:38 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/02/23 17:24:32 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	*philo_brain(void *arg)
 
 	philo = (t_philo *)arg;
 	philo->start_time = get_time();
-	while (death_check(philo) == false)
+	while (death_check(philo) == false && philo->eaten != philo->data->meals)
 	{
 		if (death_check(philo) == true)
 			return (NULL);
@@ -50,7 +50,8 @@ void	*philo_brain(void *arg)
 			return (NULL);
 		print(philo, "sta filosofando <HMMMM>");
 	}
-	print(philo, "e' morto <ded>");
+	if (death_check(philo) == true)
+		print(philo, "e' morto <ded>");
 	return (NULL);
 }
 
