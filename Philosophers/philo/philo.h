@@ -37,12 +37,12 @@ typedef struct s_philo {
 	int			id;
 	t_data		*data;
 	int			eaten;
-	int			start_time;
+	long			start_time;
 }		t_philo;
 
 int		ft_atoi(const char *str);
 int		ft_atoi_free(char *str);
-int		get_time(void);
+long		get_time(void);
 bool	death_check(t_philo *philo);
 void	eat(t_philo *philo);
 void	print(t_philo *philo, char *str);

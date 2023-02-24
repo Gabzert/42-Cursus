@@ -41,11 +41,11 @@ void	*philo_brain(void *arg)
 	philo->start_time = get_time();
 	while (death_check(philo) == false && philo->eaten != philo->data->meals)
 	{
+		eat(philo);
 		if (death_check(philo) == true)
 			return (NULL);
-		eat(philo);
 		print(philo, "sta dormendo <zzzzzz>");
-		usleep(philo->data->tts);
+		usleep(philo->data->tts * 1000);
 		if (death_check(philo) == true)
 			return (NULL);
 		print(philo, "sta filosofando <HMMMM>");
@@ -89,4 +89,5 @@ int	main(int argc, char **argv)
 	table_init(&table, argv);
 	philos = malloc (table.philos * sizeof(t_philo));
 	init_thread(philos, table);
+	usleep(10000);
 }

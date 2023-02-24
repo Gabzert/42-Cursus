@@ -12,24 +12,19 @@
 
 #include "philo.h"
 
-int	get_time(void)
+long	get_time(void)
 {
-	int				ms;
 	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
-	ms = tv.tv_usec;
-	return (ms);
+	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
 }
 
 bool	death_check(t_philo *philo)
 {
-	int	now;
-
-	now = get_time();
-	if (now - philo->start_time >= philo->data->ttd)
+	if (get_time() - philo->start_time >= philo->data->ttd)
 	{
-		print(philo, "e' morto <ded>");
+		printf("philo, e' morto <ded>");
 		return (true);
 	}
 	else

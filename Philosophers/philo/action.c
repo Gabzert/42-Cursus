@@ -18,8 +18,8 @@ void	eat(t_philo *philo)
 		return ;
 	pthread_mutex_lock(&philo->data->forks[philo->id]);
 	pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
-	printf("%d : Philo %d sta mangiando <nom nom nom>\n", get_time(), philo->id);
-	usleep(philo->data->tte);
+	printf("%ld : Philo %d sta mangiando <nom nom nom>\n", get_time(), philo->id);
+	usleep(philo->data->tte * 1000);
 	if (philo->data->meals > 0)
 		philo->eaten++;
 	philo->start_time = get_time();
@@ -32,7 +32,7 @@ void	print(t_philo *philo, char *str)
 	if (death_check(philo) == true)
 		return ;
 	pthread_mutex_lock(&philo->data->printing);
-	printf("%d : Philo %d %s\n", get_time(), philo->id, str);
+	printf("%ld : Philo %d %s\n", get_time(), philo->id, str);
 	usleep(5);
 	pthread_mutex_unlock(&philo->data->printing);
 }
