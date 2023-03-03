@@ -49,7 +49,7 @@ ${OBJDIR}%.o: ${B_DIR}%.c
 ${NAME}: ${OBJS}
 	${CC} ${OBJS} ${CFLAGS} -o ${NAME} 
 	echo "${GREEN}OK"
-
+#-fsanitize=thread 
 
 debug: ${OBJS}
 	${CC} ${CFLAGS} -g -o ${NAME} ${OBJS}
