@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/06 13:03:40 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {

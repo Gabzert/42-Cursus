@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/03 15:29:53 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 int	ft_isalnum(int c)
 {

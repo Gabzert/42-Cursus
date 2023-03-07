@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/04 12:48:13 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {

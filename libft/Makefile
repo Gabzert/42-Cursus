@@ -6,7 +6,7 @@
 #    By: gfantech <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/18 10:51:21 by gfantech          #+#    #+#              #
-#    Updated: 2022/11/18 17:20:32 by gfantech         ###   ########.fr        #
+#    Updated: 2022/11/30 10:48:41 by gfantech         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ ${NAME}: ${OBJS}
 	cp srcs/srcs.a ${NAME}
 	cp printf/libftprintf.a ${NAME}
 	${LIBC} ${NAME} ${OBJS}
-	echo "${GREEN}OK"
+	# echo "${GREEN}OK"
 
 all: ${NAME}
 
@@ -43,13 +43,13 @@ clean:
 	${RM} -f ${OBJS}
 	make clean -C srcs
 	make clean -C printf
-	echo "${CIANO}Pulito"
+	#echo "${CIANO}Pulito"
 
 fclean: clean
 	${RM} -f ${NAME}
 	make fclean -C srcs
 	make fclean -C printf
-	echo "${CIANO}Pulito Tutto"
+	#echo "${CIANO}Pulito Tutto"
 
 re: fclean all
 

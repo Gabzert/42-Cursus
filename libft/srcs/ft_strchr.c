@@ -9,9 +9,9 @@
 /*   Updated: 2022/10/03 19:02:50 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 char	*ft_strchr(const char *s, int c)
 {
-	return (ft_memchr(s, c, ft_strlen(s) + 1));
+	return (ft_memchr(s, c, ft_strlen(s)));
 }

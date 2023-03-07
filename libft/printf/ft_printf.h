@@ -13,7 +13,7 @@
 # define FT_PRINTF_H
 
 # include <stdarg.h>
-# include "../srcs/libft.h"
+# include "../srcs/ft_libft.h"
 
 typedef struct s_format
 {

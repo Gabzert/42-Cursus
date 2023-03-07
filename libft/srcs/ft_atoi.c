@@ -9,7 +9,7 @@
 /*   Updated: 2022/05/11 13:08:30 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 int	ft_atoi(const char *str)
 {
@@ -36,4 +36,13 @@ int	ft_atoi(const char *str)
 		str++;
 	}
 	return (num * neg);
+}
+
+int	ft_atoi_free(char *str)
+{
+	int	n;
+
+	n = ft_atoi(str);
+	free(str);
+	return (n);
 }

@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/05 11:31:04 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 static void	convert(long n, char *res, int i)
 {

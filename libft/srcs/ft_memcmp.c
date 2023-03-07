@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/04 09:33:41 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {

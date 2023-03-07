@@ -9,7 +9,7 @@
 /*   Updated: 2022/10/03 19:01:20 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "ft_libft.h"
 
 int	ft_tolower(int c)
 {
