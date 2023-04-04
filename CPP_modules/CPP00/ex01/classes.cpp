@@ -3,33 +3,54 @@
 /*                                                        :::      ::::::::   */
 /*   classes.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:07:14 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/21 14:07:14 by marvin           ###   ########.fr       */
+/*   Updated: 2023/04/04 17:40:09 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "classes.hpp"
 
-void PhoneBook::add(Contact new_contact)
+string  get_contact(Contact c)
 {
-	int	older;
-    for(int i = 0; i < 8; i++)
-	{
-        if(list[i].getId() == 0)
-		{
-            list[i] = new_contact;
-            break;
-        }
+    string str;
+
+    str = c.getId() + "|" + c.getName() + "|" + c.getLastName() + "|" + c.getNickname();
+    return (str);
+}
+
+void Contact::init(int id)
+{
+    cout << "Name : ";
+    getline(cin, this->name);
+    cout << "Last Name : ";
+    getline(cin, this->last_name);
+    cout << "Number : ";
+    getline(cin, this->number);
+    cout << "Nickname : ";
+    getline(cin, this->nickname);
+    cout << "*Secret* : ";
+    getline(cin, this->secret);
+    this->id = id;
+}
+
+void PhoneBook::add(int i)
+{
+    this->list[i % 8].init(i);
+}
+
+void PhoneBook::search()
+{
+    int i = 0;
+    string str;
+    Contact list[8] = this->getList();
+
+    while (i < 8)
+    {
+        str = get_contact(list[i]);
+        cout << str;
+        i++;
     }
-	
 }
 
-Contact::Contact(int id_, const string& name_, const string& last_name_, const string& nickname_, int number_, const string& secret_) :
-            id(id_), name(name_), last_name(last_name_), nickname(nickname_), number(number_), secret(secret_)
-{
-	Contact::c_num++;
-}
-
-int	Contact::c_num = 0;

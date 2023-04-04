@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   classes.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:02:15 by marvin            #+#    #+#             */
-/*   Updated: 2023/03/21 12:02:15 by marvin           ###   ########.fr       */
+/*   Updated: 2023/04/04 17:35:46 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,20 @@ class Contact
 {
 	private :
 
-	int id;
-	string name;
-	string last_name;
-	string nickname;
-	int	number;
-	string secret;
+	int		id;
+	string	name;
+	string	last_name;
+	string	nickname;
+	string	number;
+	string	secret;
 
 	static int c_num;
 
 	public:
-		
-	Contact(int id_, const string& name_, const string& last_name_, const string& nickname_, int number_, const string& secret_);
+	
+	Contact();
+
+	void init(int id);
 
 	int getId() const { return id; }
 	void setId(int id_) { id = id_; }
@@ -40,13 +42,13 @@ class Contact
 	string getName() const { return name; }
 	void setName(const string &name_) { name = name_; }
 
-	string lastName() const { return last_name; }
+	string getLastName() const { return last_name; }
 	void setLastName(const string &lastName) { last_name = lastName; }
 
 	string getNickname() const { return nickname; }
 	void setNickname(const string &nickname_) { nickname = nickname_; }
 
-	int getNumber() const { return number; }
+	string getNumber() const { return number; }
 	void setNumber(int number_) { number = number_; }
 
 	string getSecret() const { return secret; }
@@ -59,8 +61,12 @@ class PhoneBook
 {
 	public :
 
-	void add(Contact new_contact);
+	PhoneBook() {};
+	~PhoneBook() {};
+	void add(int i);
 	void search();
+	
+	Contact getList() const {return list[8];}
 
 	private :
 
