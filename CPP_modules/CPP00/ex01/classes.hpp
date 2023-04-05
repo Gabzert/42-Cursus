@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   classes.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 12:02:15 by marvin            #+#    #+#             */
-/*   Updated: 2023/04/04 17:35:46 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:40:11 by gabriele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CLASSES_HPP
 
 #include <iostream>
+#include <iomanip>
 
 using namespace std;
 
@@ -32,7 +33,7 @@ class Contact
 
 	public:
 	
-	Contact();
+	Contact() {this->id = -1;};
 
 	void init(int id);
 
@@ -65,8 +66,6 @@ class PhoneBook
 	~PhoneBook() {};
 	void add(int i);
 	void search();
-	
-	Contact getList() const {return list[8];}
 
 	private :
 

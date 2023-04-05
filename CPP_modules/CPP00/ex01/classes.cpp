@@ -3,35 +3,70 @@
 /*                                                        :::      ::::::::   */
 /*   classes.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:07:14 by marvin            #+#    #+#             */
-/*   Updated: 2023/04/04 17:40:09 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/05 17:40:16 by gabriele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "classes.hpp"
 
-string  get_contact(Contact c)
+void	get_contact(Contact c)
 {
-    string str;
+	cout << "Index: " << c.getId() << endl;
+	cout << "Name: " << c.getName() << endl;
+	cout << "Lastname: " << c.getLastName() << endl;
+	cout << "Number: " << c.getNumber() << endl;
+	cout << "Nickname: " << c.getNickname() << endl;
+	cout << "Secret: " << c.getSecret() << endl;
+}
 
-    str = c.getId() + "|" + c.getName() + "|" + c.getLastName() + "|" + c.getNickname();
-    return (str);
+string	truncate(string str)
+{
+	if (str.length() > 10)
+		str = str.substr(0, 9) + ".";
+	return (str);
+}
+
+void	print_contacts(Contact c)
+{
+	cout << "|" << setw(10) << c.getId() << "|";
+	cout << setw(10) << truncate(c.getName()) << "|";
+	cout << setw(10) << truncate(c.getLastName()) << "|";
+	cout << setw(10) << truncate(c.getNickname()) << "|";
+	cout << endl;
 }
 
 void Contact::init(int id)
 {
-    cout << "Name : ";
-    getline(cin, this->name);
-    cout << "Last Name : ";
-    getline(cin, this->last_name);
-    cout << "Number : ";
-    getline(cin, this->number);
+	string check;
+
+	while (this->name.empty())
+	{
+		cout << "Name : ";
+		getline(cin, this->name);
+	}
+	while (this->last_name.empty())
+	{
+		cout << "Last Name : ";
+		getline(cin, this->last_name);
+	}
+	while (this->number.empty())
+	{
+		cout << "Number : ";
+		getline(cin, this->number);
+	}
+	while (this->nickname.empty())
+	{
     cout << "Nickname : ";
     getline(cin, this->nickname);
+	}
+	while (this->secret.empty())
+	{
     cout << "*Secret* : ";
     getline(cin, this->secret);
+	}
     this->id = id;
 }
 
@@ -42,15 +77,22 @@ void PhoneBook::add(int i)
 
 void PhoneBook::search()
 {
-    int i = 0;
-    string str;
-    Contact list[8] = this->getList();
+    int		i = 0;
+   	string	index;
 
-    while (i < 8)
+    while (i < 8 && this->list[i].getId() != -1)
     {
-        str = get_contact(list[i]);
-        cout << str;
+		print_contacts(this->list[i]);
         i++;
     }
+	do
+	{
+		cout << "Inserire indice di ricerca :";
+		cin >> index;
+		if ((stoi(index) > 7 || stoi(index) < 0) || this->list[stoi(index)].getId() == -1)
+			cout << "input non valido" << endl;
+	}
+	while(stoi(index) > 7 || stoi(index) < 0 || this->list[stoi(index)].getId() == -1);
+	get_contact(this->list[stoi(index)]);
 }
 

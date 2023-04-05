@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 11:48:32 by marvin            #+#    #+#             */
-/*   Updated: 2023/04/04 17:39:49 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/05 16:12:36 by gabriele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 int	main()
 {
 	string		str;
-	int			i = 1;
+	int			i = 0;
 	PhoneBook	book;
 
 	while (str.compare("EXIT") != 0)
 	{
+		cout << "Phonebook : ";
 		cin >> str;
 		if (str.compare("ADD") == 0)
 		{
