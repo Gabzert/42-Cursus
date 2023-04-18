@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:47:17 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/14 11:37:44 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/11 09:13:40 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,48 +34,25 @@ int	input_check(int ac, char **av)
 	return (0);
 }
 
-void	omniscience(t_philo *philos, t_data *table)
+void	philo_brain(t_philo	*philo)
 {
-	int		i;
+	pthread_t	pt;
 
-	while (finished(philos, table) == 0)
-	{
-		i = 0;
-		while (i < table->philos)
-		{
-			if (is_ded(&philos[i], table) == 1)
-				return ;
-			i++;
-		}
-	}
-}
-
-void	*philo_brain(void *arg)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)arg;
-	usleep(((philo->id + 1) % 2) * 1000);
+	pthread_create (&pt, NULL, death_check, (void *)philo);
 	if (philo->data->philos == 1)
 		print (philo, "ha preso la sua forchetta \033[0;33m<swing>\033[0m");
 	else
 	{
-		while (death_check(philo) == false
-			&& philo->eaten != philo->data->meals)
+		while (philo->eaten != philo->data->meals)
 		{
 			eat(philo);
-			if (death_check(philo) == true
-				|| philo->eaten == philo->data->meals)
-				pthread_exit(0);
-			print(philo, "sta dormendo \033[0;36m<zzzzzz>\033[0m");
+			print(philo, "sta dormendo  \033[0;36m<zzzzzz>\033[0m");
 			usleep(philo->data->tts * 1000);
-			if (death_check(philo) == true
-				|| philo->eaten == philo->data->meals)
-				pthread_exit(0);
 			print(philo, "sta filosofando \033[0;32m<HMMMM>\033[0m");
 		}
 	}
-	return (NULL);
+	pthread_join(pt, NULL);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
@@ -88,7 +65,7 @@ int	main(int argc, char **argv)
 	if (table_init(&table, argv) == 1)
 		return (0);
 	philos = malloc (table.philos * sizeof(t_philo));
-	init_thread(philos, table);
-	destroy_mutex(&table);
+	init_process(philos, table);
+	close_sem(&table);
 	free(philos);
 }

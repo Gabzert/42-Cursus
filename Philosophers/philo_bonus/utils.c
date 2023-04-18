@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:57:28 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/12 16:53:19 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/03/31 12:43:11 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,52 +39,8 @@ int	ft_atoi(const char *str)
 	return (num * neg);
 }
 
-void	destroy_mutex(t_data *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->philos)
-	{
-		pthread_mutex_destroy(&table->forks[i]);
-		i++;
-	}
-	free(table->forks);
-	pthread_mutex_destroy(&table->eating);
-	pthread_mutex_destroy(&table->printing);
-	pthread_mutex_destroy(&table->time);
-}
-
-int	fork_finder(t_philo philo, int fk)
-{
-	int	first_fork;
-	int	second_fork;
-
-	first_fork = (philo.id - 1);
-	second_fork = (philo.id + philo.data->philos - 2) % philo.data->philos;
-	if (fk == 1)
-	{
-		if (first_fork > second_fork)
-			return (first_fork);
-		else
-			return (second_fork);
-	}
-	else if (fk == 2)
-	{
-		if (first_fork > second_fork)
-			return (second_fork);
-		else
-			return (first_fork);
-	}
-	return (0);
-}
-
 int	table_init(t_data *table, char **argv)
 {
-	int	i;
-
-	i = -1;
-	table->ded = 0;
 	if (ft_atoi(argv[1]) <= 0 || ft_atoi(argv[2]) <= 0
 		|| ft_atoi(argv[3]) <= 0 || ft_atoi(argv[4]) <= 0)
 		return (0);
@@ -96,39 +52,50 @@ int	table_init(t_data *table, char **argv)
 		table->meals = ft_atoi(argv[5]);
 	else
 		table->meals = -1;
-	table->forks = malloc (table->philos * sizeof(pthread_mutex_t));
-	while (++i < table->philos)
-		pthread_mutex_init(&table->forks[i], NULL);
-	pthread_mutex_init(&table->printing, NULL);
-	pthread_mutex_init(&table->eating, NULL);
-	pthread_mutex_init(&table->time, NULL);
-	pthread_mutex_init(&table->dead, NULL);
-	pthread_mutex_init(&table->meal, NULL);
+	sem_unlink("forks");
+	sem_unlink("dead");
+	sem_unlink("print");
+	sem_unlink("eating");
+	table->forks = sem_open("forks", O_CREAT, 0644, table->philos);
+	table->dead = sem_open("dead", O_CREAT, 0644, 0);
+	table->printing = sem_open("print", O_CREAT, 0644, 1);
+	table->eating = sem_open("eating", O_CREAT, 0644, table->philos / 2);
 	return (0);
 }
 
-void	init_thread(t_philo *philos, t_data table)
+void	close_sem(t_data *table)
 {
-	int	i;
+	sem_close(table->dead);
+	sem_close(table->eating);
+	sem_close(table->forks);
+	sem_close(table->printing);
+}
+
+void	init_process(t_philo *philos, t_data table)
+{
+	int			i;
+	pthread_t	pt;
 
 	i = 0;
+	pthread_create (&pt, NULL, destroy_all, (void *)philos);
 	table.sim_start = get_time();
 	while (i < table.philos)
 	{
 		philos[i].data = &table;
-		philos[i].id = i + 1;
+		philos[i].id = i;
 		philos[i].eaten = 0;
 		philos[i].start_time = get_time();
-		if (pthread_create(&philos[i].pt, NULL,
-				philo_brain, (void *)&philos[i]) != 0)
-			perror("oh no");
+		philos[i].pid = fork();
+		if (philos[i].pid == 0)
+			philo_brain(&philos[i]);
 		i++;
 	}
 	i = 0;
-	omniscience(philos, &table);
 	while (i < table.philos)
 	{
-		pthread_join(philos[i].pt, NULL);
+		waitpid(philos[i].pid, NULL, 0);
 		i++;
 	}
+	sem_post(table.dead);
+	pthread_join(pt, NULL);
 }

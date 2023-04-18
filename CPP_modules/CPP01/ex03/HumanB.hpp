@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   HumanB.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 12:59:21 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/15 11:21:05 by gfantech         ###   ########.fr       */
+/*   Created: 2023/04/15 15:56:58 by gfantech          #+#    #+#             */
+/*   Updated: 2023/04/15 16:35:25 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include <iostream>
+#include "Weapon.hpp"
 
-size_t	ft_strlen(const char *str)
+class HumanB
 {
-	size_t	c;
+private:
+	Weapon *weapon;
+	std::string name;
+public:
+	HumanB(std::string name);
+	~HumanB();
 
-	c = 0;
-	if (!str)
-		return (c);
-	while (str[c] != '\0')
-		c++;
-	return (c);
-}
+	Weapon *getWeapon() const { return weapon; }
+	void setWeapon(Weapon &weapon_) { weapon = &weapon_; }
+
+	void attack();
+};

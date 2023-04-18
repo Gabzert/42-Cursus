@@ -1,25 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   Zombie.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 12:59:21 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/15 11:21:05 by gfantech         ###   ########.fr       */
+/*   Created: 2023/04/11 11:40:56 by gfantech          #+#    #+#             */
+/*   Updated: 2023/04/14 12:20:35 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#ifndef Zombie_HPP
+# define Zombie_HPP
+#include <iostream>
 
-size_t	ft_strlen(const char *str)
+class Zombie
 {
-	size_t	c;
+private:
+	std::string name;
+public:
+	Zombie(std::string name);
+	~Zombie(void);
+	void announce(void);
+};
 
-	c = 0;
-	if (!str)
-		return (c);
-	while (str[c] != '\0')
-		c++;
-	return (c);
-}
+Zombie* newZombie( std::string name );
+void randomChump( std::string name );
+#endif

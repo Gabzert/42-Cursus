@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   HumanB.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 12:59:21 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/15 11:21:05 by gfantech         ###   ########.fr       */
+/*   Created: 2023/04/15 15:53:28 by gfantech          #+#    #+#             */
+/*   Updated: 2023/04/15 16:35:46 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include <iostream>
+#include "Weapon.hpp"
+#include "HumanB.hpp"
 
-size_t	ft_strlen(const char *str)
+HumanB::HumanB(std::string name)
 {
-	size_t	c;
+	this->name = name;
+}
 
-	c = 0;
-	if (!str)
-		return (c);
-	while (str[c] != '\0')
-		c++;
-	return (c);
+HumanB::~HumanB(){}
+
+void HumanB::attack()
+{
+	std::cout << this->name << " attacks with their " << this->weapon->getType() << std::endl;
 }

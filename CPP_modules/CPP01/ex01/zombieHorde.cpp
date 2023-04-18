@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   zombieHorde.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 12:59:21 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/15 11:21:05 by gfantech         ###   ########.fr       */
+/*   Created: 2023/04/14 12:12:10 by gfantech          #+#    #+#             */
+/*   Updated: 2023/04/14 13:03:30 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include "Zombie.hpp"
 
-size_t	ft_strlen(const char *str)
+Zombie* zombieHorde( int N, std::string name )
 {
-	size_t	c;
+	Zombie *horde = new Zombie[N];
 
-	c = 0;
-	if (!str)
-		return (c);
-	while (str[c] != '\0')
-		c++;
-	return (c);
+	for (int i = 0; i < N; i++)
+	{
+        horde[i] = Zombie(name);
+    }
+	return (horde);
 }

@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/11 12:59:21 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/15 11:21:05 by gfantech         ###   ########.fr       */
+/*   Created: 2023/04/15 11:46:34 by gfantech          #+#    #+#             */
+/*   Updated: 2023/04/15 11:54:46 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_libft.h"
+#include <iostream>
 
-size_t	ft_strlen(const char *str)
+int main()
 {
-	size_t	c;
+	std::string str = "HI THIS IS BRAIN";
+	std::string *stringPTR = &str;
+	std::string &stringREF = str;
 
-	c = 0;
-	if (!str)
-		return (c);
-	while (str[c] != '\0')
-		c++;
-	return (c);
+	std::cout << "str: "<< &str << std::endl << "stringPTR: " << stringPTR << std::endl << "stringREF: " << &stringREF << std::endl;
+	std::cout << "str: "<< str << std::endl << "stringPTR: " << *stringPTR << std::endl << "stringREF: " << stringREF << std::endl;
+	return (0);
 }

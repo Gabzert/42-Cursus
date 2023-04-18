@@ -2,11 +2,11 @@
 # GENERIC VARIABLES #
 #####################
 
-NAME    = philo
+NAME    = philo_bonus
 INCS    = includes
 CC      = gcc
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror -pthread
+CFLAGS  = -Wall -Wextra -Werror -pthread -lrt
 OBJDIR  = obj/
 SRCDIR  =
 B_DIR	=

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   death.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 13:02:34 by gfantech          #+#    #+#             */
-/*   Updated: 2023/03/03 12:46:17 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/03 12:02:41 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,27 @@ bool	death_check(t_philo *philo)
 	}
 }
 
+int	is_ded(t_philo *philo, t_data *table)
+{
+	long long	death;
+	long long	start_time;
+
+	death = (long long) table->ttd;
+	pthread_mutex_lock(&philo->data->time);
+	start_time = philo->start_time;
+	pthread_mutex_unlock(&philo->data->time);
+	if (get_time() - start_time > death)
+	{
+		print(philo, "e' morto \033[0;31m<ded>\033[0m");
+		pthread_mutex_lock(&table->dead);
+		table->ded = 1;
+		pthread_mutex_unlock(&table->dead);
+		return (1);
+	}
+	else
+		return (0);
+}
+
 int	finished(t_philo *philos, t_data *table)
 {
 	int	i;
@@ -53,32 +74,9 @@ int	finished(t_philo *philos, t_data *table)
 	if (j == table->philos)
 	{
 		pthread_mutex_lock(&table->printing);
-		printf("%lld Il conto grazie \n", get_time());
+		printf("%lld Il conto grazie \n", get_time() - table->sim_start);
 		pthread_mutex_unlock(&table->printing);
 		return (1);
 	}
 	return (0);
 }
-
-int	is_ded(t_philo *philo, t_data *table)
-{
-	long long	death;
-	long long	start_time;
-
-	death = (long long) table->ttd;
-	pthread_mutex_lock(&philo->data->time);
-	start_time = philo->start_time;
-	pthread_mutex_unlock(&philo->data->time);
-	if (get_time() - start_time > death)
-	{
-		print(philo, "e' morto <ded>");
-		pthread_mutex_lock(&table->dead);
-		table->ded = 1;
-		pthread_mutex_unlock(&table->dead);
-		return (1);
-	}
-	else
-		return (0);
-}
-
-

@@ -2,11 +2,11 @@
 # GENERIC VARIABLES #
 #####################
 
-NAME    = philo
+NAME    = violence
 INCS    = includes
-CC      = gcc
+CC      = g++
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror -pthread
+CFLAGS  = -Wall -Wextra -Werror
 OBJDIR  = obj/
 SRCDIR  =
 B_DIR	=
@@ -15,15 +15,15 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS    = main.c utils.c action.c death.c 
+SRCS    = main.cpp HumanA.cpp HumanB.cpp Weapon.cpp
 
-OBJS    = $(addprefix $(OBJDIR),$(SRCS:.c=.o))
+OBJS    = $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
 
 B_SRCS  = main.c utils.c pipes.c
 
 B_FILES = 
 
-B_OBJS  = $(addprefix $(OBJDIR),$(B_SRCS:.c=.o))
+B_OBJS  = $(addprefix $(OBJDIR),$(B_SRCS:.cpp=.o))
 
 ##########
 # COLORS #
@@ -38,7 +38,7 @@ CIANO = \033[0;36m
 
 all: ${NAME}
 
-${OBJDIR}%.o: ${SRCDIR}%.c
+${OBJDIR}%.o: ${SRCDIR}%.cpp
 	@mkdir -p obj
 	$(CC) $(CFLAGS) -c $< -o $@ -I${INCS}
 
