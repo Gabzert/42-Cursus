@@ -6,7 +6,7 @@
 /*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:07:14 by marvin            #+#    #+#             */
-/*   Updated: 2023/04/05 17:40:16 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/04/19 10:45:53 by gabriele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void Contact::init(int id)
 {
 	string check;
 
+	cin.ignore();
 	while (this->name.empty())
 	{
 		cout << "Name : ";
@@ -59,13 +60,13 @@ void Contact::init(int id)
 	}
 	while (this->nickname.empty())
 	{
-    cout << "Nickname : ";
-    getline(cin, this->nickname);
+		cout << "Nickname : ";
+		getline(cin, this->nickname);
 	}
 	while (this->secret.empty())
 	{
-    cout << "*Secret* : ";
-    getline(cin, this->secret);
+		cout << "*Secret* : ";
+		getline(cin, this->secret);
 	}
     this->id = id;
 }
@@ -95,4 +96,3 @@ void PhoneBook::search()
 	while(stoi(index) > 7 || stoi(index) < 0 || this->list[stoi(index)].getId() == -1);
 	get_contact(this->list[stoi(index)]);
 }
-
