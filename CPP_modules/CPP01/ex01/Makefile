@@ -15,7 +15,7 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS    = main.cpp Zombie.cpp
+SRCS    = main.cpp Zombie.cpp zombieHorde.cpp
 
 OBJS    = $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
 
