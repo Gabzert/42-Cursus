@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 16:07:35 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/01 16:17:16 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/05/17 10:57:39 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ Cat &Cat::operator=(const Cat &a)
 	if (this != &a)
 	{
 		this->type = a.type;
+		this->b = a.b;
 	}
 	return (*this);
 }

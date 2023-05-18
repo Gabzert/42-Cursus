@@ -1,43 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.cpp                                         :+:      :+:    :+:   */
+/*   Cure.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/01 15:16:14 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/17 10:54:41 by gfantech         ###   ########.fr       */
+/*   Created: 2023/05/17 14:22:15 by gfantech          #+#    #+#             */
+/*   Updated: 2023/05/17 16:52:59 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animal.hpp"
+#include "Cure.hpp"
 
-Animal::Animal()
-{
-	this->type = "generic";
-	std::cout << "Animal constructor called" << std::endl;
-}
+Cure::Cure() : AMateria("cure") {}
 
-Animal::Animal(const Animal &copy)
+Cure::Cure(const Cure &copy) : AMateria("cure")
 {
-	std::cout << "Animal copy constructor called" << std::endl;
+	std::cout << "Cure copy constructor called" << std::endl;
 	*this = copy;
 }
 
-Animal &Animal::operator=(const Animal &a)
+Cure &Cure::operator=(const Cure &a)
 {
 	if (this != &a)
-	{
-		this->type = a.type;
-	}
+		this->_type = a._type;
 	return (*this);
 }
 
-Animal::~Animal()
+Cure::~Cure(){}
+
+Cure* Cure::clone() const
 {
+	return (new Cure());
 }
 
-std::string Animal::getType() const
+void Cure::use(ICharacter& target)
 {
-	return (this->type);
+	std::cout << "* heals " << target.getName() << " *" << std::endl;
 }

@@ -1,43 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Animal.cpp                                         :+:      :+:    :+:   */
+/*   Ice.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/01 15:16:14 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/17 10:54:41 by gfantech         ###   ########.fr       */
+/*   Created: 2023/05/17 12:11:28 by gfantech          #+#    #+#             */
+/*   Updated: 2023/05/17 16:37:24 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animal.hpp"
+#include "Ice.hpp"
 
-Animal::Animal()
-{
-	this->type = "generic";
-	std::cout << "Animal constructor called" << std::endl;
-}
+Ice::Ice() : AMateria("ice") {}
 
-Animal::Animal(const Animal &copy)
+Ice::Ice(const Ice &copy) : AMateria("ice")
 {
-	std::cout << "Animal copy constructor called" << std::endl;
+	std::cout << "ICE copy constructor called" << std::endl;
 	*this = copy;
 }
 
-Animal &Animal::operator=(const Animal &a)
+Ice &Ice::operator=(const Ice &a)
 {
 	if (this != &a)
-	{
-		this->type = a.type;
-	}
+		this->_type = a._type;
 	return (*this);
 }
 
-Animal::~Animal()
+Ice::~Ice(){}
+
+Ice* Ice::clone() const
 {
+	return (new Ice());
 }
 
-std::string Animal::getType() const
+void Ice::use(ICharacter& target)
 {
-	return (this->type);
+	std::cout << "* shoots an ice bolt at " << target.getName() << " *" << std::endl;
 }

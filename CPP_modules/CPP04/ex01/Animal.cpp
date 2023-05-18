@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 15:16:14 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/16 17:49:24 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/05/17 10:53:43 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,9 @@ Animal::~Animal()
 std::string Animal::getType() const
 {
 	return (this->type);
+}
+
+void Animal::makeSound() const
+{
+	std::cout << "*generic animal noise*\n";
 }
