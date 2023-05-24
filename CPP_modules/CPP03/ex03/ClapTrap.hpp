@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ClapTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 08:40:47 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/01 11:14:11 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/05/24 10:17:24 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ protected:
 	int Attack;
 	int	Energy;
 public:
+	ClapTrap();
 	ClapTrap(std::string name);
 	~ClapTrap();
 	ClapTrap(const ClapTrap &toCopy);

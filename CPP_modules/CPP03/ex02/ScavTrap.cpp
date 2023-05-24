@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ScavTrap.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 09:54:42 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/01 11:31:32 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/05/24 10:18:08 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ScavTrap.hpp"
+
+ScavTrap::ScavTrap() : ClapTrap() {
+    this->Name = "n/a";
+    this->Attack = 20;
+    this->Energy = 50;
+    this->HP = 100;
+	std::cout << "ScavTrap reporting for duty!" << std::endl;
+}
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 {

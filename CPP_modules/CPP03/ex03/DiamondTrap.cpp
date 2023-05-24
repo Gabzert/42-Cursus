@@ -3,14 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   DiamondTrap.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 12:02:26 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/01 14:18:12 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/05/24 10:22:19 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "DiamondTrap.hpp"
+
+DiamondTrap::DiamondTrap() : ClapTrap() {
+	this->Name = "n/a";
+	ClapTrap::Name = "n/a_clap_name";
+
+	this->HP = FragTrap::HP;
+	this->Energy = ScavTrap::Energy;
+	this->Attack = FragTrap::Attack;
+
+	std::cout << "DiamondTrap coming in hot!" << std::endl;
+}
 
 DiamondTrap::DiamondTrap(std::string name) : ClapTrap(name), ScavTrap(name), FragTrap(name)
 {

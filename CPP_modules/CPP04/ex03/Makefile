@@ -6,7 +6,7 @@ NAME    = elementalist
 INCS    = includes
 CC      = g++
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror
+CFLAGS  = -Wall -Wextra -Werror -std=c++98
 OBJDIR  = obj/
 SRCDIR  =
 B_DIR	=

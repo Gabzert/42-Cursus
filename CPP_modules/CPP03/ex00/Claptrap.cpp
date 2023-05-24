@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   Claptrap.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 08:50:34 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/01 10:53:28 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/05/24 10:04:43 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ClapTrap.hpp"
+
+ClapTrap::ClapTrap() : Name("n/a"), Attack(0), Energy(10), HP(10){}
+
 
 ClapTrap::ClapTrap(std::string name)
 {

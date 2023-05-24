@@ -18,7 +18,8 @@ void	eat(t_philo *philo)
 		return ;
 	pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
 	print (philo, "ha preso la sua forchetta \033[0;33m<swing>\033[0m");
-	pthread_mutex_lock(&philo->data->forks[(philo->id + philo->data->philos - 2) % philo->data->philos]);
+	pthread_mutex_lock(&philo->data->forks[(philo->id
+			+ philo->data->philos - 2) % philo->data->philos]);
 	print(philo,
 		"ha preso un'altra forchetta \033[0;33m<swing 2 the sequel>\033[0m");
 	pthread_mutex_lock(&philo->data->time);
@@ -30,7 +31,8 @@ void	eat(t_philo *philo)
 	if (philo->data->meals > 0)
 		philo->eaten++;
 	pthread_mutex_unlock(&philo->data->meal);
-	pthread_mutex_unlock(&philo->data->forks[(philo->id + philo->data->philos - 2) % philo->data->philos]);
+	pthread_mutex_unlock(&philo->data->forks[(philo->id
+			+ philo->data->philos - 2) % philo->data->philos]);
 	pthread_mutex_unlock(&philo->data->forks[philo->id - 1]);
 }
 
@@ -43,6 +45,7 @@ void	print(t_philo *philo, char *str)
 		return ;
 	}
 	printf("%lld : Philo %d %s    [%d]  \n", get_time() - philo->data->sim_start,
-		philo->id, str, ((philo->id + philo->data->philos - 2) % philo->data->philos));
+		philo->id, str, ((philo->id
+				+ philo->data->philos - 2) % philo->data->philos));
 	pthread_mutex_unlock(&philo->data->printing);
 }

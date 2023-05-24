@@ -36,5 +36,4 @@ void	print(t_philo *philo, char *str)
 	printf("%lld : Philo %d %s\n", get_time() - philo->data->sim_start,
 		philo->id, str);
 	sem_post(philo->data->printing);
-	//usleep(5);
 }

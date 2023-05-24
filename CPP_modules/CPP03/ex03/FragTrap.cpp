@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   FragTrap.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 11:40:18 by gabriele          #+#    #+#             */
-/*   Updated: 2023/05/01 14:06:37 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/05/24 10:22:46 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "FragTrap.hpp"
+
+FragTrap::FragTrap() : ClapTrap() {
+    this->Name = "n/a";
+    this->Attack = 30;
+    this->Energy = 100;
+    this->HP = 100;
+	std::cout << "FragTrap ready to roll!" << std::endl;
+}
+
 
 FragTrap::FragTrap(std::string name) : ClapTrap(name)
 {

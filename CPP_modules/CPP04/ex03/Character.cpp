@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:19:48 by gfantech          #+#    #+#             */
-/*   Updated: 2023/05/18 11:14:00 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/05/24 09:48:07 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ std::string const & Character::getName() const
 void Character::equip(AMateria* m)
 {
 	int i = 0;
+	if (!m)
+		return;
 	while (this->inventory[i])
 		i++;
 	if (i < 3)
@@ -71,5 +73,7 @@ void Character::unequip(int idx)
 
 void Character::use(int idx, ICharacter& target)
 {
-	this->inventory[idx]->use(target);
-}
+	if ((idx < 4 && idx > -1) && this->inventory[idx])
+		this->inventory[idx]->use(target);
+	std::cout << "Cannot use" << std::endl;
+ }
