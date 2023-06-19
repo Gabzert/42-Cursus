@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:47:28 by gfantech          #+#    #+#             */
-/*   Updated: 2023/03/31 12:42:44 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:28:03 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,6 @@ void		init_process(t_philo *philos, t_data table);
 int			table_init(t_data *table, char **argv);
 void		*destroy_all(void *arg);
 void		close_sem(t_data *table);
+
+void		ft_usleep(int howlong);
 #endif

@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 13:02:34 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/03 12:02:41 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/05/02 16:32:24 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ long long	get_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	ft_usleep(int howlong)
+{
+	time_t	tmp;
+
+	tmp = get_time() + howlong;
+	while (get_time() < tmp)
+		usleep(100);
 }
 
 bool	death_check(t_philo *philo)
@@ -35,6 +44,10 @@ bool	death_check(t_philo *philo)
 	}
 }
 
+	// pthread_mutex_lock(&table->meal);
+	// if (philo->eaten == table->meals)
+	// 	return (0);
+	// pthread_mutex_unlock(&table->meal);
 int	is_ded(t_philo *philo, t_data *table)
 {
 	long long	death;

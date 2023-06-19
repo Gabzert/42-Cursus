@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/21 10:05:55 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/11 14:24:57 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/20 14:15:43 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	eat(t_philo *philo)
 		"ha preso un'altra forchetta \033[0;33m<swing 2 the sequel>\033[0m");
 	philo->start_time = get_time();
 	print(philo, "sta mangiando \033[0;35m<nom nom nom>\033[0m");
-	usleep(philo->data->tte * 1000);
+	ft_usleep(philo->data->tte);
 	if (philo->data->meals > 0)
 		philo->eaten++;
 	sem_post(philo->data->forks);

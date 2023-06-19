@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:47:28 by gfantech          #+#    #+#             */
-/*   Updated: 2023/03/18 14:01:29 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:28:08 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,6 @@ void		*philo_brain(void *arg);
 void		init_thread(t_philo *philos, t_data table);
 int			table_init(t_data *table, char **argv);
 void		omniscience(t_philo *philos, t_data *table);
+
+void		ft_usleep(int howlong);
 #endif

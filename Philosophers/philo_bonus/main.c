@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:47:17 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/11 09:13:40 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:50:40 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void	philo_brain(t_philo	*philo)
 		while (philo->eaten != philo->data->meals)
 		{
 			eat(philo);
-			print(philo, "sta dormendo  \033[0;36m<zzzzzz>\033[0m");
-			usleep(philo->data->tts * 1000);
-			print(philo, "sta filosofando \033[0;32m<HMMMM>\033[0m");
+			print(philo, "sta dormendo \033[0;34m<zzzzzzz>\033[0m");
+			ft_usleep(philo->data->tts);
+			print(philo, "sta filosofando  \033[0;32m<HMMMMMMM>\033[0m");
 		}
 	}
 	pthread_join(pt, NULL);

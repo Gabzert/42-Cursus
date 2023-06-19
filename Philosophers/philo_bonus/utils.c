@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 10:57:28 by gfantech          #+#    #+#             */
-/*   Updated: 2023/03/31 12:43:11 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/17 13:52:47 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	table_init(t_data *table, char **argv)
 	table->forks = sem_open("forks", O_CREAT, 0644, table->philos);
 	table->dead = sem_open("dead", O_CREAT, 0644, 0);
 	table->printing = sem_open("print", O_CREAT, 0644, 1);
-	table->eating = sem_open("eating", O_CREAT, 0644, table->philos / 2);
+	table->eating = sem_open("eating", O_CREAT, 0644, (table->philos / 2) + 1);
 	return (0);
 }
 
@@ -82,7 +82,7 @@ void	init_process(t_philo *philos, t_data table)
 	while (i < table.philos)
 	{
 		philos[i].data = &table;
-		philos[i].id = i;
+		philos[i].id = i + 1;
 		philos[i].eaten = 0;
 		philos[i].start_time = get_time();
 		philos[i].pid = fork();

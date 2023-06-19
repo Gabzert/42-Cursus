@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 13:02:34 by gfantech          #+#    #+#             */
-/*   Updated: 2023/04/03 09:56:08 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/04/18 15:49:48 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@ long long	get_time(void)
 
 	gettimeofday(&tv, NULL);
 	return ((tv.tv_sec * 1000) + (tv.tv_usec / 1000));
+}
+
+void	ft_usleep(int howlong)
+{
+	time_t	tmp;
+
+	tmp = get_time() + howlong;
+	while (get_time() < tmp)
+		usleep(100);
 }
 
 void	*death_check(void *arg)
