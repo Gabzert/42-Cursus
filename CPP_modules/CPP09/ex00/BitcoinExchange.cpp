@@ -3,15 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:47:06 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/24 15:46:19 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:35:21 by gabriele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 #include <stdbool.h>
+#include <stdlib.h>
+
+bool operator<(const s_data first, const s_data other)
+{
+    if (first.date == other.date || first.date.find("Error:") != std::string::npos || other.date.find("Error:") != std::string::npos )
+        return first.index < other.index;
+    else
+        return first.date < other.date;
+}
 
 BitcoinExchange::BitcoinExchange()
 {}
@@ -19,8 +28,6 @@ BitcoinExchange::BitcoinExchange()
 BitcoinExchange::~BitcoinExchange()
 {
 }
-
-
 
 bool	isBisestile(int year)
 {
@@ -69,8 +76,8 @@ BitcoinExchange::BitcoinExchange(std::string dataFile, std::string inputFile)
 	std::string tmp;
 	int i = 0;
 
-	data.open(dataFile);
-	input.open(inputFile);
+	data.open(dataFile.c_str());
+	input.open(inputFile.c_str());
 	if (!data.is_open() || !input.is_open())
 	{
 		std::cerr << "ERROR: could not open file" << std::endl;
@@ -78,7 +85,7 @@ BitcoinExchange::BitcoinExchange(std::string dataFile, std::string inputFile)
 	}
 	getline(data, tmp);
 	if (tmp != "date,exchange_rate") {
-		std::cout << "Error, data files first column is not 'date,exchange_rate'" << std::endl;
+		std::cerr << "Error, data files first column is not 'date,exchange_rate'" << std::endl;
 		data.close();
 		return;
 	}
@@ -89,13 +96,13 @@ BitcoinExchange::BitcoinExchange(std::string dataFile, std::string inputFile)
 		info.index = i;
 		info.date = tmp.substr(0, tmp.find(','));
 		dataMap[info] = std::atof(tmp.substr(tmp.find(',') + 1, tmp.length()).c_str());
-		i++;
+ 		i++;
 	}
 	i = 0;
 
 	getline(input, tmp);
 	if (tmp != "date | value") {
-		std::cout << "Error, data files first column is not 'date | value'" << std::endl;
+		std::cerr << "Error, data files first column is not 'date | value'" << std::endl;
 		data.close();
 		return;
 	}
@@ -103,13 +110,19 @@ BitcoinExchange::BitcoinExchange(std::string dataFile, std::string inputFile)
 	while (getline(input, tmp))
 	{
 		t_data info;
+		double value;
+
 		info.index = i;
-		info.date = tmp.substr(0, tmp.find(','));
-		if (checkDate(info.date))
+		info.date = tmp.substr(0, tmp.find('|'));
+		if (!checkDate(info.date))
 			info.date = "Error: Date format not valid";
-		inputMap[info] = std::atof(tmp.substr(tmp.find(',') + 1, tmp.length()).c_str());
-		if (inputMap[info] > 1000 || inputMap[info] < 0)
-			info.date = "Error: Value not valid";
+		else
+		{
+			value = std::atof(tmp.substr(tmp.find('|') + 1, tmp.length()).c_str());
+			if (value > 1000 || value < 0)
+				info.date = "Error: Value not valid";
+		}
+		inputMap[info] = value;
 		i++;
 	}
 	
@@ -124,17 +137,29 @@ void BitcoinExchange::printOut()
         const t_data& info = it->first;
         double inputValue = it->second;
 
-        std::map<t_data, double>::const_iterator dataMapIt = dataMap.find(info);
-        if (dataMapIt != dataMap.end())
+		std::map<t_data, double>::const_iterator dataIt = dataMap.find(info);
+		if (dataIt == dataMap.end())
+		{
+            std::map<t_data, double>::const_iterator lower = dataMap.lower_bound(info);
+            if (lower == dataMap.begin())
+                dataIt = dataMap.begin();
+            else
+            {
+				lower--;
+                dataIt = lower;
+            }
+		}
+		//std::cout << "idx: " << i << " tmp: " << tmp << std::endl;
+		if (info.date.find("Error:") != std::string::npos)
+		{
+			std::cout << info.date << std::endl;
+		}
+        else
         {
-            double coinPrice = dataMapIt->second;
+            double coinPrice = dataIt->second;
             double coinValue = inputValue * coinPrice;
 
-            std::cout << info.date << " => " << inputValue << " = " << coinValue << std::endl;
+           std::cout << info.date << " => " << inputValue << " = " << coinValue << std::endl;
         }
-		else if (info.date.find("Error:"))
-		{
-			std::cerr << info.date << std::endl;
-		}
     }
 }
