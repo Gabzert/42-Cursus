@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RPN.hpp                                            :+:      :+:    :+:   */
+/*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/26 17:01:55 by gabriele          #+#    #+#             */
-/*   Updated: 2023/06/27 10:44:35 by gfantech         ###   ########.fr       */
+/*   Created: 2023/06/27 11:09:15 by gfantech          #+#    #+#             */
+/*   Updated: 2023/06/27 12:59:02 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 #include <iostream>
-#include <stack>
 #include <string>
 #include <sstream>
 #include <stdlib.h>
 #include <exception>
+#include <vector>
 
-int evaluateRPN(const std::string& expression);
+void PmergeMe();
