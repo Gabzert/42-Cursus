@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 11:09:15 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/27 12:59:02 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/06/28 11:52:22 by gabriele         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,5 +17,6 @@
 #include <stdlib.h>
 #include <exception>
 #include <vector>
+#include <deque>
 
-void PmergeMe();
+void PmergeMe(int argc, char **argv);

@@ -2,7 +2,7 @@
 # GENERIC VARIABLES #
 #####################
 
-NAME    = RPN
+NAME    = pmerge
 INCS    = includes
 CC      = c++
 RM      = rm -f
@@ -29,7 +29,7 @@ B_OBJS  = $(addprefix $(OBJDIR),$(B_SRCS:.cpp=.o))
 # COLORS #
 ##########
 
-DEF_COLOR = \033[0;33m
+DEF_COLOR = \033[0;0m
 GREEN = \033[0;32m
 RED = \033[0;91m
 CIANO = \033[0;36m
@@ -48,22 +48,22 @@ ${OBJDIR}%.o: ${B_DIR}%.c
 
 ${NAME}: ${OBJS}
 	${CC} ${OBJS} ${CFLAGS} -o ${NAME} 
-	echo "${GREEN}OK"
+	echo "${GREEN}OK${DEF_COLOR}"
 #-fsanitize=thread -O1
 
 debug: ${OBJS}
 	${CC} ${CFLAGS} -g -o ${NAME} ${OBJS}
-	echo "${DEF_COLOR}DEBUG READY"
+	echo "${DEF_COLOR}DEBUG READY${DEF_COLOR}"
 
 bonus: ${B_OBJS}
 	${CC} ${CFLAGS} -o ${NAME} ${B_OBJS}
 
 clean:
 	${RM} -rf ${OBJDIR}
-	echo "${CIANO}Pulito"
+	echo "${CIANO}Pulito${DEF_COLOR}"
 
 fclean: clean
 	${RM} -f ${NAME}
-	echo "${CIANO}Tutto"
+	echo "${CIANO}Tutto${DEF_COLOR}"
 
 re: fclean all
