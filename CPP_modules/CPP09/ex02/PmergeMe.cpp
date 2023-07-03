@@ -3,76 +3,182 @@
 /*                                                        :::      ::::::::   */
 /*   PmergeMe.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gabriele <gabriele@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:59:14 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/29 15:15:13 by gabriele         ###   ########.fr       */
+/*   Updated: 2023/07/03 10:58:47 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-
-void orderPairs(std::vector<int> &v, int start, int end)
+long long	get_time(void)
 {
-	if (end - start != 2)
+	struct timeval	tv;
+
+	gettimeofday(&tv, NULL);
+	return ((tv.tv_sec * 1000000) + tv.tv_usec);
+}
+
+template <typename Container>
+int findInS(Container S, int pair)
+{
+	for (size_t i = 0; i < S.size(); i++)
 	{
-		int half = (start + end) / 2;
-		orderPairs(v, start, half);
-		orderPairs(v, half + 1, end);
-		mergePairs();
+		if (S[i] == pair)
+			return (i);
 	}
-	else if (v[start] > v[end])
-		iter_swap(v.begin() + start, v.begin() + end);
+	return (-1);
 }
 
-void mergePairs(std::vector<int> &v, int size, std::vector<int>::iterator last)
+
+template <typename Container>
+void binarySearch(Container S, Container &c, int paired[])
 {
-    if (size < 0)
-        v[0] = *last;
-    else if (*last >= v[size])
+	for (size_t i = 0; i < c.size(); i++)
 	{
-        if (size == v.size() - 1)
-            v.push_back(*last);
-        else
-            v[size + 1] = *last;
-    }
-    else
-	{
-        if (size == v.size() - 1)
-            v.push_back(v[size]);
-        else
+	    int low = 0;
+    	int high = findInS(S, paired[i]);
+
+    	while (low <= high)
 		{
-            v[size + 1] = v[size];
-            v.insert(v.begin() + size, *last);
-        }
+        	int mid = low + (high - low) / 2;
+			if (S[mid] < c[i])
+				low = mid + 1;
+			else
+				high = mid - 1;
+    	}
+		S.insert(S.begin() + low, c[i]);
+	}
+	c.clear();
+	c = S;
+}
+
+template <typename Container>
+void invertSection(Container& container, size_t startIndex, size_t endIndex)
+{
+    while (startIndex < endIndex)
+    {
+        std::swap(container[startIndex], container[endIndex]);
+        ++startIndex;
+        --endIndex;
     }
 }
 
-// build utility functions for recursive insertion sort by highest value in pair
-def insert(element, A, n):
-  if n < 0:
-    A[0] = element
-  elif element[1] >= A[n][1]:
-    if n == len(A)-1:
-      A.append(element)
-    else:
-      A[n+1] = element
-  else:
-    if n == len(A)-1:
-      A.append(A[n])
-    else:
-      A[n+1] = A[n]
-      insert(element, A, n-1)
+template <typename Container>
+void jackbSequence(Container &c, int paired[])
+{
+	unsigned int x = 0;
+	unsigned int jacobsthalB = 0;
+	unsigned int jacobsthalN = 2;
+	for (size_t i = 0; i < c.size(); i++)
+	{
+		if (x == jacobsthalN )
+		{
+			invertSection(c, i - x, i);
+			invertSection(paired, i - x, i);
+			x = 0;
+			int temp = jacobsthalN;
+			jacobsthalN += (jacobsthalB * 2);
+			jacobsthalB = temp;
+		}
+		else
+			x++;
+	}
+}
 
-// entry function to recusrively sort pairs by their higher value
-def insertion_sort_pairs(A, n):
-  if n < 1:
-    return A
-  else:
-    insertion_sort_pairs(A, n-1)
-    insert(A[n], A, n-1)
+template <typename Container>
+Container makeS(Container &c)
+{
+	Container s;
+	Container pend;
+	s.push_back(c[0]);
+    for (size_t i = 1; i <= c.size() - 1; i += 2)
+	{
+		s.push_back(c[i]);
+		pend.push_back(c[i - 1]);
+	}
+	if (c.size() % 2 == 1)
+		pend.push_back(c[c.size() - 1]);
+	pend.erase(pend.begin());
+	c.clear();
+	c = pend;
+	return (s);
+}
 
+
+template <typename Container>
+void mergePairs(Container &c, int size)
+{
+	for (int i = 0; i < size; i++)
+	{
+		for (int i = 1; i < size; i += 2)
+		{
+			if (c[i] > c[i + 2])
+			{
+				std::iter_swap(c.begin() + i, c.begin() + i + 2);
+				std::iter_swap(c.begin() + i - 1, c.begin() + i + 1);
+			}
+		}
+	}
+	
+}
+
+template <typename Container>
+void orderPairs(Container &c, int last)
+{
+	for (int i = 0; i <= last; i += 2)
+	{
+		if (c[i] > c[i + 1])
+        	std::iter_swap(c.begin() + i, c.begin() + i + 1);
+    }
+    mergePairs(c, last);
+}
+
+
+void sortVector(std::vector<int> &v)
+{
+	double timeS = get_time();
+	if (v.size() % 2 == 0)
+		orderPairs(v, v.size() - 1);
+	else
+		orderPairs(v, v.size() - 2);
+	std::vector<int> S = makeS(v);
+	int paired[v.size()];
+	for (size_t i = 0; i < v.size(); i++)
+	{
+		if (i + 2 > S.size() - 1)
+			paired[i] = S[S.size() - 1];
+		else
+			paired[i] = S[i + 2];
+	}
+	jackbSequence(v, paired);
+	binarySearch(S, v, paired);
+	double timeF = get_time();
+	std::cout << "After :" << std::endl;
+	for (std::vector<int>::iterator it = v.begin(); it != v.end(); it++)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "Time to process a range of " << v.size() << " elements using <vectors> : " << timeF - timeS << " us" << std::endl;
+}
+
+void sortDeque(std::deque<int> &d)
+{
+	double timeS = get_time();
+	if (d.size() % 2 == 0)
+		orderPairs(d, d.size() - 1);
+	else
+		orderPairs(d, d.size() - 2);
+	std::deque<int> S = makeS(d);
+	int paired[d.size()];
+	for (size_t i = 0; i < d.size(); i++) {paired[i] = S[i];}
+	jackbSequence(d, paired);
+	binarySearch(S, d, paired);
+	double timeF = get_time();
+	std::cout << "Time to process a range of " << d.size() << " elements using <deques> : " << timeF - timeS << " us" << std::endl;
+}
 
 void PmergeMe(int ac, char **argv)
 {
@@ -90,6 +196,6 @@ void PmergeMe(int ac, char **argv)
 		std::cout << *it << " ";
 	}
 	std::cout << std::endl;
-
-	
+	sortVector(vector);
+	sortDeque(deque);
 }

@@ -2,7 +2,7 @@
 # GENERIC VARIABLES #
 #####################
 
-NAME    = pmerge
+NAME    = PmergeMe
 INCS    = includes
 CC      = c++
 RM      = rm -f
