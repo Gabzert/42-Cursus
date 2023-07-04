@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 14:15:29 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/19 17:33:37 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:32:29 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 Form::Form(): _name("n/a"), _isSigned(false), _gradeSign(150), _gradeExe(150){}
 
-Form::Form(std::string name, int gradeSign, int gradeExe): _name(name), _isSigned(false) {
+Form::Form(std::string name, int gradeSign, int gradeExe): _name(name), _isSigned(false), _gradeSign(gradeSign), _gradeExe(gradeExe){
 	if (gradeSign < 1)
 		throw GradeTooHighException();
 	if (gradeSign > 150)
@@ -24,19 +24,16 @@ Form::Form(std::string name, int gradeSign, int gradeExe): _name(name), _isSigne
 		throw GradeTooHighException();
 	if (gradeExe > 150)
 		throw GradeTooLowException();
-	this->_gradeSign = gradeSign;
-	this->_gradeExe = gradeExe;
 }
 
-Form::Form(const Form &copy){
+Form::Form(const Form &copy): _gradeSign(copy._gradeSign), _gradeExe(copy._gradeExe){
 	*this = copy;
 }
 
 Form &Form::operator=(const Form &a){
 	if (this != &a)
 	{
-		this->_gradeSign = a._gradeSign;
-		this->_gradeExe = a._gradeExe;
+		this->_isSigned = a._isSigned;
 	}
 	return (*this);
 }
@@ -57,6 +54,16 @@ int Form::getGradeS() const{
 
 int Form::getGradeX() const{
 	return (this->_gradeExe);
+}
+
+const char* Form::GradeTooHighException::what() const throw()
+{
+	return ("The grade you set is too high");
+}
+
+const char* Form::GradeTooLowException::what() const throw()
+{
+	return ("The grade you set is too low");
 }
 
 void Form::beSigned(Bureaucrat &bc)

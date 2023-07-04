@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 10:36:29 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/20 12:56:18 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:10:12 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,14 @@ public:
 	class GradeTooHighException : public std::exception
 	{
 		public:
-			virtual const char* what() const throw()
-			{
-				return ("The grade you set is too high");
-			}
+			virtual const char* what() const throw();
 	};
 
 	class GradeTooLowException : public std::exception
 	{
 		public:
-			virtual const char* what() const throw()
-			{
-				return ("The grade you set is too low");
-			}
-	};	
+			virtual const char* what() const throw();
+	};		
 
 	void signForm(AForm &f);
 	void executeForm(AForm const & form);

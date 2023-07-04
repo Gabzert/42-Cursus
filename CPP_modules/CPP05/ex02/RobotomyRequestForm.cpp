@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 11:20:17 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/23 11:25:27 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:34:21 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ void RobotomyRequestForm::execute(Bureaucrat const &executor) const
 		if (executor.getGrade() <= this->getGradeX())
 		{
 			std::cout << "*bzzzz clank clonk zzzz zzz ping*" << std::endl;
-			std::cout << random << std::endl;
 			if (random > 50)
 			{
 				std::cout << this->_target << " has been robotomized successfully 🤖" << std::endl;

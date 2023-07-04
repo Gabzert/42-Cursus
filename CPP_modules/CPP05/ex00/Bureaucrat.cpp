@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 10:53:31 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/19 15:14:03 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:07:57 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ int Bureaucrat::getGrade() const
 	return (this->_grade);
 }
 
+const char* Bureaucrat::GradeTooHighException::what() const throw()
+{
+	return ("The grade you set is too high");
+}
+
+const char* Bureaucrat::GradeTooLowException::what() const throw()
+{
+	return ("The grade you set is too low");
+}
+
 void Bureaucrat::promote()
 {
 	this->_grade--;
@@ -70,3 +80,4 @@ std::ostream &operator<<(std::ostream &out, const Bureaucrat &bc)
 	out << bc.getName() << " bureaucrat grade " << bc.getGrade();
 	return (out);
 }
+

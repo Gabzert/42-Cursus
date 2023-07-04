@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 12:39:13 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/19 17:27:18 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:24:31 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ class Form
 private:
 	const std::string _name;
 	bool _isSigned;
-	int _gradeSign;
-	int _gradeExe;
+	const int _gradeSign;
+	const int _gradeExe;
 
 public:
 	Form();
@@ -39,19 +39,13 @@ public:
 	class GradeTooHighException : public std::exception
 	{
 		public:
-			virtual const char* what() const throw()
-			{
-				return ("The grade you set is too high");
-			}
+			virtual const char* what() const throw();
 	};
 
 	class GradeTooLowException : public std::exception
 	{
 		public:
-			virtual const char* what() const throw()
-			{
-				return ("The grade you set is too low");
-			}
+			virtual const char* what() const throw();
 	};	
 
 	void beSigned(Bureaucrat &bc);

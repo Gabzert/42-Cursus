@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 10:53:31 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/19 17:36:45 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/07/03 11:09:26 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,16 @@ std::string Bureaucrat::getName() const
 int Bureaucrat::getGrade() const
 {
 	return (this->_grade);
+}
+
+const char* Bureaucrat::GradeTooHighException::what() const throw()
+{
+	return ("The grade you set is too high");
+}
+
+const char* Bureaucrat::GradeTooLowException::what() const throw()
+{
+	return ("The grade you set is too low");
 }
 
 void Bureaucrat::promote()

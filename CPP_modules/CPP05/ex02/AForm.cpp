@@ -15,23 +15,25 @@
 
 AForm::AForm(): _name("n/a"), _isSigned(false), _gradeSign(150), _gradeExe(150){}
 
-AForm::AForm(std::string name, int gradeSign, int gradeExe): _name(name), _isSigned(false) {
-
-	checkGrade(gradeSign);
-	checkGrade(gradeExe);
-	this->_gradeSign = gradeSign;
-	this->_gradeExe = gradeExe;
+AForm::AForm(std::string name, int gradeSign, int gradeExe): _name(name), _isSigned(false), _gradeSign(gradeSign),_gradeExe(gradeExe){
+	if (gradeSign < 1)
+		throw GradeTooHighException();
+	if (gradeSign > 150)
+		throw GradeTooLowException();
+	if (gradeExe < 1)
+		throw GradeTooHighException();
+	if (gradeExe > 150)
+		throw GradeTooLowException();
 }
 
-AForm::AForm(const AForm &copy){
+AForm::AForm(const AForm &copy): _gradeSign(copy._gradeSign),_gradeExe(copy._gradeExe){
 	*this = copy;
 }
 
 AForm &AForm::operator=(const AForm &a){
 	if (this != &a)
 	{
-		this->_gradeSign = a._gradeSign;
-		this->_gradeExe = a._gradeExe;
+		this->_isSigned = a._isSigned;
 	}
 	return (*this);
 }
@@ -52,6 +54,21 @@ int AForm::getGradeS() const{
 
 int AForm::getGradeX() const{
 	return (this->_gradeExe);
+}
+
+const char* AForm::GradeTooHighException::what() const throw()
+{
+	return ("The grade you set is too high");
+}
+
+const char* AForm::GradeTooLowException::what() const throw()
+{
+	return ("The grade you set is too low");
+}
+
+const char* AForm::NotSignedException::what() const throw()
+{
+	return ("the form is not singed");
 }
 
 void AForm::beSigned(Bureaucrat &bc)
