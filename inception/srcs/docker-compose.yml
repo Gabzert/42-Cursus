@@ -75,7 +75,16 @@ services:
     # environment:
     #   FTP_USER: ${FTP_USER}
     #   FTP_PASSWORD: ${FTP_PASSWORD}
-
+  
+  adminer:
+    build: ./requirements/bonus/adminer
+    restart: always
+    depends_on:
+      - mariadb
+    expose:
+     - "9000"
+    networks:
+      - my-network
 
 volumes:
   wp-v:
