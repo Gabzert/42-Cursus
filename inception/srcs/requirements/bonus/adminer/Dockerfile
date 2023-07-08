@@ -2,7 +2,7 @@ FROM debian:stable
 
 
 RUN apt-get update && apt-get install -y \
-	curl \
+	wget \
 	less \
 	mariadb-client \
 	php \
@@ -26,14 +26,16 @@ RUN apt-get update && apt-get install -y \
 
 #RUN the adminer part, create html directory, move the adminer directory and add user
 
-RUN \
-	curl -L -O https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php && \
-	mkdir -p /var/www/html && \
-	mv ./adminer-4.8.1.php /var/www/html/index.php
+# RUN \
+# 	curl -L -O https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php && \
+# 	mkdir -p /var/www/html && \
+# 	mv ./adminer-4.8.1.php /var/www/html/adminer.php
 
-COPY www.conf /etc/php/php-fpm.d/www.conf
+RUN mkdir -p /var/www/html && \
+	wget "http://www.adminer.org/latest.php" -O /var/www/html/adminer.php
+
+COPY www.conf /etc/php/8.2/fpm/pool.d/www.conf
 
 EXPOSE 9000
-STOPSIGNAL SIGQUIT
 
 CMD ["php-fpm8.2", "--nodaemonize"]
