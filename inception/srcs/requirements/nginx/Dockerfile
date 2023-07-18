@@ -14,9 +14,6 @@ RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
  	-keyout /etc/ssl/gfantech.42.fr.key \
  	-out /etc/ssl/gfantech.42.fr.crt
 
-RUN cp /etc/ssl/gfantech.42.fr.crt /var/tmp/shared
-RUN cp /etc/ssl/gfantech.42.fr.key /var/tmp/shared
-
 RUN rm /etc/nginx/sites-enabled/default && \
     rm /etc/nginx/sites-available/default
 

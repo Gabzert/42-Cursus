@@ -8,7 +8,6 @@ services:
     restart: always
     volumes:
       - wp-v:/var/www/html
-      - /var/tmp/shared:/shared
     ports:
       - 443:443
     networks:
@@ -44,7 +43,6 @@ services:
       - .env
 
 
-
   redis:
     container_name: redis
     build: ./requirements/bonus/redis
@@ -73,7 +71,7 @@ services:
     restart: always
     env_file:
       - .env
-  
+
   adminer:
     build: ./requirements/bonus/adminer
     container_name: adminer
@@ -94,16 +92,17 @@ services:
     networks:
       - my-network
 
-  grafana:
-    build: requirements/bonus/grafana
-    container_name: grafana
-    depends_on:
-      - nginx
+  cadvisor:
+    container_name: cadvisor
+    build: requirements/bonus/cadvisor
     restart: always
-    expose:
-      - "3000"
+    ports:
+      - "9092:9092"
     volumes:
-      - /var/tmp/shared:/var/tmp/grafana/shared:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro 
+      - /sys:/sys:ro 
+      - /var/lib/docker/:/var/lib/docker:ro
     networks:
       - my-network
 
@@ -120,13 +119,6 @@ volumes:
       device: /home/gfantech/data/mariadb
       o: bind
       type: none
-  # graf:
-  #   driver: local
-  #   driver_opts:
-  #     device: /home/gfantech/data/grafana
-  #     o: bind
-  #     type: none
+
 networks:
   my-network:
-
-
