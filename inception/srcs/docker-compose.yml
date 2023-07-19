@@ -97,7 +97,7 @@ services:
     build: requirements/bonus/cadvisor
     restart: always
     ports:
-      - "9092:9092"
+      - "9092:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro 

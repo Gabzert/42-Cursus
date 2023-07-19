@@ -9,11 +9,9 @@ EXPOSE 8080
 COPY static.conf /etc/nginx/conf.d
 
 COPY web-data /tmp/web-data
+COPY index.html /usr/share/nginx/html
 
-RUN mv /tmp/web-data/* /usr/share/nginx/html
-
-# RUN ln -sf /dev/stdout /var/log/nginx/access.log
-# RUN ln -sf /dev/stderr /var/log/nginx/error.log
+RUN mv /tmp/web-data /usr/share/nginx/html/web-data
 
 
 CMD ["nginx", "-g", "daemon off;"]
