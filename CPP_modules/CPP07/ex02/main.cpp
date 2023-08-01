@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:06:49 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/22 15:36:26 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/08/01 10:01:46 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,17 @@ int main()
         Array<int> assigned;
         assigned = intArray;
         assigned[1] = 200;
-
+        
+        
         std::cout << "Copied Array size: " << copied.size() << std::endl;
         std::cout << "Assigned Array size: " << assigned.size() << std::endl;
         std::cout << "Original Array size: " << intArray.size() << std::endl;
 
+        for (unsigned int i = 0; i < intArray.size(); ++i) {
+            intArray[i] = i + 1;
+            std::cout << "intArray[" << i << "] = " << intArray[i] << std::endl;
+        }
+        
 		intArray[345];
     } catch (const std::exception& e)
 	{
