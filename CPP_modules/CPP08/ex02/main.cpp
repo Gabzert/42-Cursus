@@ -6,7 +6,7 @@
 /*   By: gfantech <gfantech@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 11:32:45 by gfantech          #+#    #+#             */
-/*   Updated: 2023/06/23 14:19:13 by gfantech         ###   ########.fr       */
+/*   Updated: 2023/08/02 10:13:15 by gfantech         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int main()
 	mstack.push(5);
 	mstack.push(737);
 
-	//[...]
-
 	mstack.push(0);
 	MutantStack<int>::iterator it = mstack.begin();
 	MutantStack<int>::iterator ite = mstack.end();
@@ -40,7 +38,7 @@ int main()
 	while (it != ite)
 	{
 		
-		std::cout << "element " << i << ":" << *it << std::endl;
+		std::cout << "element " << i << ": " << *it << std::endl;
 		++it;
 		i++;
 	}
