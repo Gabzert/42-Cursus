@@ -1,6 +1,14 @@
 #include "ft_irc.hpp"
 #define MAX_CLIENTS 1024 // Maximum number of clients the server will allow
 
+
+
+
+void trimInput(std::string &s)
+{
+    s.erase(s.find('\n'));
+}
+
 int main(int argc, char *argv[]) {
     if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
@@ -108,6 +116,7 @@ int main(int argc, char *argv[]) {
 			read(new_socket, pass_buffer, 511);
 			// Check if the command is a "PASS" command
 			std::string provided_password(pass_buffer);
+			trimInput(provided_password);
 			// Compare the provided_password with your predefined password
 			if (provided_password == server_password) {
 				std::cout << "Client authenticated successfully." << std::endl;
@@ -144,6 +153,7 @@ int main(int argc, char *argv[]) {
 				} else {
 					// Process the command
 					std::string command(buffer);
+					trimInput(command);
 
 					// If the command is PING, reply with PONG
 					if (command.substr(0, 4) == "PING") {
@@ -170,7 +180,7 @@ int main(int argc, char *argv[]) {
 
 					// If the command is PRIVMSG, send a message to the specified user or channel
 					else if (command.substr(0, 8) == "PRIVMSG ") {
-						std::string target = command.substr(8, command.find(" :") - 8) + '\n';
+						std::string target = command.substr(8, command.find(" :") - 8);
 						std::string message = command.substr(command.find(" :") + 2);
 
 						// If the target starts with a #, it's a channel
