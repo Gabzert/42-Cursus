@@ -7,8 +7,12 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+	int connected_clients = 0;
+
     // Get the port number from command-line arguments
     int port = std::atoi(argv[1]);
+
+	std::string server_password = argv[2];
 
 	// Map from channel names to channel info
 	std::map<std::string, Channel> channels;
@@ -76,6 +80,7 @@ int main(int argc, char *argv[]) {
 
     // Run the server loop
     while (true) {
+
         std::cout << "Waiting for clients..." << std::endl;
 
         // Poll the sockets for connections
@@ -96,6 +101,24 @@ int main(int argc, char *argv[]) {
                 return 1;
             }
 
+			 // Wait for a PASS command and validate the password
+			char pass_buffer[512] = {0};
+			std::string display = "PASS :";
+			send(new_socket, display.c_str(), display.size(), 0);
+			read(new_socket, pass_buffer, 511);
+			// Check if the command is a "PASS" command
+			std::string provided_password(pass_buffer);
+			// Compare the provided_password with your predefined password
+			if (provided_password == server_password) {
+				std::cout << "Client authenticated successfully." << std::endl;
+				connected_clients++;
+				// Set the isAuthenticated flag to true
+				client_info[connected_clients].authorized = true;
+				
+			} else {
+				std::cerr << "ERROR: Invalid password provided." << std::endl;
+				close(new_socket);
+			}
             std::cout << "New client connected" << std::endl;
 
             // Add the new socket to the pollfd array
@@ -108,7 +131,7 @@ int main(int argc, char *argv[]) {
         }
 
 		// Process data from a client
-		for (int i = 1; i < MAX_CLIENTS; i++) {
+		for (int i = 1; i <= connected_clients; i++) {
 			if (client_sockets[i].revents & POLLIN) {
 				// Read data from the client
 				char buffer[512] = {0};
@@ -142,20 +165,20 @@ int main(int argc, char *argv[]) {
 					else if (command.substr(0, 5) == "JOIN ") {
 						std::string channel_name = command.substr(5);
 						channels[channel_name].name = channel_name;
-						channels[channel_name].users.insert(i);
+						channels[channel_name].users.push_back(i);
 					}
 
 					// If the command is PRIVMSG, send a message to the specified user or channel
 					else if (command.substr(0, 8) == "PRIVMSG ") {
-						std::string target = command.substr(8, command.find(" :") - 8);
+						std::string target = command.substr(8, command.find(" :") - 8) + '\n';
 						std::string message = command.substr(command.find(" :") + 2);
 
 						// If the target starts with a #, it's a channel
 						if (target[0] == '#') {
 							Channel& channel = channels[target];
-							for (std::set<int>::iterator i = channel.users.begin(); i != channel.users.end(); i++) {
+							for (size_t i = 0; i < channel.users.size(); i++) {
 								std::string full_msg = ":" + client_info[i].nickname + "!~" + client_info[i].username + "@localhost PRIVMSG " + target + " :" + message + "\r\n";
-								send( , full_msg.c_str(), full_msg.size(), 0);
+								send(client_sockets[i].fd, full_msg.c_str(), full_msg.size(), 0);
 							}
 						}
 						// Otherwise, the target is a user
