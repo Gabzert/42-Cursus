@@ -1,18 +1,18 @@
 #include "ft_irc.hpp"
 
 int main(int argc, char *argv[]) {
-    if (argc != 3) {
-        std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
-        return 1;
-    }
+	if (argc != 3) {
+			std::cerr << "Usage: " << argv[0] << " <port> <password>" << std::endl;
+			return 1;
+	}
 
-    // Get the port number from command-line arguments
-    int port = std::atoi(argv[1]);
+	// Get the port number from command-line arguments
+	int port = std::atoi(argv[1]);
 
 	ServerData server;
 
 	server.connected_clients = 0;
-    server.password = argv[2];
+		server.password = argv[2];
 
 	// Map from channel names to channel info
 	std::map<std::string, Channel> channels;
@@ -20,28 +20,28 @@ int main(int argc, char *argv[]) {
 	// Map from socket file descriptor to client info
 	std::map<int, ClientInfo> client_info;
 
-    // Initialize all client_socket[] to 0 so as not to poll them
-    struct pollfd client_sockets[MAX_CLIENTS];
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        client_sockets[i].fd = 0;
-        client_sockets[i].events = POLLIN;
-    }
+	// Initialize all client_socket[] to 0 so as not to poll them
+	struct pollfd client_sockets[MAX_CLIENTS];
+	for (int i = 0; i < MAX_CLIENTS; i++) {
+			client_sockets[i].fd = 0;
+			client_sockets[i].events = POLLIN;
+	}
 
 
 
 	//initialize the server
 	serverInit(server, port);
 
-    // Add the server socket to the pollfd array
-    client_sockets[0].fd = server.socket;
-    client_sockets[0].events = POLLIN;
+	// Add the server socket to the pollfd array
+	client_sockets[0].fd = server.socket;
+	client_sockets[0].events = POLLIN;
 
 
 
-    // Run the server loop
-    while (true) {
+	// Run the server loop
+	while (true) {
 
-        std::cout << "Waiting for clients..." << std::endl;
+		std::cout << "Waiting for clients..." << std::endl;
 
 		login(server, client_sockets, client_info);
 
@@ -78,10 +78,15 @@ int main(int argc, char *argv[]) {
 						message(i, command, client_info, channels);
 					else if (command.substr(0, 5) == "KICK ")
 						kick(i, command, client_info, channels);
+					else if (command.substr(0, 7) == "INVITE ")
+						invite(i, command, client_info, channels);
+					else if (command.substr(0, 6) == "TOPIC ")
+						topic(i, command, client_info, channels);
+					else if (command.substr(0, 5) == "MODE ")
+						mode(i, command, client_info, channels);
 				}
 			}
 		}
-    }
-
-    return 0;
+	}
+	return 0;
 }

@@ -1,4 +1,3 @@
-
 #pragma once
 #include <iostream>
 #include <cstdlib>
@@ -15,24 +14,29 @@
 
 // Structure to hold information about each client
 struct ClientInfo {
-    std::string nickname;
-    std::string username;
-    int fd;
-	bool authorized;
+	std::string	nickname = NULL;
+	std::string	username = NULL;
+	int	fd = -1;
+	bool	authorized = false;
 };
 
 // Structure to hold information about each channel
 struct Channel {
-    std::string name;
-    std::set<ClientInfo> users;     // A set of all the infos of users in this channel
-    std::set<ClientInfo> operators; // A set of all the infos of operators in this channel
+	std::string	topic;
+	std::string	key;
+	bool	inviteOnly = false;
+	bool	topicLock = false;
+	int	limit = MAX_CLIENTS;
+	std::set<ClientInfo>	users;	 // A set of all the infos of users in this channel
+	std::set<ClientInfo>	operators; // A set of all the infos of operators in this channel
+	std::set<int>	invited // Set of invited fds
 };
 
 struct ServerData {
-    std::string password;
-    int socket;
-    int connected_clients;
-    struct sockaddr_in addr;
+	std::string	password;
+	int	socket;
+	int	connected_clients;
+	struct sockaddr_in	addr;
 };
 
 
@@ -42,8 +46,12 @@ void serverInit(ServerData server, int port);
 
 /* COMMANDS */
 
+//general
 void ping(int i, std::string command, struct pollfd* client_sockets);
 void join(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
 void message(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
+//admin
 void kick(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
-
+void invite(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
+void topic(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
+void mode(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
