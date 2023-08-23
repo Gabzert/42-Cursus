@@ -29,7 +29,7 @@ struct Channel {
 	int	limit = MAX_CLIENTS;
 	std::set<ClientInfo>	users;	 // A set of all the infos of users in this channel
 	std::set<ClientInfo>	operators; // A set of all the infos of operators in this channel
-	std::set<int>	invited // Set of invited fds
+	std::set<int>	invited; // Set of invited fds
 };
 
 struct ServerData {
