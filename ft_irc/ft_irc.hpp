@@ -14,19 +14,30 @@
 
 // Structure to hold information about each client
 struct ClientInfo {
-	std::string	nickname = NULL;
-	std::string	username = NULL;
-	int	fd = -1;
-	bool	authorized = false;
+	std::string	nickname;
+	std::string	username;
+	int	fd;
+	bool	authorized;
+
+	// operator overloads so find() can work
+	bool operator<(const ClientInfo& rhs) const
+	{
+		return fd < rhs.fd;
+	}
+
+	bool operator==(const ClientInfo& rhs) const
+	{
+		return fd == rhs.fd;
+	}
 };
 
 // Structure to hold information about each channel
 struct Channel {
 	std::string	topic;
 	std::string	key;
-	bool	inviteOnly = false;
-	bool	topicLock = false;
-	int	limit = MAX_CLIENTS;
+	bool	inviteOnly;
+	bool	topicLock;
+	int	limit;
 	std::set<ClientInfo>	users;	 // A set of all the infos of users in this channel
 	std::set<ClientInfo>	operators; // A set of all the infos of operators in this channel
 	std::set<int>	invited; // Set of invited fds
