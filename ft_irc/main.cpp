@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 	// Run the server loop
 	while (true) {
 
-		std::cout << "Waiting for clients..." << std::endl;
+	std::cout << "Waiting for clients..." << std::endl;
 
 		login(server, client_sockets, client_info);
 
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 					std::string command(buffer);
 					trimInput(command);
 					if (command.substr(0, 4) == "PING")
-						ping(i, command, client_sockets);
+						ping(i, client_sockets);
 					else if (command.substr(0, 5) == "NICK ") {
 						client_info[i].nickname = command.substr(5);
 					}

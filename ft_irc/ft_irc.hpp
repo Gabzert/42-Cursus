@@ -52,13 +52,13 @@ struct ServerData {
 
 
 void trimInput(std::string &s);
-void login(ServerData server, struct pollfd *client_sockets, std::map<int, ClientInfo> client_info);
-void serverInit(ServerData server, int port);
+void login(ServerData &server, struct pollfd *client_sockets, std::map<int, ClientInfo> &client_info);
+void serverInit(ServerData &server, int port);
 
 /* COMMANDS */
 
 //general
-void ping(int i, std::string command, struct pollfd* client_sockets);
+void ping(int i, struct pollfd* client_sockets);
 void join(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
 void message(int i, std::string command, std::map<int, ClientInfo> client_info, std::map<std::string, Channel> channels);
 //admin

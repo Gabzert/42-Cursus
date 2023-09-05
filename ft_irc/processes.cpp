@@ -1,6 +1,6 @@
 #include "ft_irc.hpp"
 
-void serverInit(ServerData server, int port)
+void serverInit(ServerData &server, int port)
 {
         // Create a socket
     server.socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -37,7 +37,7 @@ void serverInit(ServerData server, int port)
 }
 
 
-void login(ServerData server, struct pollfd *client_sockets, std::map<int, ClientInfo> client_info)
+void login(ServerData &server, struct pollfd *client_sockets, std::map<int, ClientInfo> &client_info)
 {
         // Poll the sockets for connections
     int poll_count = poll(client_sockets, MAX_CLIENTS, -1);
@@ -57,7 +57,7 @@ void login(ServerData server, struct pollfd *client_sockets, std::map<int, Clien
             return ;
         }
 
-            // Wait for a PASS command and validate the password
+        // Wait for a PASS command and validate the password
         char pass_buffer[512] = {0};
         std::string display = "PASS :";
         send(new_socket, display.c_str(), display.size(), 0);

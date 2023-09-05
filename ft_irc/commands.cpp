@@ -2,9 +2,9 @@
 
 /**************			  GENERAL COMMANDS					 ********************/
 
-void ping(int i, std::string command, struct pollfd* client_sockets)
+void ping(int i, struct pollfd* client_sockets)
  {
-	std::string reply = "PONG " + command.substr(5) + "\r\n";
+	std::string reply = "PONG\n";
 	send(client_sockets[i].fd, reply.c_str(), reply.size(), 0);
 } 
 
