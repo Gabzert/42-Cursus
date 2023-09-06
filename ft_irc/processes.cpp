@@ -1,4 +1,7 @@
 #include "ft_irc.hpp"
+#include <ifaddrs.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
 
 void serverInit(ServerData &server, int port)
 {
@@ -19,7 +22,7 @@ void serverInit(ServerData &server, int port)
     // Create a sockaddr_in struct for the proper port and bind our socket to it
     server.addr.sin_family = AF_INET;
     server.addr.sin_port = htons(port); // We will need to convert the port to network byte order
-    server.addr.sin_addr.s_addr = INADDR_ANY;
+    server.addr.sin_addr.s_addr = inet_addr("127.0.0.1");    //INADDR_ANY;
 
     // Bind our socket to the port
     if (bind(server.socket, (struct sockaddr *) &server.addr, sizeof(server.addr)) < 0) {
@@ -33,7 +36,7 @@ void serverInit(ServerData &server, int port)
         return ;
     }
 
-    std::cout << "Server started and listening on port " << port << std::endl;
+    std::cout << "Server started and listening on IP 127.0.0.1 and port " << port << std::endl;
 }
 
 
