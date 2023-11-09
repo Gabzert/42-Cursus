@@ -2,68 +2,57 @@
 # GENERIC VARIABLES #
 #####################
 
-NAME    = irc
+NAME    = ircserv
 INCS    = includes
 CC      = c++
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror -std=c++98
+CFLAGS  = -Wall -Wextra -Werror -std=c++98 -g
 OBJDIR  = obj/
-SRCDIR  =
+SRCDIR	= srcs/
 B_DIR	=
 
 #########
 # FILES #
 #########
 
-SRCS    = $(wildcard *.cpp)
+SRCS    = $(wildcard $(SRCDIR)*.cpp)
 
-OBJS    = $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
+OBJS = $(addprefix $(OBJDIR), $(notdir $(SRCS:.cpp=.o)))
 
-B_SRCS  = main.c utils.c pipes.c
+B_SRCS  = $(wildcard *_bonus.cpp)
 
-B_FILES = 
-
-B_OBJS  = $(addprefix $(OBJDIR),$(B_SRCS:.cpp=.o))
+B_OBJS  = $(addprefix $(OBJDIR), $(B_SRCS:.cpp=.o))
 
 ##########
 # COLORS #
 ##########
 
-DEF_COLOR = \033[0;33m
+YELLOW = \033[0;33m
 GREEN = \033[0;32m
 RED = \033[0;91m
 CIANO = \033[0;36m
-
-.SILENT:
+RESET = \033[0m
 
 all: ${NAME}
 
 ${OBJDIR}%.o: ${SRCDIR}%.cpp
 	@mkdir -p obj
-	$(CC) $(CFLAGS) -c $< -o $@ -I${INCS}
-
-${OBJDIR}%.o: ${B_DIR}%.c
-	@mkdir -p obj
-	$(CC) $(CFLAGS) -c $< -o $@ -I${INCS}
+	$(CC) $(CFLAGS) -c $< -o $@
 
 ${NAME}: ${OBJS}
-	${CC} ${OBJS} ${CFLAGS} -o ${NAME} 
-	echo "${GREEN}OK"
-#-fsanitize=thread -O1
+	${CC} ${OBJS} -o ${NAME} 
+	@echo "${GREEN}IRC READY${RESET}"
 
-debug: ${OBJS}
-	${CC} ${CFLAGS} -g -o ${NAME} ${OBJS}
-	echo "${DEF_COLOR}DEBUG READY"
-
-bonus: ${B_OBJS}
-	${CC} ${CFLAGS} -o ${NAME} ${B_OBJS}
+debug:
+	${CC} ${CFLAGS} ${OBJS} -fsanitize=address -g -o ${NAME}
+	@echo "${YELLOW}DEBUG READY${RESET}"
 
 clean:
-	${RM} -rf ${OBJDIR}
-	echo "${CIANO}Pulito"
+	@${RM} -rf ${OBJDIR}
+	@echo "${RED}.O REMOVE${RESET}"
 
 fclean: clean
-	${RM} -f ${NAME}
-	echo "${CIANO}Tutto"
+	@${RM} -f ${NAME}
+	@echo "${RED}IRC REMOVE${RESET}"
 
 re: fclean all
