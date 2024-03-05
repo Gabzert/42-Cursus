@@ -4,7 +4,6 @@ def get_data(filename):
 	all_data = np.genfromtxt(filename, delimiter=",", dtype=str, encoding=None)
 	main_data = np.genfromtxt(filename, delimiter=",", skip_header=1, dtype=str, encoding=None)
 	header = np.genfromtxt(filename, delimiter=",", dtype=str, max_rows=1)
-	all_data = all_data[:, 1:]
 	header = header[5:]
 	main_data = main_data[:, 1:]  # Exclude Index and Hogwarts House
 	main_data[main_data == ''] = np.nan
