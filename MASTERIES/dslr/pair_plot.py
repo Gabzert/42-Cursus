@@ -14,8 +14,6 @@ def plot_pair(data):
 		print("DataFrame is empty. Nothing to plot.")
 		return
 	data_df = data_df.drop(['First Name', 'Last Name', 'Birthday', 'Best Hand'], axis=1)
-	print("DataFrame after dropping columns:")
-	print(data_df.head())
 	if data_df.shape[1] == 0:
 		print("No columns remaining after dropping unnecessary columns. Cannot plot.")
 		return
@@ -26,8 +24,6 @@ def plot_pair(data):
 		data_df[col] = pd.to_numeric(data_df[col], errors='coerce')
 
 	data_df['Hogwarts House'] = pd.Categorical(data_df['Hogwarts House'])
-	print("DataFrame Info:")
-	print(data_df.info())
 	sns.pairplot(data_df, hue='Hogwarts House', markers = ".", size=2)
 	plot.title('Pair Plot')
 	plot.legend(loc='upper right')
