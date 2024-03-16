@@ -1,13 +1,15 @@
 #include <GL/glut.h>
+#include <GL/glew.h>
+#include <glm/glm.hpp>
 #include <cstring>
 #include <string>
 #include <cstdio>
 #include <vector>
 
 bool loadObj(    const char * path,
-    std::vector < glm::vec3 > & out_vertices,
-    std::vector < glm::vec2 > & out_uvs,
-    std::vector < glm::vec3 > & out_normals
+    std::vector < glm::vec3 > & out_vertices
+    // std::vector < glm::vec2 > & out_uvs,
+    // std::vector < glm::vec3 > & out_normals
 ){
 	std::vector< unsigned int > vertexIndices, uvIndices, normalIndices;
 	std::vector< glm::vec3 > temp_vertices;
@@ -79,6 +81,7 @@ bool loadObj(    const char * path,
 		}
 		return true;
 	}
+	return false;
 }
 
 void display() {
@@ -98,12 +101,12 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutCreateWindow("OpenGL Example");
 
-    // glutDisplayFunc(display);
+    glutDisplayFunc(display);
 	// Read our .obj file
 	std::vector< glm::vec3 > vertices;
-	std::vector< glm::vec2 > uvs;
-	std::vector< glm::vec3 > normals; // Won't be used at the moment.
-	bool res = loadOBJ("cube.obj", vertices, uvs, normals);
+	// std::vector< glm::vec2 > uvs;
+	// std::vector< glm::vec3 > normals; // Won't be used at the moment.
+	loadObj("./resources/teapot.obj", vertices/* , uvs, normals */);
 	//and give your vectors to OpenGL instead of your arrays :
 
 	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);

@@ -6,7 +6,7 @@ NAME    = scop
 INCS    = includes
 CC      = g++
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror -std=c++98 -lGL -lGLU -lglut
+CFLAGS  = -Wall -Wextra -Werror -std=c++98 -lGL -lGLU -lglut -lGLEW
 
 
 OBJDIR  = obj/
