@@ -6,8 +6,7 @@ NAME    = scop
 INCS    = includes
 CC      = g++
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror -std=c++98 -lGL -lGLU -lglut -lGLEW
-
+CFLAGS  = -Wall -Wextra -Werror -lglfw -lGL 
 
 OBJDIR  = obj/
 SRCDIR  =
@@ -17,7 +16,7 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS	= test.cpp
+SRCS	= main.cpp
 
 
 OBJS	= $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
@@ -43,7 +42,6 @@ ${OBJDIR}%.o: ${SRCDIR}%.cpp
 ${NAME}: ${OBJS}
 	${CC} ${OBJS} ${CFLAGS} -o ${NAME}
 	echo "${GREEN}OK"
-#-fsanitize=thread -O1
 
 clean:
 	${RM} -rf ${OBJDIR}
