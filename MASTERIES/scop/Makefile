@@ -16,7 +16,7 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS	= main.cpp
+SRCS	= main.cpp common.cpp
 
 
 OBJS	= $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
