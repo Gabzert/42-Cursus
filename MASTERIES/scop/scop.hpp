@@ -5,15 +5,17 @@
 #include <GLES3/gl3.h>
 #include <GL/glcorearb.h>
 #include <iostream>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <cstring>
 #include <string>
 #include <cstdio>
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <math.h>
 
+
+#include "Vertex.hpp"
+#include "Matrix.hpp"
 
 extern GLuint vbo;
 extern GLuint vao;
@@ -26,13 +28,23 @@ extern float verticalAngle;
 extern float initialFoV;
 extern float speed;
 extern float mouseSpeed;
-extern glm::vec3 position;
+extern Vertex3 position;
 extern float Zoom;
 
 
+struct Material {
+    std::string name;
+    Vertex3 ambientColor;
+    Vertex3 diffuseColor;
+    Vertex3 specularColor;
+    float shininess;
+    // You can add more properties such as texture paths if needed
+};
+
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
-bool loadObj(const char * path, std::vector < glm::vec3 > & out_vertices);
-glm::mat4 getViewMatrix();
-glm::mat4 getProjectionMatrix();
+bool loadObj(const char * path, std::vector < Vertex3 > & out_vertices, std::vector < Vertex3 > &out_normals, std::vector < Material > & out_materials, std::vector < Vertex3> & out_colors);
+Matrix getViewMatrix();
+Matrix getProjectionMatrix();
 void computeMatricesFromInputs();
+Matrix putInOrigin(std::vector < Vertex3 > &vertices);
 

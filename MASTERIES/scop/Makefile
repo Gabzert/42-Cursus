@@ -6,7 +6,7 @@ NAME    = scop
 INCS    = includes
 CC      = g++
 RM      = rm -f
-CFLAGS  = -Wall -Wextra -Werror -lglfw -lGL 
+CFLAGS  = -Wall -Wextra -Werror -lglfw -lGL -g
 
 OBJDIR  = obj/
 SRCDIR  =
@@ -16,7 +16,7 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS	= main.cpp common.cpp
+SRCS	= main.cpp common.cpp Matrix.cpp Vertex.cpp
 
 
 OBJS	= $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))
