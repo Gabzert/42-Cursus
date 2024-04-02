@@ -16,7 +16,7 @@ B_DIR	=
 # FILES #
 #########
 
-SRCS	= main.cpp common.cpp Matrix.cpp Vertex.cpp
+SRCS	= main.cpp loaders.cpp camera.cpp Matrix.cpp Vertex.cpp
 
 
 OBJS	= $(addprefix $(OBJDIR),$(SRCS:.cpp=.o))

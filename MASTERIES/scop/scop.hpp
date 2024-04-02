@@ -28,23 +28,26 @@ extern float verticalAngle;
 extern float initialFoV;
 extern float speed;
 extern float mouseSpeed;
-extern Vertex3 position;
+extern Vec3 position;
 extern float Zoom;
 
 
 struct Material {
     std::string name;
-    Vertex3 ambientColor;
-    Vertex3 diffuseColor;
-    Vertex3 specularColor;
+    Vec3 ambientColor;
+    Vec3 diffuseColor;
+    Vec3 specularColor;
     float shininess;
     // You can add more properties such as texture paths if needed
 };
 
 GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
-bool loadObj(const char * path, std::vector < Vertex3 > & out_vertices, std::vector < Vertex3 > &out_normals, std::vector < Material > & out_materials, std::vector < Vertex3> & out_colors);
+bool loadObj(const char * path, std::vector < Vec3 > & out_vertices, std::vector < Vec3 > &out_normals, std::vector < Material > & out_materials, std::vector < Vec3> & out_colors);
 Matrix getViewMatrix();
 Matrix getProjectionMatrix();
 void computeMatricesFromInputs();
-Matrix putInOrigin(std::vector < Vertex3 > &vertices);
-
+void putInOrigin(std::vector < Vec3 > &vertices);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
+void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+GLuint loadBMP(const char * imagepath);
+void calculateUV(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs);

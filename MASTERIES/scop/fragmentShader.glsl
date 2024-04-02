@@ -2,11 +2,18 @@
 precision mediump float;
 
 in vec3 vertexColor;
+in vec2 vertexUV;
+
+uniform sampler2D textureSampler;
+uniform bool useTexture;
 
 out vec4 fragColor;
 
 void main() {
-    fragColor = vec4(vertexColor, 1.0); // Set fragment color to vertex color
+	if (useTexture)
+		fragColor = texture(textureSampler, vertexUV); // Set fragment color to texture color
+	else
+    	fragColor = vec4(vertexColor, 1.0); // Set fragment color to vertex color
 }
 
 

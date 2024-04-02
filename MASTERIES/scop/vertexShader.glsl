@@ -1,17 +1,20 @@
 #version 300 es
 
 layout(location = 0) in vec3 vertexPosition_modelspace;
-layout(location = 1) in vec3 vertexColors; 
+layout(location = 1) in vec3 vertexColors;
+layout(location = 2) in vec2 vertexUVs;
 
 uniform mat4 MVP;
 
 // out vec3 worldPos;
 out vec3  vertexColor;
+out vec2 vertexUV;
 
 void main(){
 	gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
 
 	vertexColor = vertexColors;
+	vertexUV = vertexUVs;
 	// Calculate the position of the vertex in the world
 	// worldPos = (mat4(1.0f) * vec4(vertexPosition_modelspace, 1)).xyz;
 }
