@@ -16,48 +16,89 @@ float Zoom = 10.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 
+
 static const GLfloat test_cube[] = {
-    -1.0f,-1.0f,-1.0f, // triangle 1 : begin
 	-1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f, // triangle 1 : end
-    1.0f, 1.0f,-1.0f, // triangle 2 : begin
+	-1.0f,-1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f,-1.0f,
 	-1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f, // triangle 2 : end
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    -1.0f,-1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    -1.0f,-1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f,-1.0f,
-    1.0f,-1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f,-1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f,-1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f, 1.0f, 1.0f,
-    -1.0f, 1.0f, 1.0f,
-    1.0f,-1.0f, 1.0f
+	-1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,
+	-1.0f,-1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	-1.0f,-1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f,-1.0f,
+	1.0f,-1.0f,-1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f,-1.0f,
+	-1.0f, 1.0f,-1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f,-1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f, 1.0f, 1.0f,
+	-1.0f, 1.0f, 1.0f,
+	1.0f,-1.0f, 1.0f
 };
 
-void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std::vector < Vec3 > &colors)
-{
+static const GLfloat test_cube_uv[] = { 
+	0.000059f, 1.0f-0.000004f, 
+	0.000103f, 1.0f-0.336048f, 
+	0.335973f, 1.0f-0.335903f, 
+	1.000023f, 1.0f-0.000013f, 
+	0.667979f, 1.0f-0.335851f, 
+	0.999958f, 1.0f-0.336064f, 
+	0.667979f, 1.0f-0.335851f, 
+	0.336024f, 1.0f-0.671877f, 
+	0.667969f, 1.0f-0.671889f, 
+	1.000023f, 1.0f-0.000013f, 
+	0.668104f, 1.0f-0.000013f, 
+	0.667979f, 1.0f-0.335851f, 
+	0.000059f, 1.0f-0.000004f, 
+	0.335973f, 1.0f-0.335903f, 
+	0.336098f, 1.0f-0.000071f, 
+	0.667979f, 1.0f-0.335851f, 
+	0.335973f, 1.0f-0.335903f, 
+	0.336024f, 1.0f-0.671877f, 
+	1.000004f, 1.0f-0.671847f, 
+	0.999958f, 1.0f-0.336064f, 
+	0.667979f, 1.0f-0.335851f, 
+	0.668104f, 1.0f-0.000013f, 
+	0.335973f, 1.0f-0.335903f, 
+	0.667979f, 1.0f-0.335851f, 
+	0.335973f, 1.0f-0.335903f, 
+	0.668104f, 1.0f-0.000013f, 
+	0.336098f, 1.0f-0.000071f, 
+	0.000103f, 1.0f-0.336048f, 
+	0.000004f, 1.0f-0.671870f, 
+	0.336024f, 1.0f-0.671877f, 
+	0.000103f, 1.0f-0.336048f, 
+	0.336024f, 1.0f-0.671877f, 
+	0.335973f, 1.0f-0.335903f, 
+	0.667969f, 1.0f-0.671889f, 
+	1.000004f, 1.0f-0.671847f, 
+	0.667979f, 1.0f-0.335851f
+};
+
+void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std::vector < Vec3 > &colors){
+
 	(void) vertices;
+	(void) uvs;
 	putInOrigin(vertices);
 	// Register callback functions
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
@@ -65,19 +106,22 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	// Set up OpenGL context and shaders
 	glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 	glEnable(GL_CULL_FACE); // Enable backface culling
+	glEnable(GL_TEXTURE_2D);
 	// // Set up VAO
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	// Set up VBO
+	//------------- VERTICES VBO-------------------
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube), test_cube, GL_STATIC_DRAW);
-
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube), test_cube, GL_STATIC_DRAW);
+	
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	//---------------------------------------------
 
+	//------------- COLOR VBO ---------------------
 	GLuint colorVBO;
 	glGenBuffers(1, &colorVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
@@ -85,16 +129,22 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//---------------------------------------------
 
-	// Generate and bind VBO for uvs
+
+	// ------------- UVS VBO -----------------------
 	GLuint vboUvs;
 	glGenBuffers(1, &vboUvs);
 	glBindBuffer(GL_ARRAY_BUFFER, vboUvs);
-	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(Vec2), &uvs[0], GL_STATIC_DRAW);
+	// glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(Vec2), &uvs[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube_uv), test_cube_uv, GL_STATIC_DRAW);
 
 	// Specify Vec3 attribute pointers for uvs
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
+	//---------------------------------------------
+
+
 
 	// Clean up
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -129,20 +179,21 @@ void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
 
 	GLuint useTexture = glGetUniformLocation(ProgramID, "useTexture");
-	glUniform1i(useTexture, 0);
-
-	GLuint TextureID  = glGetUniformLocation(ProgramID, "textureSampler");
+	glUniform1i(useTexture, 1);
 
 	// Bind our texture in Texture Unit 0
+	GLuint TextureID  = glGetUniformLocation(ProgramID, "textureSampler");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, Texture);
-	// Set our "myTextureSampler" sampler to use Texture Unit 0
 	glUniform1i(TextureID, 0);
+
+
 
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 	// printf("Done Drawing\n");
     glBindVertexArray(0);
     glUseProgram(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 int main(int argc, char** argv) {
@@ -161,7 +212,7 @@ int main(int argc, char** argv) {
 	std::vector<Vec3> colors;
 	std::vector<Vec2> uvs;
     loadObj(argv[1], vertices, normals, materials, colors);
-	GLuint Texture = loadBMP("./resources/blue-hexagon-pattern410x410.bmp");
+	GLuint Texture = loadBMP("./resources/amogus.bmp");
 	calculateUV(vertices, uvs);
     // Create a windowed mode window and its OpenGL context
     window = glfwCreateWindow(width, height, "OpenGL Example", nullptr, nullptr);

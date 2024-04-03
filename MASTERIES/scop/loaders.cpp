@@ -202,13 +202,15 @@ GLuint loadBMP(const char * imagepath) {
 	// Create one OpenGL texture
 	GLuint textureID;
 	glGenTextures(1, &textureID);
-
+	std::cout << glGetError() << std::endl;
+	glActiveTexture(GL_TEXTURE0);
+	std::cout << glGetError() << std::endl;
 	// "Bind" the newly created texture: all future texture functions will modify this texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
-
+	std::cout << glGetError() << std::endl;
 	// Give the image to OpenGL
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data.data());
-
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.data());
+	std::cout << glGetError() << std::endl;
 	// Poor filtering, or ...
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
@@ -220,8 +222,10 @@ GLuint loadBMP(const char * imagepath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	// ... which requires mipmaps. Generate them automatically.
 	glGenerateMipmap(GL_TEXTURE_2D);
-
+	std::cout << glGetError() << std::endl;
 	// Return the ID of the texture we just created
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	return textureID;
 }
 

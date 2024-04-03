@@ -172,11 +172,37 @@ void putInOrigin(std::vector < Vec3 > &vertices){
 	}
 }
 
-void calculateUV(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs){
-	for (const auto& Vec3 : vertices) {
+void calculateUV(std::vector<Vec3>& vertices, std::vector<Vec2>& uvs) {
+	// Find bounding box of the mesh
+	Vec3 minVertex, maxVertex = vertices[0];
+	for (const auto& vertex : vertices) {
+		minVertex.x = std::min(minVertex.x, vertex.x);
+		minVertex.y = std::min(minVertex.y, vertex.y);
+		minVertex.z = std::min(minVertex.z, vertex.z);
+		maxVertex.x = std::max(maxVertex.x, vertex.x);
+		maxVertex.y = std::max(maxVertex.y, vertex.y);
+		maxVertex.z = std::max(maxVertex.z, vertex.z);
+	}
+
+	// Calculate center and radius of the bounding cylinder
+	Vec3 center = (minVertex + maxVertex);
+	center.x *= 0.5f;
+	center.y *= 0.5f;
+	center.z *= 0.5f;
+
+	// Project vertices onto the cylinder and calculate UV coordinates
+	for (Vec3 vertex : vertices) {
+		// Calculate cylindrical coordinates
+		Vec3 direction = vertex - center;
+		float angle = std::atan2(direction.z, direction.x);
+		float height = vertex.y - minVertex.y; // Assume cylinder is aligned with Y-axis
+
+		// Map cylindrical coordinates to UV space
 		Vec2 uv;
-		uv.x = (atan2(Vec3.z, Vec3.x) + M_PI) / (2 * M_PI);
-		uv.y = (Vec3.y + 1.0f) / 2.0f;
+		uv.x = (angle + M_PI) / (2.0f * M_PI); // Normalize angle to [0, 1]
+		uv.y = height / (maxVertex.y - minVertex.y); // Normalize height to [0, 1]
+
 		uvs.push_back(uv);
 	}
 }
+
