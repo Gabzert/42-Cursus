@@ -106,7 +106,7 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	// Set up OpenGL context and shaders
 	glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 	glEnable(GL_CULL_FACE); // Enable backface culling
-	glEnable(GL_TEXTURE_2D);
+
 	// // Set up VAO
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
@@ -114,8 +114,8 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	//------------- VERTICES VBO-------------------
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	// glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube), test_cube, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vec3) * vertices.size(), &vertices[0], GL_STATIC_DRAW);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube), test_cube, GL_STATIC_DRAW);
 	
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -136,8 +136,8 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	GLuint vboUvs;
 	glGenBuffers(1, &vboUvs);
 	glBindBuffer(GL_ARRAY_BUFFER, vboUvs);
-	// glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(Vec2), &uvs[0], GL_STATIC_DRAW);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube_uv), test_cube_uv, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, uvs.size() * sizeof(Vec2), &uvs[0], GL_STATIC_DRAW);
+	// glBufferData(GL_ARRAY_BUFFER, sizeof(test_cube_uv), test_cube_uv, GL_STATIC_DRAW);
 
 	// Specify Vec3 attribute pointers for uvs
 	glEnableVertexAttribArray(2);
@@ -146,7 +146,7 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 
 
 
-	// Clean up
+	// // Clean up
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
     glDeleteBuffers(1, &colorVBO);
@@ -154,7 +154,8 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 
 void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint Texture) {
 	(void) uvs;
-
+	(void) Texture;
+	// Clear the screen
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -183,17 +184,17 @@ void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint
 
 	// Bind our texture in Texture Unit 0
 	GLuint TextureID  = glGetUniformLocation(ProgramID, "textureSampler");
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, Texture);
 	glUniform1i(TextureID, 0);
 
-
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "Error generating mipmaps: " << error << std::endl;
+	}
 
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 	// printf("Done Drawing\n");
     glBindVertexArray(0);
     glUseProgram(0);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 int main(int argc, char** argv) {
@@ -206,13 +207,18 @@ int main(int argc, char** argv) {
 		std::cerr << "Usage: ./scop <obj file>\n";
 		return -1;
 	}
+	glfwWindowHint(GLFW_SAMPLES, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
     std::vector<Vec3> vertices;
 	std::vector<Vec3> normals;
 	std::vector<Material> materials;
 	std::vector<Vec3> colors;
 	std::vector<Vec2> uvs;
     loadObj(argv[1], vertices, normals, materials, colors);
-	GLuint Texture = loadBMP("./resources/amogus.bmp");
+	// GLuint Texture = porcaEva();
 	calculateUV(vertices, uvs);
     // Create a windowed mode window and its OpenGL context
     window = glfwCreateWindow(width, height, "OpenGL Example", nullptr, nullptr);
@@ -241,6 +247,7 @@ int main(int argc, char** argv) {
 
 
 	setUpOpenGl(vertices, uvs, colors);
+	GLuint Texture = loadBMP("./resources/blue-hexagon.bmp");
 
 	ProgramID = LoadShaders( "./vertexShader.glsl", "./fragmentShader.glsl" );
 	printf("Program Loaded \n");

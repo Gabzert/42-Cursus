@@ -1,5 +1,5 @@
-#version 300 es
-precision mediump float;
+#version 330 core
+// precision mediump float;
 
 in vec3 vertexColor;
 in vec2 vertexUV;
