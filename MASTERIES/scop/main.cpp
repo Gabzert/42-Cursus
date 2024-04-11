@@ -95,7 +95,7 @@ static const GLfloat test_cube_uv[] = {
 	0.667979f, 1.0f-0.335851f
 };
 
-void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std::vector < Vec3 > &colors){
+void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std::vector < Vec3 > &colors, std::vector < Vec3 > &normals){
 
 	(void) vertices;
 	(void) uvs;
@@ -142,11 +142,23 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	//---------------------------------------------
 
 
+	//----------------- NORMALS VBO ----------------
+	GLuint normalbuffer;
+	glGenBuffers(1, &normalbuffer);
+	glBindBuffer(GL_ARRAY_BUFFER, normalbuffer);
+	glBufferData(GL_ARRAY_BUFFER, normals.size() * sizeof(Vec3), &normals[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	//---------------------------------------------
 
 	// // Clean up
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+	glDeleteBuffers(1, &vbo);
     glDeleteBuffers(1, &colorVBO);
+	glDeleteBuffers(1, &vboUvs);
+	glDeleteBuffers(1, &normalbuffer);
 }
 
 void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint Texture) {
@@ -166,6 +178,11 @@ void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint
 	Matrix ViewMatrix = getViewMatrix();
 	Matrix ModelMatrix(1.0f);
 	Matrix mvp = ModelMatrix * ViewMatrix * ProjectionMatrix ;
+
+	GLuint MMID = glGetUniformLocation(ProgramID, "M");
+	glUniformMatrix4fv(MMID, 1, GL_FALSE, &ModelMatrix[0][0]);
+	GLuint VMID = glGetUniformLocation(ProgramID, "V");
+	glUniformMatrix4fv(VMID, 1, GL_FALSE, &ViewMatrix[0][0]);
 
 	GLuint MatrixID = glGetUniformLocation(ProgramID, "MVP");
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
@@ -214,7 +231,6 @@ int main(int argc, char** argv) {
 	std::vector<Vec3> colors;
 	std::vector<Vec2> uvs;
     loadObj(argv[1], vertices, normals, materials, colors);
-	// GLuint Texture = porcaEva();
 	calculateUV(vertices, uvs);
     // Create a windowed mode window and its OpenGL context
     window = glfwCreateWindow(width, height, "OpenGL Example", nullptr, nullptr);
@@ -229,7 +245,7 @@ int main(int argc, char** argv) {
     // Set the display function
     glfwSetFramebufferSizeCallback(window, [](GLFWwindow*, int width, int height) { glViewport(0, 0, width, height); });
 
-	setUpOpenGl(vertices, uvs, colors);
+	setUpOpenGl(vertices, uvs, colors, normals);
 	controls_setup(window);
 	GLuint Texture = loadBMP("./resources/amogus.bmp");
 
@@ -237,7 +253,7 @@ int main(int argc, char** argv) {
 	printf("Program Loaded \n");
 
     // Loop until the user closes the window
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS){
         // Render here
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
