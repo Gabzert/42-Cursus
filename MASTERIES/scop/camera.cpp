@@ -13,43 +13,6 @@ Matrix getProjectionMatrix(){
 	return ProjectionMatrix;
 }
 
-// Mouse button callback function
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods) {
-	(void) mods;
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
-        if (action == GLFW_PRESS) {
-            // Start dragging
-            isDragging = true;
-            glfwGetCursorPos(window, &dragStartX, &dragStartY);
-        }
-        else if (action == GLFW_RELEASE) {
-            // Stop dragging
-            isDragging = false;
-        }
-    }
-}
-
-// Mouse movement callback function
-void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
-	(void) window;
-    if (isDragging) {
-        // Calculate offset from drag start position
-        double deltaX = dragStartX - xpos;
-        double deltaY = ypos - dragStartY;
-
-        // Update orientation based on mouse movement
-        horizontalAngle += mouseSpeed * deltaX;
-        verticalAngle += mouseSpeed * deltaY;
-
-        // Clamp vertical angle to avoid flipping
-        verticalAngle = std::max(-89.0f, std::min(89.0f, verticalAngle));
-
-        // Update drag start position for next frame
-        dragStartX = xpos;
-        dragStartY = ypos;
-    }
-}
-
 // MATRICE OK
 Matrix perspective(float fov, float aspectRatio, float nearClip, float farClip) {
     Matrix projectionMatrix;
@@ -66,14 +29,6 @@ Matrix perspective(float fov, float aspectRatio, float nearClip, float farClip) 
     projectionMatrix[2][2] = (nearClip + farClip) / (nearClip - farClip);
     projectionMatrix[2][3] = -1.0f;
     projectionMatrix[3][2] = (2.0f * nearClip * farClip) / (nearClip - farClip);
-    
-	// std::cout << "----- Projection matrix: ---------" << std::endl;
-	// for (int i = 0; i < 4; i++) {
-	// 	for (int j = 0; j < 4; j++) {
-	// 		std::cout << projectionMatrix[i][j] << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
 
     return projectionMatrix;
 }
@@ -109,31 +64,32 @@ Matrix lookAt(Vec3& position, Vec3& target, Vec3& up) {
     // set the last element to 1
     matrix[3][3] = 1.0f;
 
-	// std::cout << "----- View matrix: ---------" << std::endl;
-	// for (int i = 0; i < 4; i++) {
-	// 	for (int j = 0; j < 4; j++) {
-	// 		std::cout << matrix[i][j] << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
-
     return matrix;
 }
 
 void computeMatricesFromInputs() {
 
-    position.x = cos(verticalAngle) * sin(horizontalAngle) * Zoom;
-    position.y = sin(verticalAngle) * Zoom;
-    position.z = cos(verticalAngle) * cos(horizontalAngle) * Zoom;
+	// Calculate the position of the camera based on the angles and zoom level
+	position.x = cos(verticalAngle) * sin(horizontalAngle) * Zoom;
+	position.y = sin(verticalAngle) * Zoom;
+	position.z = cos(verticalAngle) * cos(horizontalAngle) * Zoom;
 
+	// Define the direction vector of the camera
 	Vec3 direction(0.0f, 0.0f, 0.0f);
 
-    // Define up vector
-	Vec3 up(0.0f, 1.0f, 0.0f);
-    
-    float FoV = initialFoV;
+	// Calculate the up vector of the camera
+	Vec3 up;
+	up.x = cos(verticalAngle + M_PI / 2.0f) * sin(horizontalAngle);
+	up.y = sin(verticalAngle + M_PI / 2.0f);
+	up.z = cos(verticalAngle + M_PI / 2.0f) * cos(horizontalAngle);
 
+	// Set the field of view for the projection matrix
+	float FoV = initialFoV;
+
+	// Calculate the projection matrix
 	ProjectionMatrix = perspective(FoV, 4.0f / 3.0f, 0.1f, 100.0f);
+
+	// Calculate the view matrix
 	ViewMatrix = lookAt(position, direction, up);
 }
 
@@ -172,37 +128,153 @@ void putInOrigin(std::vector < Vec3 > &vertices){
 	}
 }
 
+// CYLINDRICAL MAPPING
+// void calculateUV(std::vector<Vec3>& vertices, std::vector<Vec2>& uvs) {
+// 	// Find bounding box of the mesh
+// 	Vec3 minVertex, maxVertex = vertices[0];
+// 	for (const auto& vertex : vertices) {
+// 		minVertex.x = std::min(minVertex.x, vertex.x);
+// 		minVertex.y = std::min(minVertex.y, vertex.y);
+// 		minVertex.z = std::min(minVertex.z, vertex.z);
+// 		maxVertex.x = std::max(maxVertex.x, vertex.x);
+// 		maxVertex.y = std::max(maxVertex.y, vertex.y);
+// 		maxVertex.z = std::max(maxVertex.z, vertex.z);
+// 	}
+
+// 	// Calculate center and radius of the bounding cylinder
+// 	Vec3 center = (minVertex + maxVertex);
+// 	center.x *= 0.5f;
+// 	center.y *= 0.5f;
+// 	center.z *= 0.5f;
+
+// 	// Project vertices onto the cylinder and calculate UV coordinates
+// 	for (Vec3 vertex : vertices) {
+// 		// Calculate cylindrical coordinates
+// 		Vec3 direction = vertex - center;
+// 		float angle = std::atan2(direction.z, direction.x);
+// 		float height = vertex.y - minVertex.y; // Assume cylinder is aligned with Y-axis
+
+// 		// Map cylindrical coordinates to UV space
+// 		Vec2 uv;
+// 		uv.x = (angle + M_PI) / (2.0f * M_PI); // Normalize angle to [0, 1]
+// 		uv.y = height / (maxVertex.y - minVertex.y); // Normalize height to [0, 1]
+
+// 		uvs.push_back(uv);
+// 	}
+// }
+
+
+// CUBE MAPPING
 void calculateUV(std::vector<Vec3>& vertices, std::vector<Vec2>& uvs) {
-	// Find bounding box of the mesh
-	Vec3 minVertex, maxVertex = vertices[0];
-	for (const auto& vertex : vertices) {
-		minVertex.x = std::min(minVertex.x, vertex.x);
-		minVertex.y = std::min(minVertex.y, vertex.y);
-		minVertex.z = std::min(minVertex.z, vertex.z);
-		maxVertex.x = std::max(maxVertex.x, vertex.x);
-		maxVertex.y = std::max(maxVertex.y, vertex.y);
-		maxVertex.z = std::max(maxVertex.z, vertex.z);
-	}
+    // Calculate UV coordinates using normalized cube mapping
+    for (const auto& vertex : vertices) {
+        float absX = std::abs(vertex.x);
+        float absY = std::abs(vertex.y);
+        float absZ = std::abs(vertex.z);
 
-	// Calculate center and radius of the bounding cylinder
-	Vec3 center = (minVertex + maxVertex);
-	center.x *= 0.5f;
-	center.y *= 0.5f;
-	center.z *= 0.5f;
+        // Determine the major axis
+        float maxAxis = std::max(absX, std::max(absY, absZ));
 
-	// Project vertices onto the cylinder and calculate UV coordinates
-	for (Vec3 vertex : vertices) {
-		// Calculate cylindrical coordinates
-		Vec3 direction = vertex - center;
-		float angle = std::atan2(direction.z, direction.x);
-		float height = vertex.y - minVertex.y; // Assume cylinder is aligned with Y-axis
+        Vec2 uv;
+        if (maxAxis == absX) {
+            // Mapping to the positive or negative x face
+            uv.x = vertex.z / absX / 2.0f + 0.5f;
+            uv.y = vertex.y / absX / 2.0f + 0.5f;
+        } else if (maxAxis == absY) {
+            // Mapping to the positive or negative y face
+            uv.x = vertex.x / absY / 2.0f + 0.5f;
+            uv.y = vertex.z / absY / 2.0f + 0.5f;
+        } else {
+            // Mapping to the positive or negative z face
+            uv.x = vertex.x / absZ / 2.0f + 0.5f;
+            uv.y = vertex.y / absZ / 2.0f + 0.5f;
+        }
 
-		// Map cylindrical coordinates to UV space
-		Vec2 uv;
-		uv.x = (angle + M_PI) / (2.0f * M_PI); // Normalize angle to [0, 1]
-		uv.y = height / (maxVertex.y - minVertex.y); // Normalize height to [0, 1]
-
-		uvs.push_back(uv);
-	}
+        uvs.push_back(uv);
+    }
 }
 
+//SPHERICAL MAPPING
+// void calculateUV(std::vector<Vec3>& vertices, std::vector<Vec2>& uvs) {
+//     // Find bounding box of the mesh
+//     Vec3 minVertex, maxVertex;
+//     minVertex = maxVertex = vertices[0];
+//     for (const auto& vertex : vertices) {
+//         minVertex.x = std::min(minVertex.x, vertex.x);
+//         minVertex.y = std::min(minVertex.y, vertex.y);
+//         minVertex.z = std::min(minVertex.z, vertex.z);
+//         maxVertex.x = std::max(maxVertex.x, vertex.x);
+//         maxVertex.y = std::max(maxVertex.y, vertex.y);
+//         maxVertex.z = std::max(maxVertex.z, vertex.z);
+//     }
+
+//     // Calculate center of the bounding sphere
+// 	Vec3 center = (minVertex + maxVertex);
+// 	center.x *= 0.5f;
+// 	center.y *= 0.5f;
+// 	center.z *= 0.5f;
+
+
+//     // Calculate maximum radius of the bounding sphere
+//     float maxRadius = 0.0f;
+//     for (auto& vertex : vertices) {
+//         float distance = (vertex - center).length();
+//         maxRadius = std::max(maxRadius, distance);
+//     }
+
+//     // Project vertices onto the sphere and calculate UV coordinates
+//     for (auto& vertex : vertices) {
+//         // Calculate spherical coordinates
+//         Vec3 direction = vertex - center;
+//         float phi = std::acos(direction.y / maxRadius); // Inclination angle
+//         float theta = std::atan2(direction.z, direction.x); // Azimuth angle
+
+//         // Map spherical coordinates to UV space
+//         Vec2 uv;
+//         uv.x = (theta + M_PI) / (2.0f * M_PI); // Normalize azimuth angle to [0, 1]
+//         uv.y = phi / M_PI; // Normalize inclination angle to [0, 1]
+
+//         uvs.push_back(uv);
+//     }
+// }
+
+
+
+// PREDEFINED UV MAPPING
+// void calculateUV(std::vector<Vec3>& vertices, std::vector<Vec2>& uvs) {
+// 	Vec2 prev_uv(-1.0f, 0.0f);
+	
+// 	for (size_t i = 0; i < vertices.size(); i++){
+// 		if (prev_uv.x == -1.0f
+// 			|| (prev_uv.x == 0.0f && prev_uv.y == 1.0f))
+// 			uvs.push_back(Vec2(0.0f, 0.0f));
+// 		else if (prev_uv.x == 0.0f && prev_uv.y == 0.0f)
+// 			uvs.push_back(Vec2(1.0f, 0.0f));
+// 		else if (prev_uv.x == 1.0f && prev_uv.y == 0.0f)
+// 			uvs.push_back(Vec2(1.0f, 1.0f));
+// 		else if (prev_uv.x == 1.0f && prev_uv.y == 1.0f)
+// 			uvs.push_back(Vec2(0.0f, 1.0f));
+// 		prev_uv = uvs[i];
+// 	}
+// }
+
+
+// void calculateUV(std::vector<Vec3>& vertices, std::vector<Vec2>& uvs) {
+// 	Vec3 minVertex, maxVertex = vertices[0];
+// 	for (const auto& vertex : vertices) {
+// 		minVertex.x = std::min(minVertex.x, vertex.x);
+// 		minVertex.y = std::min(minVertex.y, vertex.y);
+// 		maxVertex.x = std::max(maxVertex.x, vertex.x);
+// 		maxVertex.y = std::max(maxVertex.y, vertex.y);
+// 	}
+
+// 	float k_X = 1 / (maxVertex.x - minVertex.x);
+// 	float k_Y = 1 / (maxVertex.y - minVertex.y);
+
+// 	for (const auto& vertex : vertices) {
+// 		Vec2 uv;
+// 		uv.x = (vertex.x - minVertex.x) * k_X;
+// 		uv.y = (vertex.y - minVertex.y) * k_Y;
+// 		uvs.push_back(uv);
+// 	}
+// }

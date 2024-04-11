@@ -3,10 +3,9 @@
 GLuint vbo, vao, ProgramID, width = 800, height = 600;
 GLFWwindow* window;
 
-// Initial position : on +Z
-Vec3 position = Vec3( 10, 0, 0 ); 
+Vec3 position; 
 // Initial horizontal angle : toward -Z
-float horizontalAngle = 3.14f;
+float horizontalAngle = 1.14f;
 // Initial vertical angle : none
 float verticalAngle = 0.0f;
 // Initial Field of View
@@ -15,7 +14,8 @@ float Zoom = 10.0f;
 
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
-
+bool toggle = false;
+float mix = 0.0f;
 
 static const GLfloat test_cube[] = {
 	-1.0f,-1.0f,-1.0f,
@@ -100,9 +100,6 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	(void) vertices;
 	(void) uvs;
 	putInOrigin(vertices);
-	// Register callback functions
-	glfwSetMouseButtonCallback(window, mouse_button_callback);
-	glfwSetCursorPosCallback(window, cursor_position_callback);
 	// Set up OpenGL context and shaders
 	glEnable(GL_DEPTH_TEST); // Enable depth testing for 3D rendering
 	glEnable(GL_CULL_FACE); // Enable backface culling
@@ -169,26 +166,25 @@ void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint
 	Matrix ViewMatrix = getViewMatrix();
 	Matrix ModelMatrix(1.0f);
 	Matrix mvp = ModelMatrix * ViewMatrix * ProjectionMatrix ;
-	// std::cout << "----- MVP Matrix: ---------" << std::endl;
-	// for (int i = 0; i < 4; i++) {
-	// 	for (int j = 0; j < 4; j++) {
-	// 		std::cout << mvp[i][j] << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// }
+
 	GLuint MatrixID = glGetUniformLocation(ProgramID, "MVP");
 	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &mvp[0][0]);
-
-	GLuint useTexture = glGetUniformLocation(ProgramID, "useTexture");
-	glUniform1i(useTexture, 1);
 
 	// Bind our texture in Texture Unit 0
 	GLuint TextureID  = glGetUniformLocation(ProgramID, "textureSampler");
 	glUniform1i(TextureID, 0);
 
+	if (toggle && mix < 1.0f) {	
+		mix += 0.01f;	
+	}
+	else if (!toggle && mix > 0.0f) {
+		mix -= 0.01f;
+	}
+	GLuint blend = glGetUniformLocation(ProgramID, "blend");
+	glUniform1f(blend, mix);
 	GLenum error = glGetError();
 	if (error != GL_NO_ERROR) {
-		std::cerr << "Error generating mipmaps: " << error << std::endl;
+		std::cerr << "Error in display : " << error << std::endl;
 	}
 
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
@@ -232,22 +228,10 @@ int main(int argc, char** argv) {
 
     // Set the display function
     glfwSetFramebufferSizeCallback(window, [](GLFWwindow*, int width, int height) { glViewport(0, 0, width, height); });
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-		(void) mods;
-		(void) scancode;
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-            glfwSetWindowShouldClose(window, GLFW_TRUE);
-    });
-	glfwSetScrollCallback(window, [](GLFWwindow* window, double xoffset, double yoffset) {
-		// Zoom in or out based on the yoffset value
-		(void) window;
-		(void) xoffset;
-		Zoom -= yoffset;
-	});
-
 
 	setUpOpenGl(vertices, uvs, colors);
-	GLuint Texture = loadBMP("./resources/blue-hexagon.bmp");
+	controls_setup(window);
+	GLuint Texture = loadBMP("./resources/amogus.bmp");
 
 	ProgramID = LoadShaders( "./vertexShader.glsl", "./fragmentShader.glsl" );
 	printf("Program Loaded \n");

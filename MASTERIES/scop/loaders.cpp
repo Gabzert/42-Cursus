@@ -219,8 +219,10 @@ GLuint loadBMP(const char * imagepath) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	// ... which requires mipmaps. Generate them automatically.
 	glGenerateMipmap(GL_TEXTURE_2D);
-	// std::cout << glGetError() << std::endl;
-	// Return the ID of the texture we just created
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR) {
+		std::cerr << "Error generating mipmaps: " << error << std::endl;
+	}
 	return textureID;
 }
 

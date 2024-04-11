@@ -13,6 +13,7 @@ public:
 	~Vec3();
     Vec3 cross(const Vec3& other) const;
     Vec3 normalize() const;
+	float length() const;
 	Vec3 &operator=(const Vec3 &rhs);
 	Vec3 operator+(const Vec3 &rhs);
 	Vec3 operator-(const Vec3 &rhs);

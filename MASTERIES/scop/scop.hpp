@@ -51,3 +51,4 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 GLuint loadBMP(const char * imagepath);
 void calculateUV(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs);
+void controls_setup(GLFWwindow* window);

@@ -30,6 +30,9 @@ Vec3 Vec3::normalize() const {
 	return {x / length, y / length, z / length};
 }
 
+float Vec3::length() const {
+	return std::sqrt(x * x + y * y + z * z);
+}
 
 Vec3 &Vec3::operator=(const Vec3 &rhs)
 {

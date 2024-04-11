@@ -5,15 +5,14 @@ in vec3 vertexColor;
 in vec2 vertexUV;
 
 uniform sampler2D textureSampler;
-uniform bool useTexture;
+uniform float blend;
 
 out vec4 fragColor;
 
 void main() {
-	if (useTexture)
-		fragColor = texture(textureSampler, vertexUV); // Set fragment color to texture color
-	else
-    	fragColor = vec4(vertexColor, 1.0); // Set fragment color to vertex color
+		// fragColor = texture(textureSampler, vertexUV); // Set fragment color to texture color
+    	// fragColor = ; // Set fragment color to vertex color
+		fragColor = mix(vec4(vertexColor, 1.0), texture(textureSampler, vertexUV), blend); // Mix fragment color with texture color
 }
 
 
