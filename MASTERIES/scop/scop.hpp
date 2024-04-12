@@ -52,3 +52,4 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
 GLuint loadBMP(const char * imagepath);
 void calculateUV(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs);
 void controls_setup(GLFWwindow* window);
+Matrix rotationMatrix(float angle, Vec3 axis);

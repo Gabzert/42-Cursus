@@ -161,9 +161,12 @@ void setUpOpenGl(std::vector < Vec3 > &vertices, std::vector < Vec2 > &uvs, std:
 	glDeleteBuffers(1, &normalbuffer);
 }
 
-void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint Texture) {
-	(void) uvs;
-	(void) Texture;
+void display(std::vector < Vec3 > & vertices) {
+	static float angle;
+	if (angle > 4 || !angle) {
+		angle = 0.0f;
+	}
+	angle += 0.01f;
 	// Clear the screen
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -176,7 +179,7 @@ void display(std::vector < Vec3 > & vertices, std::vector < Vec2 > & uvs, GLuint
 	computeMatricesFromInputs();
 	Matrix ProjectionMatrix = getProjectionMatrix();
 	Matrix ViewMatrix = getViewMatrix();
-	Matrix ModelMatrix(1.0f);
+	Matrix ModelMatrix = rotationMatrix(angle * 3.14f / 2, Vec3(0.0f, 1.0f, 0.0f));
 	Matrix mvp = ModelMatrix * ViewMatrix * ProjectionMatrix ;
 
 	GLuint MMID = glGetUniformLocation(ProgramID, "M");
@@ -230,7 +233,10 @@ int main(int argc, char** argv) {
 	std::vector<Material> materials;
 	std::vector<Vec3> colors;
 	std::vector<Vec2> uvs;
-    loadObj(argv[1], vertices, normals, materials, colors);
+    if (!loadObj(argv[1], vertices, normals, materials, colors)){
+		glfwTerminate();
+        return -1;
+	}
 	calculateUV(vertices, uvs);
     // Create a windowed mode window and its OpenGL context
     window = glfwCreateWindow(width, height, "OpenGL Example", nullptr, nullptr);
@@ -247,7 +253,7 @@ int main(int argc, char** argv) {
 
 	setUpOpenGl(vertices, uvs, colors, normals);
 	controls_setup(window);
-	GLuint Texture = loadBMP("./resources/amogus.bmp");
+	loadBMP("./resources/amogus.bmp");
 
 	ProgramID = LoadShaders( "./vertexShader.glsl", "./fragmentShader.glsl" );
 	printf("Program Loaded \n");
@@ -258,8 +264,8 @@ int main(int argc, char** argv) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Call the display function
-		// system("clear");
-        display(vertices, uvs, Texture);
+		system("clear");
+        display(vertices);
 
         // Swap front and back buffers
         glfwSwapBuffers(window);

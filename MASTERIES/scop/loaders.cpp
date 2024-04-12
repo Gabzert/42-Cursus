@@ -296,5 +296,5 @@ bool loadObj(const char * path, std::vector < Vec3 > & out_vertices, std::vector
 			out_colors.push_back(color);
 		}
 	}
-	return false;
+	return true;
 }

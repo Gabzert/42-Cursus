@@ -13,6 +13,37 @@ Matrix getProjectionMatrix(){
 	return ProjectionMatrix;
 }
 
+Matrix rotationMatrix(float angle, Vec3 axis) {
+    Matrix matrix(1.0f); // Identity matrix
+
+    float c = cos(angle);
+    float s = sin(angle);
+    float t = 1.0f - c;
+
+    float x = axis.x;
+    float y = axis.y;
+    float z = axis.z;
+
+    // First row
+    matrix[0][0] = t * x * x + c;
+    matrix[0][1] = t * x * y - s * z;
+    matrix[0][2] = t * x * z + s * y;
+
+    // Second row
+    matrix[1][0] = t * x * y + s * z;
+    matrix[1][1] = t * y * y + c;
+    matrix[1][2] = t * y * z - s * x;
+
+    // Third row
+    matrix[2][0] = t * x * z - s * y;
+    matrix[2][1] = t * y * z + s * x;
+    matrix[2][2] = t * z * z + c;
+
+    return matrix;
+}
+
+
+
 // MATRICE OK
 Matrix perspective(float fov, float aspectRatio, float nearClip, float farClip) {
     Matrix projectionMatrix;
