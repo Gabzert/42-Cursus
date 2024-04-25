@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def plot_pair(data):
-	plot.figure(figsize=(10, 8))
+	# plot.figure(figsize=(10, 8))
 	data_df = pd.DataFrame(data, columns=data[0])
 	data_df = data_df.drop(0)
 	data_df = data_df.set_index(data_df.columns[0])
@@ -24,7 +24,7 @@ def plot_pair(data):
 		data_df[col] = pd.to_numeric(data_df[col], errors='coerce')
 
 	data_df['Hogwarts House'] = pd.Categorical(data_df['Hogwarts House'])
-	sns.pairplot(data_df, hue='Hogwarts House', markers = ".", size=2)
+	sns.pairplot(data_df, hue='Hogwarts House', markers = ".", height=1)
 	plot.title('Pair Plot')
 	plot.legend(loc='upper right')
 	plot.show()
