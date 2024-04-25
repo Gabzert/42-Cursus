@@ -1,4 +1,3 @@
-import sys
 import matplotlib.pyplot as plot
 from describe import get_data
 import numpy as np
@@ -18,6 +17,5 @@ def plot_scatter(data):
 
 if __name__ == '__main__':
 	filename = "./datasets/dataset_train.csv"
-	all_data, desc_data, header = get_data(filename)
-	header = header[1:]
+	all_data, desc_data = get_data(filename)
 	plot_scatter(desc_data)

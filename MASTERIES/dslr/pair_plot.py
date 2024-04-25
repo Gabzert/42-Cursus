@@ -31,6 +31,5 @@ def plot_pair(data):
 
 if __name__ == '__main__':
 	filename = "./datasets/dataset_train.csv"
-	all_data, desc_data, header = get_data(filename)
-	header = header[1:]
+	all_data = get_data(filename)
 	plot_pair(all_data)
