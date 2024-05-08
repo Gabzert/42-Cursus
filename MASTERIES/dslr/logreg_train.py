@@ -20,7 +20,7 @@ def compute_loss(y_pred, y_true):
 
 
 # Update parameters
-def update_parameters(weights, bias, dw, db, learning_rate):
+def update_parameters(weights, bias, dw, db):
 		weights -= learning_rate * dw
 		bias -= learning_rate * db
 		return weights, bias
@@ -39,21 +39,23 @@ def forward_pass(X, weights, bias):
 
 
 # Gradient descent
-def gradient_descent(X, y_true, y_pred):
+def gradient_descent(X:np.ndarray, y_true:np.ndarray, y_pred:np.ndarray):
 		dw = np.dot(X.T, (y_pred - y_true)) / len(y_true)
 		db = np.mean(y_pred - y_true)
 		return dw, db
 
 # Model training
-def train_model(X_train, y_train, num_iterations, learning_rate, house):
+def train_model(X_train, y_train, house):
 		n_features = X_train.shape[1]
 		weights, bias = initialize_parameters(n_features)
+		#Convert y_train to binary
 		y_train = (y_train == house).astype(int)
-		for i in range(num_iterations):
+		y_train = y_train.reshape(-1, 1)
+		for i in range(epochs):
 				y_pred = forward_pass(X_train, weights, bias)
 				loss = compute_loss(y_pred, y_train)
 				dw, db = gradient_descent(X_train, y_train, y_pred)
-				weights, bias = update_parameters(weights, bias, dw, db, learning_rate)
+				weights, bias = update_parameters(weights, bias, dw, db)
 				if i % 100 == 0:
 						print(f"Iteration {i}, Loss: {loss}")
 		return weights, bias
@@ -69,25 +71,27 @@ if __name__ == '__main__':
 	data = data[1:, :]
 
 	# Take only the classes we consider, in this case "Defense Against the Dark Arts" and "Herbology"
-	data = data[:, [0, 8, 9]]
+	data = data[:, [1, 8, 9]]
+	# Clear
+	data = np.where(data == '', np.nan, data)
 
 	# Split the data into features and target
-	X = data[:, 0:]
+	X = data[:, 1:]
 	y = data[:, 0]
+	X = X.astype(float)
+	# X = X[~np.isnan(X).any(axis=1)]
+	X = np.nan_to_num(X)
 
 	houses = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
 
 	for house in houses:
 		# Train the models
-		weights, bias = train_model(X, y, epochs, learning_rate, house)
+		weights, bias = train_model(X, y, house)
+		print(f"Training for {house} complete")
+		print(weights, bias)
 		# Save the models
-		np.savez(f'./models/logreg_{house}.npz', weights=weights, bias=bias)
-
-
-
-
-
-
+		np.save(f'models/{house}_weights.npy', weights)
+		np.save(f'models/{house}_bias.npy', bias)
 
 
 
