@@ -17,5 +17,5 @@ def plot_scatter(data):
 
 if __name__ == '__main__':
 	filename = "./datasets/dataset_train.csv"
-	all_data, desc_data = get_data(filename)
+	desc_data = get_data(filename)[1]
 	plot_scatter(desc_data)

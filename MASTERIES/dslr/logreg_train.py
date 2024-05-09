@@ -79,7 +79,6 @@ if __name__ == '__main__':
 	X = data[:, 1:]
 	y = data[:, 0]
 	X = X.astype(float)
-	# X = X[~np.isnan(X).any(axis=1)]
 	X = np.nan_to_num(X)
 
 	houses = ['Gryffindor', 'Hufflepuff', 'Ravenclaw', 'Slytherin']
@@ -93,15 +92,6 @@ if __name__ == '__main__':
 		np.save(f'models/{house}_weights.npy', weights)
 		np.save(f'models/{house}_bias.npy', bias)
 
-
-
-
-
-
-
-# # Prediction
-# def predict(X, weight, bias):
-# 		y_pred = forward_pass(X, weight, bias)
 
 
 # # Model evaluation
