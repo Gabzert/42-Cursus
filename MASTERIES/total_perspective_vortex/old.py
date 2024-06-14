@@ -12,8 +12,9 @@
 # import mne
 
 # # Load your EEG data using MNE
-# X = mne.io.read_raw_edf('path_to_your_data.edf', preload=True)
-# y = np.array([1, 2, 1, 2, 1, 2, 1, 2])
+# X = mne.io.read_raw_edf('S001R01.edf', preload=True)
+# X.filter(1, 30)  # Apply bandpass filter to the data
+# y = np.array([0, 1, 0, 1, 0, 1, 0, 1])
 
 # # Assuming X contains EEG data and y contains labels indicating task moments
 
@@ -38,6 +39,8 @@
 # print("Accuracy:", accuracy)
 
 
+
+'''
 import numpy as np
 import mne
 from sklearn.pipeline import Pipeline
@@ -60,31 +63,32 @@ raw.filter(1, 30)
 # Visualize the data after preprocessing
 raw.plot()
 
-# # Select features
-# X = ...  # Extract features from the preprocessed data
-# y = ...  # Extract labels
+# Select features
+X = ...  # Extract features from the preprocessed data
+y = ...  # Extract labels
 
-# # V.1.2 Treatment Pipeline
-# # Define the processing pipeline
-# pipeline = Pipeline([
-#     ('scaling', StandardScaler()),
-#     ('dimensionality_reduction', PCA()),  # Change PCA to your chosen algorithm
-#     ('classification', SVC())  # Change SVC to your chosen classification algorithm
-# ])
+# V.1.2 Treatment Pipeline
+# Define the processing pipeline
+pipeline = Pipeline([
+    ('scaling', StandardScaler()),
+    ('dimensionality_reduction', PCA()),  # Change PCA to your chosen algorithm
+    ('classification', SVC())  # Change SVC to your chosen classification algorithm
+])
 
-# # V.1.3 Implementation
-# # Train the pipeline
-# pipeline.fit(X, y)
+# V.1.3 Implementation
+# Train the pipeline
+pipeline.fit(X, y)
 
-# # V.1.4 Train, Validation and Test
-# # Cross-validation
-# scores = cross_val_score(pipeline, X, y, cv=5)  # Adjust cv value as needed
+# V.1.4 Train, Validation and Test
+# Cross-validation
+scores = cross_val_score(pipeline, X, y, cv=5)  # Adjust cv value as needed
 
-# # Split data into train, validation, and test sets
-# X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Split data into train, validation, and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# # Train the pipeline on the training set
-# pipeline.fit(X_train, y_train)
+# Train the pipeline on the training set
+pipeline.fit(X_train, y_train)
 
-# # Evaluate on the test set
-# accuracy = pipeline.score(X_test, y_test)
+# Evaluate on the test set
+accuracy = pipeline.score(X_test, y_test)
+'''
